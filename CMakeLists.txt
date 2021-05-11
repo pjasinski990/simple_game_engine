@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.17)
+cmake_minimum_required(VERSION 3.7)
 project(mrld_engine)
 set(CMAKE_CXX_STANDARD 14)
 
@@ -10,4 +10,4 @@ add_subdirectory(dependencies/glfw3)
 
 
 add_executable(mrld_engine main.cpp)
-target_link_libraries(mrld_engine GLAD glfw Gdi32 Opengl32)
+target_link_libraries(mrld_engine GLAD glfw)
