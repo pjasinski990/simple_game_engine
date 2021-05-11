@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="GLAD"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="msvc8"/>
+		<Option virtualFolders="CMake Files\;CMake Files\dependencies\;CMake Files\dependencies\glad\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="C:/dev/c_cpp/mrld_engine/cmake-build-debug/dependencies/glad"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="nmake /NOLOGO /f C:\dev\c_cpp\mrld_engine\cmake-build-debug\dependencies\glad\Makefile VERBOSE=1 all"/>
+					<CompileFile command="nmake /NOLOGO /f C:\dev\c_cpp\mrld_engine\cmake-build-debug\dependencies\glad\Makefile VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="nmake /NOLOGO /f C:\dev\c_cpp\mrld_engine\cmake-build-debug\dependencies\glad\Makefile VERBOSE=1 clean"/>
+					<DistClean command="nmake /NOLOGO /f C:\dev\c_cpp\mrld_engine\cmake-build-debug\dependencies\glad\Makefile VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="glad-generate-files">
+				<Option working_dir="C:/dev/c_cpp/mrld_engine/cmake-build-debug/dependencies/glad"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="nmake /NOLOGO /f C:\dev\c_cpp\mrld_engine\cmake-build-debug\dependencies\glad\Makefile VERBOSE=1 glad-generate-files"/>
+					<CompileFile command="nmake /NOLOGO /f C:\dev\c_cpp\mrld_engine\cmake-build-debug\dependencies\glad\Makefile VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="nmake /NOLOGO /f C:\dev\c_cpp\mrld_engine\cmake-build-debug\dependencies\glad\Makefile VERBOSE=1 clean"/>
+					<DistClean command="nmake /NOLOGO /f C:\dev\c_cpp\mrld_engine\cmake-build-debug\dependencies\glad\Makefile VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="glad">
+				<Option output="C:/dev/c_cpp/mrld_engine/cmake-build-debug/dependencies/glad/glad.lib" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/dev/c_cpp/mrld_engine/cmake-build-debug/dependencies/glad"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="msvc8"/>
+				<Compiler>
+					<Add directory="C:/dev/c_cpp/mrld_engine/cmake-build-debug/dependencies/glad/include"/>
+					<Add directory="C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\VC\Tools\MSVC\14.27.29110\include"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\NETFXSDK\4.8\include\um"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\ucrt"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\shared"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\um"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\winrt"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\cppwinrt"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="nmake /NOLOGO /f C:\dev\c_cpp\mrld_engine\cmake-build-debug\dependencies\glad\Makefile VERBOSE=1 glad"/>
+					<CompileFile command="nmake /NOLOGO /f C:\dev\c_cpp\mrld_engine\cmake-build-debug\dependencies\glad\Makefile VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="nmake /NOLOGO /f C:\dev\c_cpp\mrld_engine\cmake-build-debug\dependencies\glad\Makefile VERBOSE=1 clean"/>
+					<DistClean command="nmake /NOLOGO /f C:\dev\c_cpp\mrld_engine\cmake-build-debug\dependencies\glad\Makefile VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="glad/fast">
+				<Option output="C:/dev/c_cpp/mrld_engine/cmake-build-debug/dependencies/glad/glad.lib" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/dev/c_cpp/mrld_engine/cmake-build-debug/dependencies/glad"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="msvc8"/>
+				<Compiler>
+					<Add directory="C:/dev/c_cpp/mrld_engine/cmake-build-debug/dependencies/glad/include"/>
+					<Add directory="C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\VC\Tools\MSVC\14.27.29110\include"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\NETFXSDK\4.8\include\um"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\ucrt"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\shared"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\um"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\winrt"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\cppwinrt"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="nmake /NOLOGO /f C:\dev\c_cpp\mrld_engine\cmake-build-debug\dependencies\glad\Makefile VERBOSE=1 glad/fast"/>
+					<CompileFile command="nmake /NOLOGO /f C:\dev\c_cpp\mrld_engine\cmake-build-debug\dependencies\glad\Makefile VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="nmake /NOLOGO /f C:\dev\c_cpp\mrld_engine\cmake-build-debug\dependencies\glad\Makefile VERBOSE=1 clean"/>
+					<DistClean command="nmake /NOLOGO /f C:\dev\c_cpp\mrld_engine\cmake-build-debug\dependencies\glad\Makefile VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="C:/dev/c_cpp/mrld_engine/cmake-build-debug/dependencies/glad/include/glad/glad.h">
+			<Option target="glad"/>
+		</Unit>
+		<Unit filename="C:/dev/c_cpp/mrld_engine/cmake-build-debug/dependencies/glad/include/glad/glad.h.rule">
+			<Option target="glad"/>
+		</Unit>
+		<Unit filename="C:/dev/c_cpp/mrld_engine/cmake-build-debug/dependencies/glad/src/glad.c">
+			<Option target="glad"/>
+		</Unit>
+		<Unit filename="C:/dev/c_cpp/mrld_engine/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+		<Unit filename="C:/dev/c_cpp/mrld_engine/dependencies/glad/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\dependencies\glad\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>
