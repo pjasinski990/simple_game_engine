@@ -45,7 +45,6 @@ void mrld::on_window_resize(GLFWwindow *window, int width, int height)
     glViewport(0, 0, width, height);
 }
 
-
 const char *mrld::WindowCreationException::what() const
 {
     return exception::what();
