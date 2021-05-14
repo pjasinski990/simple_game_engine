@@ -1,23 +1,14 @@
 #include <iostream>
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
+#include <window/window.h>
+#include <input/keyboard_handler.h>
+#include <vector>
 
 int main() {
-    if (!glfwInit()) {
-        std::cerr << "Error initializing glfw" << std::endl;
-        return -1;
+    mrld::Window w("Hello world!", 800, 600);
+    std::vector<mrld::KeyCode> v = {mrld::W, mrld::S, mrld::A, mrld::D};
+    mrld::KeyboardHandler handler(v);
+    while (!w.should_close()) {
+        w.update();
     }
-    GLFWwindow* window = glfwCreateWindow(640, 480, "LearnOpenGL", NULL, NULL);
-    glfwMakeContextCurrent(window);
-
-    if (!gladLoadGL()) {
-        std::cerr << "Error initializing GLAD" << std::endl;
-        exit(-1);
-    }
-
-    while (!glfwWindowShouldClose(window)) {
-        glfwPollEvents();
-    }
-
     return 0;
 }
