@@ -1,3 +1,5 @@
+#include <algorithm>
+
 #include <input/key_code.h>
 #include <input/mouse_handler.h>
 

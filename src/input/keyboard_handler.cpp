@@ -1,3 +1,5 @@
+#include <algorithm>
+
 #include <input/keyboard_handler.h>
 
 std::vector<mrld::KeyboardHandler*> mrld::KeyboardHandler::_instances;

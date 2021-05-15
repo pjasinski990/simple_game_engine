@@ -1,7 +1,7 @@
 #ifndef MRLD_ENGINE_WINDOW_H
 #define MRLD_ENGINE_WINDOW_H
 
-#include <exception>
+#include <stdexcept>
 
 class GLFWwindow;
 
@@ -22,10 +22,11 @@ namespace mrld {
         int _height;
     };
 
-    class WindowCreationException: public std::exception {
+    class WindowCreationException: public std::runtime_error {
     public:
-        explicit WindowCreationException(const char* msg): std::exception(msg) {}
-        const char *what() const override;
+        explicit WindowCreationException(const char* msg): std::runtime_error(msg) {}
+        virtual ~WindowCreationException() = default;
+        virtual const char *what() const noexcept override { return runtime_error::what(); }
     };
 
     void on_window_resize(GLFWwindow *window, int width, int height);
