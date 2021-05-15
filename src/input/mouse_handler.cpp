@@ -13,12 +13,18 @@ mrld::MouseHandler::MouseHandler(const std::vector<MouseButton> &mouse_buttons)
 
     glfwSetMouseButtonCallback(glfwGetCurrentContext(), mouse_button_callback);
     glfwSetCursorPosCallback(glfwGetCurrentContext(), cursor_position_callback);
+    glfwSetScrollCallback(glfwGetCurrentContext(), scroll_callback);
 }
 
 mrld::MouseHandler::~MouseHandler()
 {
     std::vector<MouseHandler*>::iterator it = std::find(std::begin(_instances), std::end(_instances), this);
     _instances.erase(it);
+}
+
+double mrld::MouseHandler::is_button_down(mrld::MouseButton button) const
+{
+    return _mouse_button_states.at(static_cast<int>(button));
 }
 
 void mrld::MouseHandler::mouse_button_callback(GLFWwindow *window, int button, int action, int mods)
@@ -39,8 +45,10 @@ void mrld::MouseHandler::cursor_position_callback(GLFWwindow *window, double x_p
     }
 }
 
-double mrld::MouseHandler::is_button_down(mrld::MouseButton button) const
+void mrld::MouseHandler::scroll_callback(GLFWwindow *window, double x_offset, double y_offset)
 {
-    return _mouse_button_states.at(static_cast<int>(button));
+    for (auto q : _instances) {
+        q->_x_scroll = x_offset;
+        q-> _y_scroll = y_offset;
+    }
 }
-

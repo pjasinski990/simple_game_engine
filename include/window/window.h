@@ -2,6 +2,7 @@
 #define MRLD_ENGINE_WINDOW_H
 
 #include <exception>
+
 class GLFWwindow;
 
 namespace mrld {
