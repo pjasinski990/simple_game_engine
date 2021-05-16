@@ -9,13 +9,27 @@ namespace mrld
 {
     struct vec2 
     {
-        // TODO define operators for operations with single floats (like vec2 * 5)
-        explicit vec2(float x = 0.0f, float y = 0.0f); 
+        explicit vec2(float x = 0.0f, float y = 0.0f);
 
         vec2& operator+=(const vec2& o);
         vec2& operator-=(const vec2& o);
         vec2& operator*=(const vec2& o);
         vec2& operator/=(const vec2& o);
+
+        friend vec2 operator+(vec2 o1, const vec2& o2);
+        friend vec2 operator-(vec2 o1, const vec2& o2);
+        friend vec2 operator*(vec2 o1, const vec2& o2);
+        friend vec2 operator/(vec2 o1, const vec2& o2);
+
+        vec2& operator+=(float f);
+        vec2& operator-=(float f);
+        vec2& operator*=(float f);
+        vec2& operator/=(float f);
+
+        friend vec2 operator+(vec2 o1, float f);
+        friend vec2 operator-(vec2 o1, float f);
+        friend vec2 operator*(vec2 o1, float f);
+        friend vec2 operator/(vec2 o1, float f);
 
         friend vec2 operator+(vec2 o1, const vec2& o2);
         friend vec2 operator-(vec2 o1, const vec2& o2);

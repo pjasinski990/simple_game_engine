@@ -36,6 +36,43 @@ namespace mrld
         return *this;
     }
 
+    vec3& vec3::operator+=(float f)
+    {
+        *this += vec3(f, f, f);
+        return *this;
+    }
+    vec3& vec3::operator-=(float f)
+    {
+        *this -= vec3(f, f, f);
+        return *this;
+    }
+    vec3& vec3::operator*=(float f)
+    {
+        *this *= vec3(f, f, f);
+        return *this;
+    }
+    vec3& vec3::operator/=(float f)
+    {
+        *this /= vec3(f, f, f);
+        return *this;
+    }
+
+    vec3 operator+(vec3 o, float f)
+    {
+        return vec3(o) += f;
+    }
+    vec3 operator-(vec3 o, float f)
+    {
+        return vec3(o) -= f;
+    }
+    vec3 operator*(vec3 o, float f)
+    {
+        return vec3(o) *= f;
+    }
+    vec3 operator/(vec3 o, float f)
+    {
+        return vec3(o) /= f;
+    }
 
     vec3 operator+(vec3 o1, const vec3& o2)
     {
@@ -100,5 +137,13 @@ namespace mrld
         float rz = this->x * o.y - this->y * o.x;
         return vec3(rx, ry, rz);
     }
-};
 
+    float vec3::magnitude() const
+    {
+        return sqrt(x*x + y*y + z*z);
+    }
+    vec3 vec3::normalized() const
+    {
+        return *this / magnitude();
+    }
+}

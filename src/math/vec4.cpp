@@ -3,7 +3,7 @@
 
 #include <math/vec4.h>
 
-namespace mrld 
+namespace mrld
 {
     vec4::vec4(float x, float y, float z, float w): x{x}, y{y}, z{z}, w{w} {}
 
@@ -58,6 +58,44 @@ namespace mrld
         return o1 /= o2;
     }
 
+    vec4& vec4::operator+=(float f)
+    {
+        *this += vec4(f, f, f, f);
+        return *this;
+    }
+    vec4& vec4::operator-=(float f)
+    {
+        *this -= vec4(f, f, f, f);
+        return *this;
+    }
+    vec4& vec4::operator*=(float f)
+    {
+        *this *= vec4(f, f, f, f);
+        return *this;
+    }
+    vec4& vec4::operator/=(float f)
+    {
+        *this /= vec4(f, f, f, f);
+        return *this;
+    }
+
+    vec4 operator+(vec4 o, float f)
+    {
+        return vec4(o) += f;
+    }
+    vec4 operator-(vec4 o, float f)
+    {
+        return vec4(o) -= f;
+    }
+    vec4 operator*(vec4 o, float f)
+    {
+        return vec4(o) *= f;
+    }
+    vec4 operator/(vec4 o, float f)
+    {
+        return vec4(o) /= f;
+    }
+
     bool operator<(const vec4& o1, const vec4& o2)
     {
         return std::tie(o1.x, o1.y, o1.z, o1.w) < std::tie(o2.x, o2.y, o2.z, o2.w);
@@ -99,5 +137,13 @@ namespace mrld
     {
         return this->x * o.x + this->y + o.y + this->z * o.z + this->w * o.w;
     }
-};
 
+    float vec4::magnitude() const
+    {
+        return sqrt(x*x + y*y + z*z + w*w);
+    }
+    vec4 vec4::normalized() const
+    {
+        return *this / magnitude();
+    }
+};

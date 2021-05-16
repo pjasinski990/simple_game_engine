@@ -21,6 +21,16 @@ namespace mrld
         friend vec4 operator*(vec4 o1, const vec4& o2);
         friend vec4 operator/(vec4 o1, const vec4& o2);
 
+        vec4& operator+=(float f);
+        vec4& operator-=(float f);
+        vec4& operator*=(float f);
+        vec4& operator/=(float f);
+
+        friend vec4 operator+(vec4 o1, float f);
+        friend vec4 operator-(vec4 o1, float f);
+        friend vec4 operator*(vec4 o1, float f);
+        friend vec4 operator/(vec4 o1, float f);
+
         friend bool operator<(const vec4& o1, const vec4& o2);
         friend bool operator>(const vec4& o1, const vec4& o2);
         friend bool operator<=(const vec4& o1, const vec4& o2);
@@ -32,11 +42,14 @@ namespace mrld
 
         float dot(const vec4 &o) const;
 
+        float magnitude() const;
+        vec4 normalized() const;
+
         float x;
         float y;
         float z;
         float w;
     };
-};
+}
 
 #endif //MRLD_ENGINE_VEC4_H

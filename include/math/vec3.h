@@ -21,6 +21,16 @@ namespace mrld
         friend vec3 operator*(vec3 o1, const vec3& o2);
         friend vec3 operator/(vec3 o1, const vec3& o2);
 
+        vec3& operator+=(float f);
+        vec3& operator-=(float f);
+        vec3& operator*=(float f);
+        vec3& operator/=(float f);
+
+        friend vec3 operator+(vec3 o1, float f);
+        friend vec3 operator-(vec3 o1, float f);
+        friend vec3 operator*(vec3 o1, float f);
+        friend vec3 operator/(vec3 o1, float f);
+
         friend bool operator<(const vec3& o1, const vec3& o2);
         friend bool operator>(const vec3& o1, const vec3& o2);
         friend bool operator<=(const vec3& o1, const vec3& o2);
@@ -32,6 +42,9 @@ namespace mrld
 
         float dot(const vec3 &o) const;
         vec3 cross(const vec3 &o) const;
+
+        float magnitude() const;
+        vec3 normalized() const;
 
         float x;
         float y;

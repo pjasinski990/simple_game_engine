@@ -50,6 +50,44 @@ namespace mrld
         return o1 /= o2;
     }
 
+    vec2& vec2::operator+=(float f)
+    {
+        *this += vec2(f, f);
+        return *this;
+    }
+    vec2& vec2::operator-=(float f)
+    {
+        *this -= vec2(f, f);
+        return *this;
+    }
+    vec2& vec2::operator*=(float f)
+    {
+        *this *= vec2(f, f);
+        return *this;
+    }
+    vec2& vec2::operator/=(float f)
+    {
+        *this /= vec2(f, f);
+        return *this;
+    }
+
+    vec2 operator+(vec2 o, float f)
+    {
+        return vec2(o) += f;
+    }
+    vec2 operator-(vec2 o, float f)
+    {
+        return vec2(o) -= f;
+    }
+    vec2 operator*(vec2 o, float f)
+    {
+        return vec2(o) *= f;
+    }
+    vec2 operator/(vec2 o, float f)
+    {
+        return vec2(o) /= f;
+    }
+
     bool operator<(const vec2& o1, const vec2& o2)
     {
         return std::tie(o1.x, o1.y) < std::tie(o2.x, o2.y);
@@ -96,5 +134,4 @@ namespace mrld
     {
         return *this / magnitude();
     }
-};
-
+}
