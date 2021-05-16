@@ -19,6 +19,9 @@ include_directories(${PROJECT_SOURCE_DIR}/include)
 set(SOURCES ${PROJECT_SOURCE_DIR}/src/window/window.cpp)
 list(APPEND SOURCES ${PROJECT_SOURCE_DIR}/src/input/mouse_handler.cpp)
 list(APPEND SOURCES ${PROJECT_SOURCE_DIR}/src/input/keyboard_handler.cpp)
+list(APPEND SOURCES ${PROJECT_SOURCE_DIR}/src/math/vec2.cpp)
+list(APPEND SOURCES ${PROJECT_SOURCE_DIR}/src/math/vec3.cpp)
+list(APPEND SOURCES ${PROJECT_SOURCE_DIR}/src/math/vec4.cpp)
 
 add_library(mrld ${SOURCES})
 
