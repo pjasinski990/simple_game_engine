@@ -22,6 +22,8 @@ list(APPEND SOURCES ${PROJECT_SOURCE_DIR}/src/input/keyboard_handler.cpp)
 list(APPEND SOURCES ${PROJECT_SOURCE_DIR}/src/math/vec2.cpp)
 list(APPEND SOURCES ${PROJECT_SOURCE_DIR}/src/math/vec3.cpp)
 list(APPEND SOURCES ${PROJECT_SOURCE_DIR}/src/math/vec4.cpp)
+list(APPEND SOURCES ${PROJECT_SOURCE_DIR}/src/math/mat4.cpp)
+list(APPEND SOURCES ${PROJECT_SOURCE_DIR}/src/math/matrix_factory.cpp)
 
 add_library(mrld ${SOURCES})
 
