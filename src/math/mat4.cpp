@@ -7,13 +7,20 @@
 
 namespace mrld
 {
+    mat4::mat4()
+    {
+        for (int i = 0; i < 16; ++i) {
+            data[i] = 0.0f;
+        }
+    }
+
     float* mat4::operator[] (int i)
     {
-        return &(*data) + 4 * i;
+        return data + 4 * i;
     }
     const float* mat4::operator[] (int i) const
     {
-        return &(*data) + 4 * i;
+        return data + 4 * i;
     }
 
     mat4& mat4::operator+=(const mat4 &o)
@@ -36,7 +43,9 @@ namespace mrld
         for (int i = 0; i < 4; ++i) {
             for (int k = 0; k < 4; ++k) {
                 for (int j = 0; j < 4; ++j) {
-                    temp[i][j] += (*this)[i][k] * o[k][j];
+                    temp[i][j] += (*this).data[i*4 + k] * o.data[k*4 + j];
+                    if (i == 3 && j == 3)
+                        std::cout << "added to last element: " << (*this).data[i*4 + k] * o.data[k*4 + j] <<std::endl;
                 }
             }
         }
@@ -88,19 +97,9 @@ namespace mrld
         return out;
     }
 
-    mat4 mat4::zero()
-    {
-        mat4 temp;
-        for (int i = 0; i < 4; ++i) {
-            for (int j = 0; j < 4; ++j) {
-                temp[i][j] = 0.0f;
-            }
-        }
-        return temp;
-    }
     mat4 mat4::identity()
     {
-        mat4 temp = mat4::zero();
+        mat4 temp;
         for (int i = 0; i < 4; ++i) {
             temp[i][i] = 1.0f;
         }
@@ -135,7 +134,7 @@ namespace mrld
     }
     mat4 mat4::projection(float aspect_ratio, float fov, float z_near, float z_far)
     {
-        mat4 res = mat4::zero();
+        mat4 res;
         float atan_fov = std::atan(fov / 2.0f);
         res[0][0] = aspect_ratio * atan_fov;
         res[1][1] = atan_fov;

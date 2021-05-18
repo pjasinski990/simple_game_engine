@@ -14,6 +14,8 @@ namespace mrld
         float* operator[] (int i);
         const float* operator[] (int i) const;
 
+        mat4();
+
         mat4& operator+=(const mat4& o);
         mat4& operator-=(const mat4& o);
         mat4& operator*=(const mat4& o);
@@ -27,9 +29,8 @@ namespace mrld
 
         friend std::ostream& operator<<(std::ostream& out, const mat4 &o);
 
-        static mat4 zero();
         static mat4 identity();
-//        static mat4 rotation(float angle);    //TODO implement quaternions and rotation
+        // static mat4 rotation(float angle_x, float angle_y, float angle_z);    //TODO implement quaternions and rotation
         static mat4 translation(const vec2 &v);
         static mat4 translation(const vec3 &v);
         static mat4 translation(const vec4 &v);

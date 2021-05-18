@@ -7,6 +7,7 @@
 #include <window/window.h>
 #include <math/vec2.h>
 #include <math/vec3.h>
+#include <math/vec4.h>
 #include <math/mat4.h>
 #include <input/keyboard_handler.h>
 #include <input/mouse_handler.h>
@@ -20,9 +21,6 @@ int main() {
 
     mrld::Window w("Hello world!", 800, 600);
     std::vector<mrld::KeyCode> keys = {mrld::W, mrld::S, mrld::A, mrld::D};
-
-    mrld::vec3 camera_pos;
-    mrld::mat4 proj = mrld::mat4::projection(4.0f/3.0f, 3.141592f / 2.0f, 0.1f, 1000.0f);
 
     mrld::KeyboardHandler handler(keys);
     mrld::MouseHandler m_handler({mrld::BUTTON_LEFT, mrld::BUTTON_RIGHT});
