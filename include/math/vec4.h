@@ -9,7 +9,10 @@ namespace mrld
 {
     struct vec4 
     {
-        vec4(float x = 0.0f, float y = 0.0f, float z = 0.0f, float w = 0.0f); 
+        explicit vec4(float x = 0.0f, float y = 0.0f, float z = 0.0f, float w = 0.0f);
+
+        float& operator[](int i);
+        float operator[](int i) const;
 
         vec4& operator+=(const vec4& o);
         vec4& operator-=(const vec4& o);

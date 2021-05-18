@@ -11,6 +11,9 @@ namespace mrld
     {
         explicit vec2(float x = 0.0f, float y = 0.0f);
 
+        float& operator[](int i);
+        float operator[](int i) const;
+
         vec2& operator+=(const vec2& o);
         vec2& operator-=(const vec2& o);
         vec2& operator*=(const vec2& o);

@@ -1,20 +1,28 @@
 #include <iostream>
 #include <vector>
 
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
+
 #include <window/window.h>
+#include <math/vec2.h>
+#include <math/vec3.h>
 #include <math/mat4.h>
-#include <math/matrix_factory.h>
 #include <input/keyboard_handler.h>
 #include <input/mouse_handler.h>
 
 int main() {
+    float vertices[] = {
+            -0.5f, -0.5f, 1.0f,
+            0.5f, -0.5f, 1.0f,
+            0.0f,  0.5f, 1.0f
+    };
+
     mrld::Window w("Hello world!", 800, 600);
     std::vector<mrld::KeyCode> keys = {mrld::W, mrld::S, mrld::A, mrld::D};
 
-    mrld::mat4 matrix = mrld::MatrixFactory::zero();
-    std::cout << matrix;
-    matrix = mrld::MatrixFactory::identity();
-    std::cout << matrix;
+    mrld::vec3 camera_pos;
+    mrld::mat4 proj = mrld::mat4::projection(4.0f/3.0f, 3.141592f / 2.0f, 0.1f, 1000.0f);
 
     mrld::KeyboardHandler handler(keys);
     mrld::MouseHandler m_handler({mrld::BUTTON_LEFT, mrld::BUTTON_RIGHT});

@@ -1,11 +1,25 @@
 #include <tuple>
 #include <cmath>
+#include <stdexcept>
 
 #include <math/vec2.h>
 
 namespace mrld 
 {
     vec2::vec2(float x, float y): x{x}, y{y} {}
+
+    float& vec2::operator[](int i)
+    {
+        if (i == 0) {return x;}
+        if (i == 1) {return y;}
+        throw std::out_of_range("Indexing error in vec2: out of range");
+    }
+    float vec2::operator[](int i) const
+    {
+        if (i == 0) {return x;}
+        if (i == 1) {return y;}
+        throw std::out_of_range("Indexing error in vec2: out of range");
+    }
 
     vec2& vec2::operator+=(const vec2& o)
     {

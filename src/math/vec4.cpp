@@ -7,6 +7,23 @@ namespace mrld
 {
     vec4::vec4(float x, float y, float z, float w): x{x}, y{y}, z{z}, w{w} {}
 
+    float& vec4::operator[](int i)
+    {
+        if (i == 0) {return x;}
+        if (i == 1) {return y;}
+        if (i == 2) {return z;}
+        if (i == 3) {return w;}
+        throw std::out_of_range("Indexing error in vec2: out of range");
+    }
+    float vec4::operator[](int i) const
+    {
+        if (i == 0) {return x;}
+        if (i == 1) {return y;}
+        if (i == 2) {return z;}
+        if (i == 3) {return w;}
+        throw std::out_of_range("Indexing error in vec2: out of range");
+    }
+
     vec4& vec4::operator+=(const vec4& o)
     {
         this->x += o.x;
