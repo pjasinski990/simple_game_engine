@@ -23,6 +23,8 @@ list(APPEND SOURCES ${PROJECT_SOURCE_DIR}/src/math/vec2.cpp)
 list(APPEND SOURCES ${PROJECT_SOURCE_DIR}/src/math/vec3.cpp)
 list(APPEND SOURCES ${PROJECT_SOURCE_DIR}/src/math/vec4.cpp)
 list(APPEND SOURCES ${PROJECT_SOURCE_DIR}/src/math/mat4.cpp)
+list(APPEND SOURCES ${PROJECT_SOURCE_DIR}/src/math/quaternion.cpp)
+list(APPEND SOURCES ${PROJECT_SOURCE_DIR}/src/graphics/shader.cpp)
 
 add_library(mrld ${SOURCES})
 

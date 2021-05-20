@@ -3,9 +3,7 @@
 
 #include <iostream>
 
-#include <math/constants.h>
-
-namespace mrld 
+namespace mrld
 {
     struct vec2 
     {

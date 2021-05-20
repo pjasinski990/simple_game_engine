@@ -1,6 +1,7 @@
 #include <tuple>
 #include <cmath>
 
+#include <math/constants.h>
 #include <math/vec3.h>
 
 namespace mrld 
@@ -124,11 +125,11 @@ namespace mrld
     }
     bool operator==(const vec3& o1, const vec3& o2)
     {
-        bool rx = (o1.x - o2.x) <= (fabs(o1.x) < fabs(o2.x) ? fabs(o1.x) : fabs(o2.x) * EPSILON);
+        bool rx = (o1.x - o2.x) <= (fabs(o1.x) < fabs(o2.x) ? fabs(o1.x) : fabs(o2.x) * constants::epsilon);
         if (!rx) { return false; }
-        bool ry = (o1.y - o2.y) <= (fabs(o1.y) < fabs(o2.y) ? fabs(o1.y) : fabs(o2.y) * EPSILON);
+        bool ry = (o1.y - o2.y) <= (fabs(o1.y) < fabs(o2.y) ? fabs(o1.y) : fabs(o2.y) * constants::epsilon);
         if (!ry) { return false; }
-        return (o1.z - o2.z) <= (fabs(o1.z) < fabs(o2.z) ? fabs(o1.z) : fabs(o2.z) * EPSILON);
+        return (o1.z - o2.z) <= (fabs(o1.z) < fabs(o2.z) ? fabs(o1.z) : fabs(o2.z) * constants::epsilon);
     }
     bool operator!=(const vec3& o1, const vec3& o2)
     {

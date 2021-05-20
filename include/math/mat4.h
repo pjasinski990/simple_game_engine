@@ -11,10 +11,10 @@ namespace mrld
 
     struct mat4
     {
-        float* operator[] (int i);
-        const float* operator[] (int i) const;
-
         mat4();
+
+        float& at(int i, int j);
+        float at(int i, int j) const;
 
         mat4& operator+=(const mat4& o);
         mat4& operator-=(const mat4& o);
@@ -30,10 +30,12 @@ namespace mrld
         friend std::ostream& operator<<(std::ostream& out, const mat4 &o);
 
         static mat4 identity();
-        // static mat4 rotation(float angle_x, float angle_y, float angle_z);    //TODO implement quaternions and rotation
-        static mat4 translation(const vec2 &v);
+        static mat4 diagonal(float f);
+
         static mat4 translation(const vec3 &v);
-        static mat4 translation(const vec4 &v);
+        // static mat4 rotation(float angle_x, float angle_y, float angle_z);    //TODO implement quaternions and rotation
+        static mat4 scale(const vec3 &scale);
+
         static mat4 projection(float aspect_ratio, float fov, float z_near, float z_far);
 
         float data[16];
