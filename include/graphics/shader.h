@@ -4,6 +4,10 @@
 #include <iostream>
 #include <string>
 #include <unordered_map>
+#include <math/vec2.h>
+#include <math/vec3.h>
+#include <math/vec4.h>
+#include <math/mat4.h>
 
 namespace mrld
 {
@@ -26,9 +30,18 @@ namespace mrld
         void use() const;
         void disable() const;
 
+        void set_bool(const char *name, bool value) const;
+        void set_int(const char *name, int value) const;
+        void set_float(const char *name, float value) const;
+        void set_mat4(const char *name, const mat4 &value) const;
+        void set_vec2(const char *name, const vec2 &value) const;
+        void set_vec3(const char *name, const vec3 &value) const;
+        void set_vec4(const char *name, const vec4 &value) const;
+
     private:
         GLuint compile_shader(const char *source_str, GLenum type);
         void initialize_shaders();
+        GLuint get_uniform_location(const char *name) const;
 
         static std::unordered_map<ShaderType, const char*> _shader_type_to_string;
 
@@ -41,6 +54,7 @@ namespace mrld
         GLuint _shader_program;
     };
 
+    // TODO exchange exceptions for logging errors maybe
     class ShaderException: public std::runtime_error {
     public:
         explicit ShaderException(const char* msg): std::runtime_error(msg) {}

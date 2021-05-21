@@ -137,7 +137,7 @@ namespace mrld
         return res;
     }
 
-    mat4 mat4::orthographic(float top, float bottom, float left, float right, float near, float far)
+    mat4 mat4::orthographic(float left, float right, float bottom, float top, float near, float far)
     {
         mat4 res;
         res.data[0 + 0 * 4] = 2.0f / (right - left);

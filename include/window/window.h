@@ -10,7 +10,8 @@ namespace mrld {
     public:
         Window(const char* name, int width, int height);
         ~Window();
-        void update();
+        void clear() const;
+        void update() const;
         bool should_close() const;
         inline int get_width() const {return _width;}
         inline int get_height() const {return _height;}
@@ -22,6 +23,7 @@ namespace mrld {
         int _height;
     };
 
+    // TODO exchange exceptions for logging errors maybe
     class WindowCreationException: public std::runtime_error {
     public:
         explicit WindowCreationException(const char* msg): std::runtime_error(msg) {}

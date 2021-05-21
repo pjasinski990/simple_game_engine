@@ -14,22 +14,30 @@ namespace mrld
             {FRAGMENT_SHADER, "FRAGMENT_SHADER"}
     };
 
-    Shader::Shader() = default;
+    Shader::Shader()
+    {
+        _shader_program = glCreateProgram();
+    }
 
     Shader::Shader(const char *vertex_path, const char *fragment_path)
     {
+        _shader_program = glCreateProgram();
         update_shader_source(vertex_path, VERTEX_SHADER);
         update_shader_source(fragment_path, FRAGMENT_SHADER);
     }
 
     Shader::Shader(const char *vertex_path, const char *geometry_path, const char *fragment_path)
     {
+        _shader_program = glCreateProgram();
         update_shader_source(vertex_path, VERTEX_SHADER);
         update_shader_source(geometry_path, GEOMETRY_SHADER);
         update_shader_source(fragment_path, FRAGMENT_SHADER);
     }
 
-    Shader::~Shader() = default;
+    Shader::~Shader()
+    {
+        glDeleteProgram(_shader_program);
+    }
 
     void Shader::update_shader_source(const char *path, ShaderType type)
     {
@@ -49,15 +57,12 @@ namespace mrld
             switch (type) {
                 case VERTEX_SHADER:
                     _vertex_shader_source = stream.str();
-                    std::cout << _vertex_shader_source;
                     break;
                 case GEOMETRY_SHADER:
                     _geometry_shader_source = stream.str();
-                    std::cout << _geometry_shader_source;
                     break;
                 case FRAGMENT_SHADER:
                     _fragment_shader_source = stream.str();
-                    std::cout << _fragment_shader_source;
                     break;
             }
         }
@@ -72,8 +77,6 @@ namespace mrld
     void Shader::create_shader_program()
     {
         initialize_shaders();
-
-        _shader_program = glCreateProgram();
 
         GLint success;
         GLchar msg[512];
@@ -90,6 +93,15 @@ namespace mrld
             sprintf(exc_msg, "Error: shader linking failed. \nFull error message:\n%s", msg);
             throw ShaderException(exc_msg);
         }
+        glValidateProgram(_shader_program);
+        glGetProgramiv(_shader_program, GL_VALIDATE_STATUS, &success);
+        if(!success) {
+            glGetProgramInfoLog(_shader_program, 512, nullptr, msg);
+            char exc_msg[512];
+            sprintf(exc_msg, "Error: shader validation failed. \nFull error message:\n%s", msg);
+            throw ShaderException(exc_msg);
+        }
+
         glDeleteShader(_vertex_shader);
         glDeleteShader(_fragment_shader);
     }
@@ -101,6 +113,35 @@ namespace mrld
     {
         glUseProgram(0);
     }
+
+    void Shader::set_bool(const char *name, bool value) const
+	{
+        glUniform1i(get_uniform_location(name), (int)value);
+	}
+    void Shader::set_int(const char *name, int value) const
+	{
+        glUniform1i(get_uniform_location(name), value);
+	}
+    void Shader::set_float(const char *name, float value) const
+	{
+        glUniform1f(get_uniform_location(name), value);
+	}
+    void Shader::set_mat4(const char *name, const mat4 &value) const
+	{
+        glUniformMatrix4fv(get_uniform_location(name), 1, GL_FALSE, value.data);
+	}
+    void Shader::set_vec2(const char *name, const vec2 &value) const
+	{
+        glUniform2f(get_uniform_location(name), value.x, value.y);
+	}
+    void Shader::set_vec3(const char *name, const vec3 &value) const
+	{
+        glUniform3f(get_uniform_location(name), value.x, value.y, value.z);
+	}
+    void Shader::set_vec4(const char *name, const vec4 &value) const
+	{
+        glUniform4f(get_uniform_location(name), value.x, value.y, value.z, value.w);
+	}
 
     unsigned int Shader::compile_shader(const char *source_str, GLenum type)
     {
@@ -131,5 +172,9 @@ namespace mrld
         if (!_geometry_shader_source.empty()) {
             _geometry_shader = compile_shader(_geometry_shader_source.c_str(), GL_GEOMETRY_SHADER);
         }
+    }
+    GLuint Shader::get_uniform_location(const char *name) const
+    {
+        return glGetUniformLocation(_shader_program, name);
     }
 }

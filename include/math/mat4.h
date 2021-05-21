@@ -36,7 +36,7 @@ namespace mrld
         // static mat4 rotation(float angle_x, float angle_y, float angle_z);    //TODO implement quaternions and rotation
         static mat4 scale(const vec3 &scale);
 
-        static mat4 orthographic(float top, float bottom, float left, float right, float near, float far);
+        static mat4 orthographic(float left, float right, float bottom, float top, float near, float far);
         static mat4 perspective(float aspect_ratio, float fov_degrees, float z_near, float z_far);
 
         float data[16];
