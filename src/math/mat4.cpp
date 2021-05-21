@@ -43,7 +43,7 @@ namespace mrld
         for (int i = 0; i < 4; ++i) {
             for (int j = 0; j < 4; ++j) {
                 for (int k = 0; k < 4; ++k) {
-                    temp.at(i, j) += at(i, k) * o.at(k, j);
+                    temp.data[i + j * 4] += data[i + k * 4] * o.data[k + j * 4];
                 }
             }
         }
@@ -79,7 +79,7 @@ namespace mrld
         vec4 temp;
         for (int i = 0; i < 4; ++i) {
             for (int j = 0; j < 4; ++j) {
-                temp[i] += at(i, j) * v[i];
+                temp[i] += data[i + j * 4] * v[i];
             }
         }
         return temp;
@@ -118,9 +118,9 @@ namespace mrld
     mat4 mat4::translation(const vec3 &v)
     {
         mat4 res = mat4::identity();
-        res.at(0, 3) = v.x;
-        res.at(1, 3) = v.y;
-        res.at(2, 3) = v.z;
+        res.data[0 + 3 * 4] = v.x;
+        res.data[1 + 3 * 4] = v.y;
+        res.data[2 + 3 * 4] = v.z;
         return res;
     }
 //    mat4 mat4::rotation(float angle)  // TODO rotation implementation
@@ -137,16 +137,30 @@ namespace mrld
         return res;
     }
 
-    mat4 mat4::projection(float aspect_ratio, float fov_degrees, float z_near, float z_far)
+    mat4 mat4::orthographic(float top, float bottom, float left, float right, float near, float far)
     {
         mat4 res;
-        float fov_rads = fov_degrees / 180.0f * constants::pi;
+        res.data[0 + 0 * 4] = 2.0f / (right - left);
+        res.data[1 + 1 * 4] = 2.0f / (top - bottom);
+        res.data[2 + 2 * 4] = -2.0f / (far - near);
+        res.data[3 + 3 * 4] = 1.0f;
+
+        res.data[0 + 3 * 4] = -1.0f * (right + left) / (right - left);
+        res.data[1 + 3 * 4] = -1.0f * (top + bottom) / (top - bottom);
+        res.data[2 + 3 * 4] = -1.0f * (far + near) / (far - near);
+        return res;
+    }
+    mat4 mat4::perspective(float aspect_ratio, float fov_degrees, float z_near, float z_far)
+    {
+        mat4 res;
+        float fov_rads = fov_degrees * constants::pi / 180.0f;
         float atan_fov_half = std::atan(fov_rads / 2.0f);
-        res.at(0, 0) = aspect_ratio * atan_fov_half;
-        res.at(1, 1) = atan_fov_half;
-        res.at(2, 2) = z_far / (z_far - z_near);
-        res.at(2, 3) = 1.0f;
-        res.at(3, 2) = -1.0f * z_far * z_near / (z_far - z_near);
+
+        res.data[0 + 0 * 4]= aspect_ratio * atan_fov_half;
+        res.data[1 + 1 * 4] = atan_fov_half;
+        res.data[2 + 2 * 4] = z_far / (z_far - z_near);
+        res.data[3 + 3 * 4] = 1.0f;
+        res.data[3 + 2 * 4] = -1.0f * z_far * z_near / (z_far - z_near);
         return res;
     }
 }
