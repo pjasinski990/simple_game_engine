@@ -16,13 +16,13 @@ namespace mrld
 
     Shader::Shader() = default;
 
-    Shader::Shader(const std::string &vertex_path, const std::string &fragment_path)
+    Shader::Shader(const char *vertex_path, const char *fragment_path)
     {
         update_shader_source(vertex_path, VERTEX_SHADER);
         update_shader_source(fragment_path, FRAGMENT_SHADER);
     }
 
-    Shader::Shader(const std::string &vertex_path, const std::string &geometry_path, const std::string &fragment_path)
+    Shader::Shader(const char *vertex_path, const char *geometry_path, const char *fragment_path)
     {
         update_shader_source(vertex_path, VERTEX_SHADER);
         update_shader_source(geometry_path, GEOMETRY_SHADER);
@@ -31,7 +31,7 @@ namespace mrld
 
     Shader::~Shader() = default;
 
-    void Shader::update_shader_source(const std::string &path, ShaderType type)
+    void Shader::update_shader_source(const char *path, ShaderType type)
     {
         std::ifstream file;
         try
@@ -39,8 +39,7 @@ namespace mrld
             file.open(path);
             if (!file.is_open()) {
                 char msg[512];
-                sprintf(msg, "Error loading shader source file. File %s cannot be open for reading.",
-                        path.c_str());
+                sprintf(msg, "Error loading shader source file. File %s cannot be open for reading.", path);
                 throw ShaderException(msg);
             }
             std::stringstream stream;
@@ -65,7 +64,7 @@ namespace mrld
         catch (std::ifstream::failure& e) {
             char msg[512];
             sprintf(msg, "Error loading shader of type %s from file %s.",
-                    _shader_type_to_string[type], path.c_str());
+                    _shader_type_to_string[type], path);
             throw ShaderException(msg);
         }
     }
@@ -94,8 +93,13 @@ namespace mrld
         glDeleteShader(_vertex_shader);
         glDeleteShader(_fragment_shader);
     }
-    void Shader::use() const {
+    void Shader::use() const
+    {
         glUseProgram(_shader_program);
+    }
+    void Shader::disable() const
+    {
+        glUseProgram(0);
     }
 
     unsigned int Shader::compile_shader(const char *source_str, GLenum type)
