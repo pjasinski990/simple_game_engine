@@ -32,8 +32,10 @@ namespace mrld
         static mat4 identity();
         static mat4 diagonal(float f);
 
-        static mat4 translation(const vec3 &v);
-        // static mat4 rotation(float angle_x, float angle_y, float angle_z);    //TODO implement quaternions and rotation
+        static mat4 translate(const vec3 &v);
+        static mat4 rotate_x(float angle_rads);
+        static mat4 rotate_y(float angle_rads);
+        static mat4 rotate_z(float angle_rads);
         static mat4 scale(const vec3 &scale);
 
         static mat4 orthographic(float left, float right, float bottom, float top, float near, float far);

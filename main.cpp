@@ -7,6 +7,7 @@
 #include <graphics/shader.h>
 #include <input/keyboard_handler.h>
 #include <input/mouse_handler.h>
+#include <math/constants.h>
 
 int main() {
     mrld::Window w("Hello world!", 800, 600);
@@ -17,12 +18,6 @@ int main() {
             -0.5f, -0.5f, 0.0f,
             0.5f, -0.5f, 0.0f,
             0.0f, 0.5f, 0.0f
-    };
-
-    float vertices2[] = {
-            1.0f, 1.0f, 0.0f,
-            5.0f, 1.0f, 0.0f,
-            3.0f, 3.0f, 0.0f
     };
 
     try {
@@ -37,8 +32,16 @@ int main() {
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
         glEnableVertexAttribArray(0);
 
-        mrld::mat4 proj = mrld::mat4::orthographic(0, 6, 0, 4, -1, 1);
+        mrld::mat4 proj = mrld::mat4::orthographic(-1, 1, -1, 1, -1, 1);
+        mrld::mat4 model = mrld::mat4::identity();
+
+        mrld::mat4 tr = mrld::mat4::translate(mrld::vec3(0.0f, 0.8f, 0.0f));
+        mrld::mat4 rotz = mrld::mat4::rotate_z(mrld::constants::pi * 45.0f / 180.0f);
+        mrld::mat4 rotx = mrld::mat4::rotate_x(mrld::constants::pi * 80.0f / 180.0f);
+        model = model * tr * rotz * rotx;
+
         s.set_mat4("proj_matrix", proj);
+        s.set_mat4("model_matrix", model);
 
     } catch (mrld::ShaderException &e) {
         std::cout << e.what() << std::endl;

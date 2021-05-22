@@ -115,7 +115,7 @@ namespace mrld
         return res;
     }
 
-    mat4 mat4::translation(const vec3 &v)
+    mat4 mat4::translate(const vec3 &v)
     {
         mat4 res = mat4::identity();
         res.data[0 + 3 * 4] = v.x;
@@ -123,10 +123,45 @@ namespace mrld
         res.data[2 + 3 * 4] = v.z;
         return res;
     }
-//    mat4 mat4::rotation(float angle)  // TODO rotation implementation
-//    {
-//        return mat4();
-//    }
+    mat4 mat4::rotate_x(float angle_rads)
+    {
+        mat4 res;
+        float s = sin(angle_rads);
+        float c = cos(angle_rads);
+        res.data[0 + 0 * 4] = 1.0f;
+        res.data[1 + 1 * 4] = c;
+        res.data[2 + 2 * 4] = c;
+        res.data[1 + 2 * 4] = -s;
+        res.data[2 + 1 * 4] = s;
+        res.data[3 + 3 * 4] = 1.0f;
+        return res;
+    }
+    mat4 mat4::rotate_y(float angle_rads)
+    {
+        mat4 res;
+        float s = sin(angle_rads);
+        float c = cos(angle_rads);
+        res.data[0 + 0 * 4] = c;
+        res.data[1 + 1 * 4] = 1.0f;
+        res.data[2 + 2 * 4] = c;
+        res.data[0 + 2 * 4] = s;
+        res.data[2 + 0 * 4] = -s;
+        res.data[3 + 3 * 4] = 1.0f;
+        return res;
+    }
+    mat4 mat4::rotate_z(float angle_rads)
+    {
+        mat4 res;
+        float s = sin(angle_rads);
+        float c = cos(angle_rads);
+        res.data[0 + 0 * 4] = c;
+        res.data[1 + 1 * 4] = c;
+        res.data[2 + 2 * 4] = 1.0f;
+        res.data[0 + 1 * 4] = -s;
+        res.data[1 + 0 * 4] = s;
+        res.data[3 + 3 * 4] = 1.0f;
+        return res;
+    }
     mat4 mat4::scale(const vec3 &scale)
     {
         mat4 res;
