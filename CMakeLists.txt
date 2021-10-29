@@ -1,7 +1,6 @@
-set(CMAKE_CXX_STANDARD 20)
 cmake_minimum_required(VERSION 3.7)
 project(mrld_engine)
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 20)
 
 # glad
 include_directories(dependencies/glad/include)
@@ -25,11 +24,16 @@ list(APPEND SOURCES ${PROJECT_SOURCE_DIR}/src/math/vec3.cpp)
 list(APPEND SOURCES ${PROJECT_SOURCE_DIR}/src/math/vec4.cpp)
 list(APPEND SOURCES ${PROJECT_SOURCE_DIR}/src/math/mat4.cpp)
 list(APPEND SOURCES ${PROJECT_SOURCE_DIR}/src/math/quaternion.cpp)
-list(APPEND SOURCES ${PROJECT_SOURCE_DIR}/src/graphics/shader.cpp)
+list(APPEND SOURCES ${PROJECT_SOURCE_DIR}/src/graphics/shader/shader.cpp)
+list(APPEND SOURCES ${PROJECT_SOURCE_DIR}/src/camera/camera.cpp)
+list(APPEND SOURCES ${PROJECT_SOURCE_DIR}/src/logging/logger.cpp)
+list(APPEND SOURCES ${PROJECT_SOURCE_DIR}/src/graphics/rendering/buffers/attrib_data_buffer.cpp)
+list(APPEND SOURCES ${PROJECT_SOURCE_DIR}/src/graphics/rendering/buffers/index_buffer.cpp)
+list(APPEND SOURCES ${PROJECT_SOURCE_DIR}/src/graphics/rendering/buffers/vertex_array.cpp)
+list(APPEND SOURCES ${PROJECT_SOURCE_DIR}/src/graphics/rendering/renderer/renderable2d.cpp)
+list(APPEND SOURCES ${PROJECT_SOURCE_DIR}/src/graphics/rendering/renderer/renderer2d.cpp)
 
 add_library(mrld ${SOURCES})
-
-
 
 # linking
 add_executable(mrld_engine main.cpp)

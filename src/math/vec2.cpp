@@ -2,8 +2,8 @@
 #include <cmath>
 #include <stdexcept>
 
-#include <math/constants.h>
-#include <math/vec2.h>
+#include <mrld/constants.h>
+#include <mrld/vec2.h>
 
 namespace mrld 
 {

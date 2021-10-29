@@ -1,11 +1,11 @@
-#ifndef MRLD_ENGINE_KEY_CODE_H
-#define MRLD_ENGINE_KEY_CODE_H
+#pragma once
 
 #include <GLFW/glfw3.h>
 
 namespace mrld
 {
-    enum MouseButton {
+    enum MouseButton
+    {
         BUTTON_LEFT = GLFW_MOUSE_BUTTON_1,
         BUTTON_RIGHT = GLFW_MOUSE_BUTTON_2,
         BUTTON_MIDDLE = GLFW_MOUSE_BUTTON_3,
@@ -142,5 +142,3 @@ namespace mrld
         KEYBOARD_LAST = MENU,
     };
 }
-
-#endif //MRLD_ENGINE_KEY_CODE_H

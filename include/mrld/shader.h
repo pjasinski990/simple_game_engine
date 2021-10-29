@@ -1,17 +1,19 @@
-#ifndef MRLD_ENGINE_SHADER_H
-#define MRLD_ENGINE_SHADER_H
+#pragma once
+
+#include "glad/glad.h"
 
 #include <iostream>
 #include <string>
 #include <unordered_map>
-#include <math/vec2.h>
-#include <math/vec3.h>
-#include <math/vec4.h>
-#include <math/mat4.h>
+#include <mrld/vec2.h>
+#include <mrld/vec3.h>
+#include <mrld/vec4.h>
+#include <mrld/mat4.h>
 
 namespace mrld
 {
-    enum ShaderType {
+    enum ShaderType
+    {
         VERTEX_SHADER = GL_VERTEX_SHADER,
         GEOMETRY_SHADER = GL_GEOMETRY_SHADER,
         FRAGMENT_SHADER = GL_FRAGMENT_SHADER
@@ -53,14 +55,4 @@ namespace mrld
         GLuint _fragment_shader;
         GLuint _shader_program;
     };
-
-    // TODO exchange exceptions for logging errors maybe
-    class ShaderException: public std::runtime_error {
-    public:
-        explicit ShaderException(const char* msg): std::runtime_error(msg) {}
-        virtual ~ShaderException() = default;
-        virtual const char *what() const noexcept override { return runtime_error::what(); }
-    };
 }
-
-#endif //MRLD_ENGINE_SHADER_H

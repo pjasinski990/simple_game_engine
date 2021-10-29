@@ -4,7 +4,8 @@
 
 #include <glad/glad.h>
 
-#include <graphics/shader.h>
+#include <mrld/shader.h>
+#include <mrld/logger.h>
 
 namespace mrld
 {
@@ -41,14 +42,18 @@ namespace mrld
 
     void Shader::update_shader_source(const char *path, ShaderType type)
     {
+        Logger::log(LogLevel::DBG, "%s", __func__);
         std::ifstream file;
         try
         {
             file.open(path);
             if (!file.is_open()) {
-                char msg[512];
-                sprintf(msg, "Error loading shader source file. File %s cannot be open for reading.", path);
-                throw ShaderException(msg);
+                char msg[LOGGER_SHADER_ERR_MSG_MAX_LENGTH];
+                sprintf_s(msg,
+                          LOGGER_SHADER_ERR_MSG_MAX_LENGTH,
+                          "Error loading shader source file. File %s cannot be open for reading", path);
+                Logger::log(LogLevel::ERR, "%s", msg);
+                throw std::runtime_error("Error loading shader file");
             }
             std::stringstream stream;
             stream << file.rdbuf();
@@ -67,19 +72,23 @@ namespace mrld
             }
         }
         catch (std::ifstream::failure& e) {
-            char msg[512];
-            sprintf(msg, "Error loading shader of type %s from file %s.",
+            char msg[LOGGER_SHADER_ERR_MSG_MAX_LENGTH];
+            sprintf_s(msg,
+                      LOGGER_SHADER_ERR_MSG_MAX_LENGTH,
+                      "Error loading shader of type %s from file %s",
                     _shader_type_to_string[type], path);
-            throw ShaderException(msg);
+            Logger::log(LogLevel::ERR, "%s", msg);
+            throw e;
         }
     }
 
     void Shader::create_shader_program()
     {
+        Logger::log(LogLevel::DBG, "%s", __func__);
         initialize_shaders();
 
         GLint success;
-        GLchar msg[512];
+        GLchar msg[LOGGER_SHADER_ERR_MSG_MAX_LENGTH];
         glAttachShader(_shader_program, _vertex_shader);
         glAttachShader(_shader_program, _fragment_shader);
         if (!_geometry_shader_source.empty()) {
@@ -88,18 +97,23 @@ namespace mrld
         glLinkProgram(_shader_program);
         glGetProgramiv(_shader_program, GL_LINK_STATUS, &success);
         if(!success) {
-            glGetProgramInfoLog(_shader_program, 512, nullptr, msg);
-            char exc_msg[512];
-            sprintf(exc_msg, "Error: shader linking failed. \nFull error message:\n%s", msg);
-            throw ShaderException(exc_msg);
+            glGetProgramInfoLog(_shader_program, LOGGER_SHADER_ERR_MSG_MAX_LENGTH, nullptr, msg);
+            char err_msg[LOGGER_SHADER_ERR_MSG_MAX_LENGTH];
+            sprintf_s(err_msg,
+                      LOGGER_SHADER_ERR_MSG_MAX_LENGTH,
+                      "Error: shader linking failed. \nFull error message:\n%s", msg);
+            Logger::log(LogLevel::ERR, "%s", err_msg);
+            throw std::runtime_error("Error linking shader");
         }
         glValidateProgram(_shader_program);
         glGetProgramiv(_shader_program, GL_VALIDATE_STATUS, &success);
         if(!success) {
-            glGetProgramInfoLog(_shader_program, 512, nullptr, msg);
-            char exc_msg[512];
-            sprintf(exc_msg, "Error: shader validation failed. \nFull error message:\n%s", msg);
-            throw ShaderException(exc_msg);
+            glGetProgramInfoLog(_shader_program, LOGGER_SHADER_ERR_MSG_MAX_LENGTH, nullptr, msg);
+            char err_msg[LOGGER_SHADER_ERR_MSG_MAX_LENGTH];
+            sprintf_s(err_msg,
+                      LOGGER_SHADER_ERR_MSG_MAX_LENGTH,
+                      "Error: shader validation failed. \nFull error message:\n%s", msg);
+            throw std::runtime_error("Error linking shader");
         }
 
         glDeleteShader(_vertex_shader);
@@ -145,26 +159,33 @@ namespace mrld
 
     unsigned int Shader::compile_shader(const char *source_str, GLenum type)
     {
+        Logger::log(LogLevel::DBG, "%s", __func__);
         GLint success;
-        GLchar msg[512];
+        GLchar msg[LOGGER_SHADER_ERR_MSG_MAX_LENGTH];
 
         unsigned int shader = glCreateShader(type);
         glShaderSource(shader, 1, &source_str, nullptr);
         glCompileShader(shader);
         glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
         if(!success) {
-            glGetShaderInfoLog(shader, 512, nullptr, msg);
-            char exc_msg[512];
-            sprintf(exc_msg, "Error: %s compilation failed. \nFull error message:\n%s",
+            glGetShaderInfoLog(shader, LOGGER_SHADER_ERR_MSG_MAX_LENGTH, nullptr, msg);
+            char err_msg[LOGGER_SHADER_ERR_MSG_MAX_LENGTH];
+            sprintf_s(err_msg,
+                      LOGGER_SHADER_ERR_MSG_MAX_LENGTH,
+                      "Error: %s compilation failed. \nFull error message:\n%s",
                     _shader_type_to_string[static_cast<ShaderType>(type)], msg);
-            throw ShaderException(exc_msg);
+            Logger::log(LogLevel::ERR, "%s", err_msg);
+            throw std::runtime_error("Error compiling shader");
         }
         return shader;
     }
     void Shader::initialize_shaders()
     {
+        Logger::log(LogLevel::DBG, "%s", __func__);
         if (_vertex_shader_source.empty() || _fragment_shader_source.empty()) {
-            throw ShaderException("Error initializing shaders: at least vertex and fragment shaders must be loaded.");
+            Logger::log(LogLevel::WRN, "%s",
+                        "Not initializing shaders - at least vertex and fragment shaders must be loaded");
+            return;
         }
 
         _vertex_shader = compile_shader(_vertex_shader_source.c_str(), GL_VERTEX_SHADER);

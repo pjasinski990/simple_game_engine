@@ -1,12 +1,11 @@
-#ifndef MRLD_ENGINE_KEYBOARD_HANDLER_H
-#define MRLD_ENGINE_KEYBOARD_HANDLER_H
+#pragma once
 
 #include <unordered_map>
 #include <vector>
 
 #include <GLFW/glfw3.h>
 
-#include <input/key_code.h>
+#include <mrld/key_code.h>
 
 namespace mrld
 {
@@ -14,6 +13,9 @@ namespace mrld
     class KeyboardHandler
     {
     public:
+        /**
+         * @param keys std::vector of KeyCodes that will be handled by this instance of KeyboardHandler.
+         */
         KeyboardHandler(const std::vector<KeyCode> &keys);
         ~KeyboardHandler();
         bool is_key_down(KeyCode key) const;
@@ -24,5 +26,3 @@ namespace mrld
         std::unordered_map<int, bool> _key_states;
     };
 }
-
-#endif //MRLD_ENGINE_KEYBOARD_HANDLER_H

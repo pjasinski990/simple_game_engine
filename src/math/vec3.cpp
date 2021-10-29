@@ -1,8 +1,8 @@
 #include <tuple>
 #include <cmath>
 
-#include <math/constants.h>
-#include <math/vec3.h>
+#include <mrld/constants.h>
+#include <mrld/vec3.h>
 
 namespace mrld 
 {

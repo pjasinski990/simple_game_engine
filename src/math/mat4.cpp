@@ -1,9 +1,9 @@
 #include <cmath>
 
-#include <math/constants.h>
-#include <math/vec3.h>
-#include <math/vec4.h>
-#include <math/mat4.h>
+#include <mrld/constants.h>
+#include <mrld/vec3.h>
+#include <mrld/vec4.h>
+#include <mrld/mat4.h>
 
 namespace mrld
 {

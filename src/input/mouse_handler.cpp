@@ -1,7 +1,7 @@
 #include <algorithm>
 
-#include <input/key_code.h>
-#include <input/mouse_handler.h>
+#include <mrld/key_code.h>
+#include <mrld/mouse_handler.h>
 
 namespace mrld
 {
@@ -26,11 +26,6 @@ namespace mrld
         _instances.erase(it);
     }
 
-    double MouseHandler::is_button_down(MouseButton button) const
-    {
-        return _mouse_button_states.at(static_cast<int>(button));
-    }
-
     void MouseHandler::mouse_button_callback(GLFWwindow *window, int button, int action, int mods)
     {
         for (auto q : _instances) {
@@ -44,16 +39,16 @@ namespace mrld
     void MouseHandler::cursor_position_callback(GLFWwindow *window, double x_pos, double y_pos)
     {
         for (auto q : _instances) {
-            q->_x_pos = x_pos;
-            q->_y_pos = y_pos;
+            q->_x_pos = static_cast<float>(x_pos);
+            q->_y_pos = static_cast<float>(y_pos);
         }
     }
 
     void MouseHandler::scroll_callback(GLFWwindow *window, double x_offset, double y_offset)
     {
         for (auto q : _instances) {
-            q->_x_scroll = x_offset;
-            q->_y_scroll = y_offset;
+            q->_x_scroll = static_cast<float>(x_offset);
+            q->_y_scroll = static_cast<float>(y_offset);
         }
     }
 }

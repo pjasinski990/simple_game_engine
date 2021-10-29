@@ -1,4 +1,4 @@
-#include <math/quaternion.h>
+#include <mrld/quaternion.h>
 
 namespace mrld
 {

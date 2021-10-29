@@ -1,6 +1,6 @@
 #include <algorithm>
 
-#include <input/keyboard_handler.h>
+#include <mrld/keyboard_handler.h>
 
 namespace mrld
 {
