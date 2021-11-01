@@ -3,9 +3,7 @@
 #include <unordered_map>
 #include <vector>
 
-#include <GLFW/glfw3.h>
-
-#include <mrld/key_code.h>
+#include "../key_code.h"
 
 namespace mrld
 {

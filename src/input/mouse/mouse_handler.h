@@ -1,8 +1,9 @@
-#ifndef MRLD_ENGINE_MOUSE_HANDLER_H
-#define MRLD_ENGINE_MOUSE_HANDLER_H
+#pragma once
 
 #include <vector>
 #include <unordered_map>
+
+#include "../key_code.h"
 
 struct GLFWwindow;
 
@@ -31,4 +32,3 @@ namespace mrld
         float _y_scroll;
     };
 }
-#endif //MRLD_ENGINE_MOUSE_HANDLER_H

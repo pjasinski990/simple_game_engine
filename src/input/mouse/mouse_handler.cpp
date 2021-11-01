@@ -1,7 +1,7 @@
 #include <algorithm>
 
-#include <mrld/key_code.h>
-#include <mrld/mouse_handler.h>
+#include "mouse_handler.h"
+#include "../key_code.h"
 
 namespace mrld
 {

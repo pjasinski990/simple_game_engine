@@ -1,9 +1,9 @@
 #include <cmath>
 
-#include <mrld/constants.h>
-#include <mrld/vec3.h>
-#include <mrld/vec4.h>
-#include <mrld/mat4.h>
+#include "constants.h"
+#include "vec3.h"
+#include "vec4.h"
+#include "mat4.h"
 
 namespace mrld
 {
@@ -188,7 +188,7 @@ namespace mrld
     mat4 mat4::perspective(float aspect_ratio, float fov_degrees, float z_near, float z_far)
     {
         mat4 res;
-        float fov_rads = fov_degrees * constants::pi / 180.0f;
+        float fov_rads = fov_degrees * math::constants::pi / 180.0f;
         float atan_fov_half = std::atan(fov_rads / 2.0f);
 
         res.data[0 + 0 * 4]= aspect_ratio * atan_fov_half;

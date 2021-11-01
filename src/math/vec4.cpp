@@ -1,8 +1,8 @@
 #include <tuple>
 #include <cmath>
 
-#include <mrld/constants.h>
-#include <mrld/vec4.h>
+#include "constants.h"
+#include "vec4.h"
 
 namespace mrld
 {
@@ -132,13 +132,13 @@ namespace mrld
     }
     bool operator==(const vec4& o1, const vec4& o2)
     {
-        bool rx = (o1.x - o2.x) <= (fabs(o1.x) < fabs(o2.x) ? fabs(o1.x) : fabs(o2.x) * constants::epsilon);
+        bool rx = (o1.x - o2.x) <= (fabs(o1.x) < fabs(o2.x) ? fabs(o1.x) : fabs(o2.x) * math::constants::epsilon);
         if (!rx) { return false; }
-        bool ry = (o1.y - o2.y) <= (fabs(o1.y) < fabs(o2.y) ? fabs(o1.y) : fabs(o2.y) * constants::epsilon);
+        bool ry = (o1.y - o2.y) <= (fabs(o1.y) < fabs(o2.y) ? fabs(o1.y) : fabs(o2.y) * math::constants::epsilon);
         if (!ry) { return false; }
-        bool rz = (o1.z - o2.z) <= (fabs(o1.z) < fabs(o2.z) ? fabs(o1.z) : fabs(o2.z) * constants::epsilon);
+        bool rz = (o1.z - o2.z) <= (fabs(o1.z) < fabs(o2.z) ? fabs(o1.z) : fabs(o2.z) * math::constants::epsilon);
         if (!rz) { return false; }
-        return (o1.w - o2.w) <= (fabs(o1.w) < fabs(o2.w) ? fabs(o1.w) : fabs(o2.w) * constants::epsilon);
+        return (o1.w - o2.w) <= (fabs(o1.w) < fabs(o2.w) ? fabs(o1.w) : fabs(o2.w) * math::constants::epsilon);
     }
     bool operator!=(const vec4& o1, const vec4& o2)
     {

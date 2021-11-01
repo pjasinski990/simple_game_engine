@@ -4,8 +4,8 @@
 
 #include <glad/glad.h>
 
-#include <mrld/shader.h>
-#include <mrld/logger.h>
+#include "shader.h"
+#include "../../utils/logger.h"
 
 namespace mrld
 {

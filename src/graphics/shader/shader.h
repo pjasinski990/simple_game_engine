@@ -5,10 +5,10 @@
 #include <iostream>
 #include <string>
 #include <unordered_map>
-#include <mrld/vec2.h>
-#include <mrld/vec3.h>
-#include <mrld/vec4.h>
-#include <mrld/mat4.h>
+#include "../../math/vec2.h"
+#include "../../math/vec3.h"
+#include "../../math/vec4.h"
+#include "../../math/mat4.h"
 
 namespace mrld
 {

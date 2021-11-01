@@ -1,7 +1,8 @@
-#include <mrld/window.h>
-#include <mrld/logger.h>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+
+#include "window.h"
+#include "../utils/logger.h"
 
 namespace mrld
 {
@@ -30,6 +31,7 @@ namespace mrld
         }
 
         glfwSetWindowSizeCallback(_window, on_window_resize);
+        glfwSwapInterval(0);
     }
 
     void Window::clear() const
