@@ -123,7 +123,7 @@ namespace mrld
     {
         glUseProgram(_shader_program);
     }
-    void Shader::disable() const
+    void Shader::remove() const
     {
         glUseProgram(0);
     }

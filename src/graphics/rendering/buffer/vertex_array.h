@@ -18,6 +18,7 @@ namespace mrld
 
         void bind() const;
         void unbind() const;
+        // TODO think about a better way to pass buffers
         void add_buffer(AttribDataBuffer *buffer, uint32_t id, uint32_t stride, uint32_t offset);
     private:
         std::vector <AttribDataBuffer*> _buffers;

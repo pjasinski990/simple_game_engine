@@ -30,7 +30,7 @@ namespace mrld
         void update_shader_source(const char *path, ShaderType type);
         void create_shader_program();
         void use() const;
-        void disable() const;
+        void remove() const;
 
         void set_bool(const char *name, bool value) const;
         void set_int(const char *name, int value) const;

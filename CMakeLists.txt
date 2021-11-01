@@ -33,6 +33,8 @@ list(APPEND SOURCES ${PROJECT_SOURCE_DIR}/src/graphics/rendering/buffer/index_bu
 list(APPEND SOURCES ${PROJECT_SOURCE_DIR}/src/graphics/rendering/buffer/vertex_array.cpp)
 list(APPEND SOURCES ${PROJECT_SOURCE_DIR}/src/graphics/rendering/renderer/renderer2d/renderable2d.cpp)
 list(APPEND SOURCES ${PROJECT_SOURCE_DIR}/src/graphics/rendering/renderer/renderer2d/renderer2d.cpp)
+list(APPEND SOURCES ${PROJECT_SOURCE_DIR}/src/graphics/rendering/layer/layer.cpp)
+list(APPEND SOURCES ${PROJECT_SOURCE_DIR}/src/graphics/rendering/layer/layer2d/layer2d.cpp)
 
 add_library(mrld ${SOURCES})
 
