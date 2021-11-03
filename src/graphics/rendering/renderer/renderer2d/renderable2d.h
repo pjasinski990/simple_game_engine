@@ -1,12 +1,13 @@
 #pragma once
 
+#include "../renderable.h"
 #include "../../../../math/vec2.h"
 #include "../../../../math/vec3.h"
 #include "../../../../math/vec4.h"
 
 namespace mrld
 {
-    class Renderable2D
+    class Renderable2D: public Renderable
     {
     public:
         Renderable2D(const vec3 &position, const vec2 &size, const vec4 &color, uint32_t z_index = 0, uint32_t tex_index = 0);

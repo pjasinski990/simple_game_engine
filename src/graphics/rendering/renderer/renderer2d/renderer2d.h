@@ -5,10 +5,11 @@
 #include "../../buffer/index_buffer.h"
 #include "../../../shader/shader.h"
 #include "../renderer2d/renderable2d.h"
+#include "../renderer.h"
 
 namespace mrld
 {
-    class Renderer2D
+    class Renderer2D: public Renderer
     {
     public:
         Renderer2D();
@@ -16,7 +17,7 @@ namespace mrld
 
         void begin() const;
         void end() const;
-        void submit(const Renderable2D &o);
+        void submit(const Renderable &o);
         void flush();
 
         void push(const mat4 &transform, bool override = false);

@@ -1,5 +1,6 @@
 #include <glad/glad.h>
 
+#include "../renderable.h"
 #include "renderable2d.h"
 #include "renderer2d.h"
 #include "../../../../utils/logger.h"
@@ -63,8 +64,10 @@ namespace mrld
         _vbo->unbind();
     }
 
-    void Renderer2D::submit(const Renderable2D &o)
+    void Renderer2D::submit(const Renderable &r)
     {
+        /* This is a reinterpret cast for performance reasons - dynamic cast is an expensive operation. */
+        const Renderable2D &o = *reinterpret_cast<const Renderable2D*>(&r);
         VertexData sprite[4];
         const float x = o.get_position().x;
         const float y = o.get_position().y;
