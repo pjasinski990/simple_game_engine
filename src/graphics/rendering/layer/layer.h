@@ -13,6 +13,7 @@ namespace mrld
         virtual void draw() = 0;
     protected:
         Layer(const Shader &shader, mat4 projection);
+
         Shader _shader;
         Renderer2D _renderer;
         mat4 _projection;

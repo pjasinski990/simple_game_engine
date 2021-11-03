@@ -19,6 +19,9 @@ namespace mrld
         void submit(const Renderable2D &o);
         void flush();
 
+        void push(const mat4 &transform, bool override = false);
+        void pop();
+
     private:
         constexpr static uint32_t MAX_SPRITES = 10000;
         constexpr static uint32_t VERTEX_SIZE = sizeof(VertexData);
@@ -35,6 +38,8 @@ namespace mrld
         VertexArray _vao;
         AttribDataBuffer *_vbo;
         IndexBuffer *_ibo;
+        std::vector<mat4> _transform_stack;
+        const mat4 *_last_transform;
         uint16_t _sprites_submitted;
     };
 }

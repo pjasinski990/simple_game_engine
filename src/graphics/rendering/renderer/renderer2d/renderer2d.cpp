@@ -42,6 +42,9 @@ namespace mrld
         glEnableVertexAttribArray(ATTRIB_INDEX_COLOR);
         _vbo->unbind();
         _vao.unbind();
+
+        _transform_stack.push_back(mat4::identity());
+        _last_transform = &_transform_stack.back();
     }
 
     Renderer2D::~Renderer2D()
@@ -70,28 +73,28 @@ namespace mrld
         const float height = o.get_size().y;
         const float tex_index = static_cast<float>(o.get_tex_index());
         sprite[0] = {
-                vec3(x, y, z),
+                *_last_transform * vec3(x, y, z),
                 vec3(0.0f, 0.0f, 1.0f),
                 vec2(0.0f, 0.0f),
                 tex_index,
                 o.get_color()
                 };
         sprite[1] = {
-                vec3(x + width, y, z),
+                *_last_transform * vec3(x + width, y, z),
                 vec3(0.0f, 0.0f, 1.0f),
                 vec2(1.0f, 0.0f),
                 tex_index,
                 o.get_color()
         };
         sprite[2] = {
-                vec3(x + width, y + height, z),
+                *_last_transform * vec3(x + width, y + height, z),
                 vec3(0.0f, 0.0f, 1.0f),
                 vec2(1.0f, 1.0f),
                 tex_index,
                 o.get_color()
         };
         sprite[3] = {
-                vec3(x, y + height, z),
+                *_last_transform * vec3(x, y + height, z),
                 vec3(0.0f, 0.0f, 1.0f),
                 vec2(0.0f, 1.0f),
                 tex_index,
@@ -124,4 +127,26 @@ namespace mrld
         _sprites_submitted = 0;
     }
 
+    void Renderer2D::push(const mat4 &transform, bool override /* = false */)
+    {
+        if (override) {
+            _transform_stack.push_back(transform);
+        }
+        else {
+            _transform_stack.push_back(_transform_stack.back() * transform);
+        }
+        _last_transform = &_transform_stack.back();
+    }
+
+    void Renderer2D::pop()
+    {
+        if (_transform_stack.size() > 1) {
+            _transform_stack.pop_back();
+            _last_transform = &_transform_stack.back();
+        }
+        else {
+            Logger::log(LogLevel::WRN, "Trying to pop nonexistent transformation from "
+                                       "transformation stack in Renderer2D");
+        }
+    }
 }

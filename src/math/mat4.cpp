@@ -79,8 +79,19 @@ namespace mrld
         vec4 temp;
         for (int i = 0; i < 4; ++i) {
             for (int j = 0; j < 4; ++j) {
-                temp[i] += data[i + j * 4] * v[i];
+                temp[i] += data[i + j * 4] * v[j];
             }
+        }
+        return temp;
+    }
+    vec3 mat4::operator*(const vec3 &v) const
+    {
+        vec3 temp;
+        for (int i = 0; i < 3; ++i) {
+            for (int j = 0; j < 3; ++j) {
+                temp[i] += data[i + j * 4] * v[j];
+            }
+            temp[i] += data[i + 3 * 4];
         }
         return temp;
     }

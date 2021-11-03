@@ -9,6 +9,7 @@ namespace mrld
     struct vec3;
     struct vec4;
 
+    // TODO change matrices to use row-major indexing, set "transpose" flag when loading uniform, measure performance
     struct mat4
     {
         mat4();
@@ -26,6 +27,7 @@ namespace mrld
         friend mat4 operator*(mat4 o1, const mat4 &o2);
         friend mat4 operator*(mat4 o1, float f);
         vec4 operator*(const vec4 &v) const;
+        vec3 operator*(const vec3 &v) const;
 
         friend std::ostream& operator<<(std::ostream& out, const mat4 &o);
 
