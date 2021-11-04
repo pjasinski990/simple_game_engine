@@ -12,10 +12,12 @@ uniform mat4 model_matrix = mat4(1.0);
 
 out vec4 v_pos;
 out vec4 v_color;
+out vec2 v_tex_coord;
 
 void main()
 {
     gl_Position = proj_matrix * view_matrix * model_matrix * vec4(position, 1.0f);
     v_pos = model_matrix * vec4(position, 1.0f);
     v_color = color;
+    v_tex_coord = tex_coord;
 }

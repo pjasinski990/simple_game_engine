@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../../shader/shader.h"
-#include "../renderer/renderer2d/renderable2d.h"
+#include "../renderer/renderer2d/sprite.h"
 #include "../renderer/renderer2d/renderer2d.h"
 
 namespace mrld

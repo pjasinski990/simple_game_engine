@@ -3,10 +3,11 @@
 #include <vector>
 #include <memory>
 
-#include "../layer.h"
+#include "layer.h"
 
 namespace mrld
 {
+    class Renderable;
     class Layer2D: public Layer
     {
     public:
@@ -14,8 +15,8 @@ namespace mrld
         ~Layer2D();
         void draw() override;
         // TODO better way to add renderable objs
-        void add(Renderable2D *o);
+        void add(Renderable *o);
     private:
-        std::vector<Renderable2D *> _objects;
+        std::vector<Renderable *> _objects;
     };
 }

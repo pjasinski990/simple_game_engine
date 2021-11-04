@@ -4,12 +4,12 @@
 #include "../../buffer/vertex_array.h"
 #include "../../buffer/index_buffer.h"
 #include "../../../shader/shader.h"
-#include "../renderer2d/renderable2d.h"
-#include "../renderer.h"
+#include "../../group/group2d.h"
 
 namespace mrld
 {
-    class Renderer2D: public Renderer
+    class Renderable;
+    class Renderer2D
     {
     public:
         Renderer2D();
@@ -22,6 +22,9 @@ namespace mrld
 
         void push(const mat4 &transform, bool override = false);
         void pop();
+
+        void submit_data(const void* data, uint32_t size);
+        const mat4 &get_last_transform() const { return *_last_transform; }
 
     private:
         constexpr static uint32_t MAX_SPRITES = 10000;
@@ -41,6 +44,6 @@ namespace mrld
         IndexBuffer *_ibo;
         std::vector<mat4> _transform_stack;
         const mat4 *_last_transform;
-        uint16_t _sprites_submitted;
+        uint32_t _sprites_submitted;
     };
 }

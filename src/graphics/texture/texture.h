@@ -1,12 +1,22 @@
 #pragma once
 
-#define STB_IMAGE_IMPLEMENTATION
-#include "../../../dependencies/stb_image/stb_image.h"
-
 namespace mrld
 {
     class Texture
     {
+    public:
+        Texture(const char *filename, bool reverse = false);
+        ~Texture();
+        void bind(uint32_t slot = 0) const;
+        void unbind() const;
 
+        inline uint32_t get_width() const { return _width; }
+        inline uint32_t get_height() const { return _height; }
+    private:
+        std::string _filename;
+        uint32_t _id;
+        int32_t _width;
+        int32_t _height;
+        int32_t _n_channels;
     };
 }

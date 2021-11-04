@@ -1,7 +1,7 @@
 #include <glad/glad.h>
 
 #include "../renderable.h"
-#include "renderable2d.h"
+#include "sprite.h"
 #include "renderer2d.h"
 #include "../../../../utils/logger.h"
 
@@ -66,57 +66,7 @@ namespace mrld
 
     void Renderer2D::submit(const Renderable &r)
     {
-        /* This is a reinterpret cast for performance reasons - dynamic cast is an expensive operation. */
-        const Renderable2D &o = *reinterpret_cast<const Renderable2D*>(&r);
-        VertexData sprite[4];
-        const float x = o.get_position().x;
-        const float y = o.get_position().y;
-        const float z = static_cast<float>(o.get_z_index());
-        const float width = o.get_size().x;
-        const float height = o.get_size().y;
-        const float tex_index = static_cast<float>(o.get_tex_index());
-        sprite[0] = {
-                *_last_transform * vec3(x, y, z),
-                vec3(0.0f, 0.0f, 1.0f),
-                vec2(0.0f, 0.0f),
-                tex_index,
-                o.get_color()
-                };
-        sprite[1] = {
-                *_last_transform * vec3(x + width, y, z),
-                vec3(0.0f, 0.0f, 1.0f),
-                vec2(1.0f, 0.0f),
-                tex_index,
-                o.get_color()
-        };
-        sprite[2] = {
-                *_last_transform * vec3(x + width, y + height, z),
-                vec3(0.0f, 0.0f, 1.0f),
-                vec2(1.0f, 1.0f),
-                tex_index,
-                o.get_color()
-        };
-        sprite[3] = {
-                *_last_transform * vec3(x, y + height, z),
-                vec3(0.0f, 0.0f, 1.0f),
-                vec2(0.0f, 1.0f),
-                tex_index,
-                o.get_color()
-        };
-
-        glBufferSubData(
-                GL_ARRAY_BUFFER,
-                SPRITE_SIZE * _sprites_submitted,
-                SPRITE_SIZE,
-                (const void*) &sprite
-                );
-        ++_sprites_submitted;
-
-        Logger::log(LogLevel::DBG, "Submitted sprite N=%d", _sprites_submitted);
-        if (_sprites_submitted == MAX_SPRITES) {
-            Logger::log(LogLevel::DBG, "Performing early flush of Renderer2D batch (reached max sprites)");
-            flush();
-        }
+        r.submit(*this);
     }
 
     void Renderer2D::flush()
@@ -150,6 +100,28 @@ namespace mrld
         else {
             Logger::log(LogLevel::WRN, "Trying to pop nonexistent transformation from "
                                        "transformation stack in Renderer2D");
+        }
+    }
+
+    void Renderer2D::submit_data(const void *data, uint32_t size)
+    {
+        if (size != SPRITE_SIZE) {
+            Logger::log(LogLevel::ERR, "Submitted wrong size of renderable to Renderer2D");
+        }
+
+        glBufferSubData(
+                GL_ARRAY_BUFFER,
+                SPRITE_SIZE * _sprites_submitted,
+                size,
+                data
+        );
+
+        Logger::log(LogLevel::DBG, "Submitted %u bytes of vertex data. "
+                                   "N submitted sprites: %u", size, _sprites_submitted);
+
+        if (++_sprites_submitted > MAX_SPRITES) {
+            Logger::log(LogLevel::DBG, "Performing early flush of Renderer2D batch (reached buffer size)");
+            flush();
         }
     }
 }

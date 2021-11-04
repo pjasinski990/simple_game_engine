@@ -32,6 +32,10 @@ namespace mrld
 
         glfwSetWindowSizeCallback(_window, on_window_resize);
         glfwSwapInterval(0);
+
+        // TODO remove init from here
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     }
 
     void Window::clear() const

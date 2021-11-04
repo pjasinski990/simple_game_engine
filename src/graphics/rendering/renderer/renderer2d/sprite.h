@@ -1,19 +1,19 @@
 #pragma once
 
-#include "../renderable.h"
 #include "../../../../math/vec2.h"
 #include "../../../../math/vec3.h"
 #include "../../../../math/vec4.h"
+#include "../renderable.h"
 
 namespace mrld
 {
-    class Renderable2D: public Renderable
+    class Renderer2D;
+    class Sprite: public Renderable
     {
     public:
-        Renderable2D(const vec3 &position, const vec2 &size, const vec4 &color, uint32_t z_index = 0, uint32_t tex_index = 0);
-        ~Renderable2D();
+        Sprite(const vec3 &position, const vec2 &size = vec2(), const vec4 &color = vec4(), uint32_t z_index = 0, uint32_t tex_index = 0);
+        virtual void submit(Renderer2D &renderer) const override;
 
-        inline vec3 get_position() const { return _position; }
         inline vec2 get_size() const { return _size; }
         inline vec4 get_color() const { return _color; }
         inline uint32_t get_z_index() const { return _z_index; }

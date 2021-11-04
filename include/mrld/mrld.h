@@ -8,11 +8,12 @@
 #include "../../src/graphics/rendering/buffer/index_buffer.h"
 #include "../../src/graphics/rendering/buffer/vertex_array.h"
 #include "../../src/graphics/rendering/buffer/vertex_data.h"
+#include "../../src/graphics/color.h"
 
-#include "../../src/graphics/rendering/renderer/renderer2d/renderable2d.h"
+#include "../../src/graphics/rendering/renderer/renderer2d/sprite.h"
 #include "../../src/graphics/rendering/renderer/renderer2d/renderer2d.h"
 #include "../../src/graphics/rendering/layer/layer.h"
-#include "../../src/graphics/rendering/layer/layer2d/layer2d.h"
+#include "../../src/graphics/rendering/layer/layer2d.h"
 #include "../../src/graphics/texture/texture.h"
 #include "../../src/graphics/shader/shader.h"
 
