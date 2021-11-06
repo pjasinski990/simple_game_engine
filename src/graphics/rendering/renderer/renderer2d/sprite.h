@@ -12,7 +12,7 @@ namespace mrld
     {
     public:
         Sprite(const vec3 &position, const vec2 &size = vec2(), const vec4 &color = vec4(), uint32_t z_index = 0, uint32_t tex_index = 0);
-        virtual void submit(Renderer2D &renderer) const override;
+        virtual void submit(Renderer &renderer) const override;
 
         inline vec2 get_size() const { return _size; }
         inline vec4 get_color() const { return _color; }

@@ -22,11 +22,7 @@ namespace mrld
         void submit(const Renderable &o) override;
         void flush() override;
 
-        void push(const mat4 &transform, bool override = false) override;
-        void pop() override;
-
-        void submit_data(const void* data, uint32_t size);
-        const mat4 &get_last_transform() const { return *_last_transform; }
+        void submit_data(const void* data, uint32_t size) override;
 
     private:
         constexpr static uint32_t MAX_SPRITES = 10000;
@@ -44,8 +40,6 @@ namespace mrld
         VertexArray _vao;
         AttribDataBuffer *_vbo;
         IndexBuffer *_ibo;
-        std::vector<mat4> _transform_stack;
-        const mat4 *_last_transform;
         uint32_t _sprites_submitted;
     };
 }

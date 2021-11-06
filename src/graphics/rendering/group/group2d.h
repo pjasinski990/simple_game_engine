@@ -15,7 +15,7 @@ namespace mrld
         ~Group2D();
         // TODO adding by pointer, allocation on heap, find a better way?
         void add(const Renderable *o);
-        void submit(Renderer2D &renderer) const override;
+        void submit(Renderer &renderer) const override;
 
     private:
         mat4 _transformation;

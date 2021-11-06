@@ -21,7 +21,7 @@ namespace mrld
         _children.push_back(o);
     }
 
-    void Group2D::submit(Renderer2D &renderer) const
+    void Group2D::submit(Renderer &renderer) const
     {
         renderer.push(_transformation);
         renderer.begin();

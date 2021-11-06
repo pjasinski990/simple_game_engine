@@ -1,5 +1,4 @@
 #include <string>
-#include <iostream>
 
 #include "glad/glad.h"
 #define STB_IMAGE_IMPLEMENTATION
@@ -10,7 +9,7 @@
 
 namespace mrld
 {
-    Texture::Texture(const char *filename, bool reverse /* = false */)
+    Texture::Texture(const char *filename, uint32_t slot /* = 0 */, bool reverse /* = false */)
     : _filename{filename}
     {
         stbi_set_flip_vertically_on_load(reverse);
@@ -20,7 +19,7 @@ namespace mrld
         }
         else {
             glGenTextures(1, &_id);
-            bind();
+            bind(slot);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);

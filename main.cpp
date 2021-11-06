@@ -42,13 +42,16 @@ int main(void)
     mrld::mat4 proj = mrld::mat4::orthographic(-8, 8, -6, 6, -1, 1);
     mrld::Layer2D layer(s, proj);
 
-    mrld::Texture tex1("../jake.png", true);
-    s.set_int("tex", 0);
-    tex1.bind(0);
-//    mrld::Texture tex1("../container.jpg", 1, false);
+//    mrld::Texture tex1("../jake.png", 0, true);
+//    s.set_int("tex", 0);
+//    tex1.bind(0);
+
+    mrld::Texture tex2("../container.jpg", 0, false);
+    s.set_int("tex", 2);
+    tex2.bind(0);
 
     auto baseGroup = new mrld::Group2D(mrld::mat4::translate(mrld::vec3(-8.0f, -6.0f)));
-    float ratio = static_cast<float>(tex1.get_width()) / tex1.get_height();
+    float ratio = 1.0f;
     baseGroup->add(new mrld::Sprite(mrld::vec3(6.0f, 4.0f), mrld::vec2(8.0f * ratio, 6.0f), mrld::vec4(0.8f, 0.5f, 0.9f, 0.0f)));
 
     baseGroup->add(new mrld::Sprite(mrld::vec3(0.0f, 5.0f), mrld::vec2(5.0f * ratio, 5.0f), mrld::color::WHITE, 0, 1));

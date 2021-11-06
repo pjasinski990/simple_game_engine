@@ -13,7 +13,7 @@ namespace mrld
     , _tex_index {tex_index}
     { }
 
-    void Sprite::submit(Renderer2D &renderer) const
+    void Sprite::submit(Renderer &renderer) const
     {
         // TODO render with z-index depth
         VertexData sprite[4];
@@ -24,11 +24,11 @@ namespace mrld
         const float height = _size.y;
         const float tex_index = static_cast<float>(_tex_index);
 
-        uint8_t r = static_cast<uint32_t>(_color.x * 255.0f);
-        uint8_t g = static_cast<uint32_t>(_color.y * 255.0f);
-        uint8_t b = static_cast<uint32_t>(_color.z * 255.0f);
-        uint8_t a = static_cast<uint32_t>(_color.w * 255.0f);
-        uint32_t ui_color = a << 24 | b << 16 | g << 8 | r;
+        const uint8_t r = static_cast<uint32_t>(_color.x * 255.0f);
+        const uint8_t g = static_cast<uint32_t>(_color.y * 255.0f);
+        const uint8_t b = static_cast<uint32_t>(_color.z * 255.0f);
+        const uint8_t a = static_cast<uint32_t>(_color.w * 255.0f);
+        const uint32_t ui_color = a << 24 | b << 16 | g << 8 | r;
 
         sprite[0] = {
                 last_transform * vec3(x, y, 0.0f),

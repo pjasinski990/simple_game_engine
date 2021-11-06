@@ -1,6 +1,6 @@
-//
-// Created by Piotr on 06/11/2021.
-//
+#pragma once
+
+#include <vector>
 
 namespace mrld
 {
@@ -8,6 +8,8 @@ namespace mrld
     struct mat4;
     class Renderer
     {
+    public:
+
         virtual void begin() const {};
         virtual void end() const {};
 
@@ -15,7 +17,13 @@ namespace mrld
         virtual void flush() = 0;
         virtual void submit_data(const void *data, uint32_t size) {};
 
-        virtual void push(const mat4 &transform, bool override = false) {};
-        virtual void pop() {};
+        virtual void push(const mat4 &transform, bool override = false);
+        virtual void pop();
+
+        virtual const mat4 &get_last_transform() const { return *_last_transform; }
+
+    protected:
+        std::vector<mat4> _transform_stack;
+        const mat4 *_last_transform;
     };
 }

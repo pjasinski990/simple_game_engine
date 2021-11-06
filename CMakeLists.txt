@@ -32,6 +32,7 @@ list(APPEND SOURCES ${PROJECT_SOURCE_DIR}/src/graphics/rendering/buffer/attrib_d
 list(APPEND SOURCES ${PROJECT_SOURCE_DIR}/src/graphics/rendering/buffer/index_buffer.cpp)
 list(APPEND SOURCES ${PROJECT_SOURCE_DIR}/src/graphics/rendering/buffer/vertex_array.cpp)
 list(APPEND SOURCES ${PROJECT_SOURCE_DIR}/src/graphics/rendering/renderer/renderer2d/sprite.cpp)
+list(APPEND SOURCES ${PROJECT_SOURCE_DIR}/src/graphics/rendering/renderer/renderer.cpp)
 list(APPEND SOURCES ${PROJECT_SOURCE_DIR}/src/graphics/rendering/renderer/renderer2d/renderer2d.cpp)
 list(APPEND SOURCES ${PROJECT_SOURCE_DIR}/src/graphics/rendering/layer/layer.cpp)
 list(APPEND SOURCES src/graphics/rendering/layer/layer2d.cpp)

@@ -5,7 +5,7 @@ namespace mrld
     class Texture
     {
     public:
-        Texture(const char *filename, bool reverse = false);
+        Texture(const char *filename, uint32_t slot = 0, bool reverse = false);
         ~Texture();
         void bind(uint32_t slot = 0) const;
         void unbind() const;
