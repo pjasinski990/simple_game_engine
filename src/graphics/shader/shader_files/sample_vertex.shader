@@ -11,8 +11,9 @@ uniform mat4 view_matrix = mat4(1.0);
 uniform mat4 model_matrix = mat4(1.0);
 
 out vec4 v_pos;
-out vec4 v_color;
 out vec2 v_tex_coord;
+out float v_tex_index;
+out vec4 v_color;
 
 void main()
 {

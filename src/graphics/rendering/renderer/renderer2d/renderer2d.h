@@ -5,23 +5,25 @@
 #include "../../buffer/index_buffer.h"
 #include "../../../shader/shader.h"
 #include "../../group/group2d.h"
+#include "../renderer.h"
 
 namespace mrld
 {
     class Renderable;
-    class Renderer2D
+    class Renderer2D: public Renderer
     {
     public:
         Renderer2D();
         ~Renderer2D();
 
-        void begin() const;
-        void end() const;
-        void submit(const Renderable &o);
-        void flush();
+        void begin() const override;
+        void end() const override;
 
-        void push(const mat4 &transform, bool override = false);
-        void pop();
+        void submit(const Renderable &o) override;
+        void flush() override;
+
+        void push(const mat4 &transform, bool override = false) override;
+        void pop() override;
 
         void submit_data(const void* data, uint32_t size);
         const mat4 &get_last_transform() const { return *_last_transform; }

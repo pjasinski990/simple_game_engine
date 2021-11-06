@@ -12,6 +12,6 @@ namespace mrld
         vec3 normal;
         vec2 tex_coord;
         float tex_index;
-        vec4 color;
+        uint32_t color;
     };
 }

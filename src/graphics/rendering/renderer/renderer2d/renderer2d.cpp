@@ -31,11 +31,11 @@ namespace mrld
 
         _vao.bind();
         _vbo->bind();
-        glVertexAttribPointer(ATTRIB_INDEX_POSITION, member_floats_count(VertexData, position), GL_FLOAT, GL_FALSE, sizeof(VertexData), (const void*) offsetof(VertexData, position));
-        glVertexAttribPointer(ATTRIB_INDEX_NORMAL, member_floats_count(VertexData, normal), GL_FLOAT, GL_FALSE, sizeof(VertexData), (const void*) offsetof(VertexData, normal));
-        glVertexAttribPointer(ATTRIB_INDEX_TEX_COORD, member_floats_count(VertexData, tex_coord), GL_FLOAT, GL_FALSE, sizeof(VertexData), (const void*) offsetof(VertexData, tex_coord));
-        glVertexAttribPointer(ATTRIB_INDEX_TEX_INDEX, member_floats_count(VertexData, tex_index), GL_FLOAT, GL_FALSE, sizeof(VertexData), (const void*) offsetof(VertexData, tex_index));
-        glVertexAttribPointer(ATTRIB_INDEX_COLOR, member_floats_count(VertexData, color), GL_FLOAT, GL_FALSE, sizeof(VertexData), (const void*) offsetof(VertexData, color));
+        glVertexAttribPointer(ATTRIB_INDEX_POSITION, member_floats_count(VertexData, position), GL_FLOAT, GL_FALSE, VERTEX_SIZE, (const void*) offsetof(VertexData, position));
+        glVertexAttribPointer(ATTRIB_INDEX_NORMAL, member_floats_count(VertexData, normal), GL_FLOAT, GL_FALSE, VERTEX_SIZE, (const void*) offsetof(VertexData, normal));
+        glVertexAttribPointer(ATTRIB_INDEX_TEX_COORD, member_floats_count(VertexData, tex_coord), GL_FLOAT, GL_FALSE, VERTEX_SIZE, (const void*) offsetof(VertexData, tex_coord));
+        glVertexAttribPointer(ATTRIB_INDEX_TEX_INDEX, member_floats_count(VertexData, tex_index), GL_FLOAT, GL_FALSE, VERTEX_SIZE, (const void*) offsetof(VertexData, tex_index));
+        glVertexAttribPointer(ATTRIB_INDEX_COLOR, sizeof(uint32_t), GL_UNSIGNED_BYTE, GL_TRUE, VERTEX_SIZE, (const void*) offsetof(VertexData, color));
         glEnableVertexAttribArray(ATTRIB_INDEX_POSITION);
         glEnableVertexAttribArray(ATTRIB_INDEX_NORMAL);
         glEnableVertexAttribArray(ATTRIB_INDEX_TEX_COORD);
