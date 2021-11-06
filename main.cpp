@@ -19,7 +19,7 @@ int main(void)
     );
     s1.create_shader_program();
     mrld::mat4 proj1 = mrld::mat4::orthographic(-4, 4, -3, 3, -1, 1);
-    mrld::Layer2D layer1(s1, proj1);
+    mrld::Layer layer1(s1, proj1);
     float dx = 8.0f / SPRITES_HORIZONTAL;
     float dy = 6.0f / SPRITES_VERTICAL;
     for (int i = 0; i < SPRITES_HORIZONTAL; ++i) {
@@ -46,20 +46,20 @@ int main(void)
 //    s.set_int("tex", 0);
 //    tex1.bind(0);
 
-    mrld::Texture tex2("../container.jpg", 0, false);
-    s.set_int("tex", 2);
+    mrld::Texture tex2("../container.jpg", 1, false);
+    s.set_int("tex", 1);
     tex2.bind(0);
 
-    auto baseGroup = new mrld::Group2D(mrld::mat4::translate(mrld::vec3(-8.0f, -6.0f)));
+    auto baseGroup = new mrld::Group(mrld::mat4::translate(mrld::vec3(-8.0f, -6.0f)));
     float ratio = 1.0f;
     baseGroup->add(new mrld::Sprite(mrld::vec3(6.0f, 4.0f), mrld::vec2(8.0f * ratio, 6.0f), mrld::vec4(0.8f, 0.5f, 0.9f, 0.0f)));
 
     baseGroup->add(new mrld::Sprite(mrld::vec3(0.0f, 5.0f), mrld::vec2(5.0f * ratio, 5.0f), mrld::color::WHITE, 0, 1));
-    baseGroup->add(new mrld::Sprite(mrld::vec3(1.0f, 1.0f), mrld::vec2(2.0 * ratio, 2.0f), mrld::vec4(1.0f)));
-    auto secGroup = new mrld::Group2D(mrld::mat4::translate(mrld::vec3(5.0f, 1.0f)));
+    baseGroup->add(new mrld::Sprite(mrld::vec3(1.0f, 1.0f), mrld::vec2(2.0f * ratio, 2.0f), mrld::vec4(1.0f)));
+    auto secGroup = new mrld::Group(mrld::mat4::translate(mrld::vec3(5.0f, 1.0f)));
     secGroup->add(new mrld::Sprite(mrld::vec3(), mrld::vec2(2.0f * ratio, 2.0f), mrld::vec4(0.0f, 1.0f)));
     baseGroup->add(secGroup);
-    auto thGroup = new mrld::Group2D(mrld::mat4::translate(mrld::vec3(9.0f, 1.0f)));
+    auto thGroup = new mrld::Group(mrld::mat4::translate(mrld::vec3(9.0f, 1.0f)));
     thGroup->add(new mrld::Sprite(mrld::vec3(), mrld::vec2(2.0f * ratio, 2.0f), mrld::vec4(0.0f, 0.0f, 1.0f)));
     baseGroup->add(thGroup);
     layer.add(baseGroup);

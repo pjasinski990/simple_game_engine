@@ -4,7 +4,7 @@
 #include "../../buffer/vertex_array.h"
 #include "../../buffer/index_buffer.h"
 #include "../../../shader/shader.h"
-#include "../../group/group2d.h"
+#include "../../group/group.h"
 #include "../renderer.h"
 
 namespace mrld

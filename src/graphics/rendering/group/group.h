@@ -7,12 +7,12 @@
 
 namespace mrld
 {
-    class Renderer2D;
-    class Group2D: public Renderable
+    class Renderer;
+    class Group: public Renderable
     {
     public:
-        Group2D(const mat4 &transformation);
-        ~Group2D();
+        Group(const mat4 &transformation);
+        ~Group();
         // TODO adding by pointer, allocation on heap, find a better way?
         void add(const Renderable *o);
         void submit(Renderer &renderer) const override;
