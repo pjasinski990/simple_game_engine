@@ -14,7 +14,7 @@ namespace mrld
         if (i == 1) {return y;}
         if (i == 2) {return z;}
         if (i == 3) {return w;}
-        throw std::out_of_range("Indexing error in vec2: out of range");
+        throw std::out_of_range("Indexing error in vec4: out of range");
     }
     float vec4::operator[](int i) const
     {
@@ -22,7 +22,7 @@ namespace mrld
         if (i == 1) {return y;}
         if (i == 2) {return z;}
         if (i == 3) {return w;}
-        throw std::out_of_range("Indexing error in vec2: out of range");
+        throw std::out_of_range("Indexing error in vec4: out of range");
     }
 
     vec4& vec4::operator+=(const vec4& o)

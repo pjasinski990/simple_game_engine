@@ -30,8 +30,9 @@ namespace mrld
         void update_shader_source(const char *path, ShaderType type);
         void create_shader_program();
         void use() const;
-        void remove() const;
+        void disable() const;
 
+        // TODO cache uniform names against ids
         void set_bool(const char *name, bool value) const;
         void set_int(const char *name, int value) const;
         void set_float(const char *name, float value) const;
@@ -39,11 +40,12 @@ namespace mrld
         void set_vec2(const char *name, const vec2 &value) const;
         void set_vec3(const char *name, const vec3 &value) const;
         void set_vec4(const char *name, const vec4 &value) const;
+        // TODO this should be private
+        GLuint get_uniform_location(const char *name) const;
 
     private:
         GLuint compile_shader(const char *source_str, GLenum type);
         void initialize_shaders();
-        GLuint get_uniform_location(const char *name) const;
 
         static std::unordered_map<ShaderType, const char*> _shader_type_to_string;
 
@@ -53,6 +55,7 @@ namespace mrld
         GLuint _vertex_shader;
         GLuint _geometry_shader;
         GLuint _fragment_shader;
+    public:
         GLuint _shader_program;
     };
 }

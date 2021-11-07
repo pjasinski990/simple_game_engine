@@ -9,8 +9,9 @@
 
 namespace mrld
 {
-    Renderer2D::Renderer2D()
-    : _sprites_submitted{0}
+    Renderer2D::Renderer2D(const Shader *shader)
+    : Renderer(shader)
+    , _sprites_submitted{0}
     {
         uint16_t *indices = new uint16_t [MAX_INDICES];
         for (uint16_t i = 0; i < MAX_SPRITES; ++i) {
@@ -34,12 +35,12 @@ namespace mrld
         glVertexAttribPointer(ATTRIB_INDEX_POSITION, member_floats_count(VertexData, position), GL_FLOAT, GL_FALSE, VERTEX_SIZE, (const void*) offsetof(VertexData, position));
         glVertexAttribPointer(ATTRIB_INDEX_NORMAL, member_floats_count(VertexData, normal), GL_FLOAT, GL_FALSE, VERTEX_SIZE, (const void*) offsetof(VertexData, normal));
         glVertexAttribPointer(ATTRIB_INDEX_TEX_COORD, member_floats_count(VertexData, tex_coord), GL_FLOAT, GL_FALSE, VERTEX_SIZE, (const void*) offsetof(VertexData, tex_coord));
-        glVertexAttribPointer(ATTRIB_INDEX_TEX_INDEX, member_floats_count(VertexData, tex_index), GL_FLOAT, GL_FALSE, VERTEX_SIZE, (const void*) offsetof(VertexData, tex_index));
+        glVertexAttribPointer(ATTRIB_INDEX_TEX_SLOT, 1, GL_FLOAT, GL_FALSE, VERTEX_SIZE, (const void*) offsetof(VertexData, tex_slot));
         glVertexAttribPointer(ATTRIB_INDEX_COLOR, sizeof(uint32_t), GL_UNSIGNED_BYTE, GL_TRUE, VERTEX_SIZE, (const void*) offsetof(VertexData, color));
         glEnableVertexAttribArray(ATTRIB_INDEX_POSITION);
         glEnableVertexAttribArray(ATTRIB_INDEX_NORMAL);
         glEnableVertexAttribArray(ATTRIB_INDEX_TEX_COORD);
-        glEnableVertexAttribArray(ATTRIB_INDEX_TEX_INDEX);
+        glEnableVertexAttribArray(ATTRIB_INDEX_TEX_SLOT);
         glEnableVertexAttribArray(ATTRIB_INDEX_COLOR);
         _vbo->unbind();
         _vao.unbind();
@@ -72,16 +73,22 @@ namespace mrld
     void Renderer2D::flush()
     {
         Logger::log(LogLevel::DBG, "Flushing renderer batch N=%d", _sprites_submitted);
+        for (const auto &val: _texture_id_to_texture_slot) {
+            glActiveTexture(GL_TEXTURE0 + val.second);
+            glBindTexture(GL_TEXTURE_2D, val.first);
+        }
         _vao.bind();
         _ibo->bind();
         glDrawElements(GL_TRIANGLES, _sprites_submitted * 6, GL_UNSIGNED_SHORT, nullptr);
         _ibo->unbind();
         _vao.unbind();
         _sprites_submitted = 0;
+        _texture_id_to_texture_slot.clear();
     }
 
     void Renderer2D::submit_data(const void *data, uint32_t size)
     {
+        // TODO major - this is wrong - this function should abstract from sprite data type
         if (size != SPRITE_SIZE) {
             Logger::log(LogLevel::ERR, "Submitted wrong size of renderable to Renderer2D");
         }

@@ -42,17 +42,22 @@ namespace mrld
 
     void Shader::update_shader_source(const char *path, ShaderType type)
     {
-        Logger::log(LogLevel::DBG, "%s", __func__);
         std::ifstream file;
         try
         {
             file.open(path);
             if (!file.is_open()) {
                 char msg[LOGGER_SHADER_ERR_MSG_MAX_LENGTH];
-                sprintf_s(msg,
+                // TODO this code is being repeated a lot. move to function.
+                int sprintf_res = sprintf_s(msg,
                           LOGGER_SHADER_ERR_MSG_MAX_LENGTH,
                           "Error loading shader source file. File %s cannot be open for reading", path);
-                Logger::log(LogLevel::ERR, "%s", msg);
+                if (sprintf_res == -1) {
+                    Logger::log(LogLevel::ERR, "%s", "Error updating shader source. Could not retrieve error message.");
+                }
+                else {
+                    Logger::log(LogLevel::ERR, "%s", msg);
+                }
                 throw std::runtime_error("Error loading shader file");
             }
             std::stringstream stream;
@@ -73,18 +78,22 @@ namespace mrld
         }
         catch (std::ifstream::failure& e) {
             char msg[LOGGER_SHADER_ERR_MSG_MAX_LENGTH];
-            sprintf_s(msg,
+            int sprintf_res = sprintf_s(msg,
                       LOGGER_SHADER_ERR_MSG_MAX_LENGTH,
                       "Error loading shader of type %s from file %s",
                     _shader_type_to_string[type], path);
-            Logger::log(LogLevel::ERR, "%s", msg);
+            if (sprintf_res == -1) {
+                Logger::log(LogLevel::ERR, "%s", "Error updating shader source. Could not retrieve error message.");
+            }
+            else {
+                Logger::log(LogLevel::ERR, "%s", msg);
+            }
             throw e;
         }
     }
 
     void Shader::create_shader_program()
     {
-        Logger::log(LogLevel::DBG, "%s", __func__);
         initialize_shaders();
 
         GLint success;
@@ -99,10 +108,15 @@ namespace mrld
         if(!success) {
             glGetProgramInfoLog(_shader_program, LOGGER_SHADER_ERR_MSG_MAX_LENGTH, nullptr, msg);
             char err_msg[LOGGER_SHADER_ERR_MSG_MAX_LENGTH];
-            sprintf_s(err_msg,
+            int sprintf_res = sprintf_s(err_msg,
                       LOGGER_SHADER_ERR_MSG_MAX_LENGTH,
                       "Error: shader linking failed. \nFull error message:\n%s", msg);
-            Logger::log(LogLevel::ERR, "%s", err_msg);
+            if (sprintf_res == -1) {
+                Logger::log(LogLevel::ERR, "%s", "Error updating shader source. Could not retrieve error message.");
+            }
+            else {
+                Logger::log(LogLevel::ERR, "%s", err_msg);
+            }
             throw std::runtime_error("Error linking shader");
         }
         glValidateProgram(_shader_program);
@@ -110,11 +124,27 @@ namespace mrld
         if(!success) {
             glGetProgramInfoLog(_shader_program, LOGGER_SHADER_ERR_MSG_MAX_LENGTH, nullptr, msg);
             char err_msg[LOGGER_SHADER_ERR_MSG_MAX_LENGTH];
-            sprintf_s(err_msg,
+            int sprintf_res = sprintf_s(err_msg,
                       LOGGER_SHADER_ERR_MSG_MAX_LENGTH,
                       "Error: shader validation failed. \nFull error message:\n%s", msg);
+            if (sprintf_res == -1) {
+                Logger::log(LogLevel::ERR, "%s", "Error creating shader program. Could not retrieve error message.");
+            }
+            else {
+                Logger::log(LogLevel::ERR, "%s", err_msg);
+            }
             throw std::runtime_error("Error linking shader");
         }
+
+        // TODO this is very bad. remove magic numbers, possibly create global config, add
+        // function to set array of uniforms. also, this should be extracted to member function.
+        int slots[32];
+        for (int i = 0; i < 32; ++i) {
+            slots[i] = i;
+        }
+        use();
+        glUniform1iv(get_uniform_location("textures"), 32, slots);
+        disable();
 
         glDeleteShader(_vertex_shader);
         glDeleteShader(_fragment_shader);
@@ -123,7 +153,7 @@ namespace mrld
     {
         glUseProgram(_shader_program);
     }
-    void Shader::remove() const
+    void Shader::disable() const
     {
         glUseProgram(0);
     }
@@ -159,7 +189,6 @@ namespace mrld
 
     unsigned int Shader::compile_shader(const char *source_str, GLenum type)
     {
-        Logger::log(LogLevel::DBG, "%s", __func__);
         GLint success;
         GLchar msg[LOGGER_SHADER_ERR_MSG_MAX_LENGTH];
 
@@ -170,18 +199,22 @@ namespace mrld
         if(!success) {
             glGetShaderInfoLog(shader, LOGGER_SHADER_ERR_MSG_MAX_LENGTH, nullptr, msg);
             char err_msg[LOGGER_SHADER_ERR_MSG_MAX_LENGTH];
-            sprintf_s(err_msg,
+            int sprintf_res = sprintf_s(err_msg,
                       LOGGER_SHADER_ERR_MSG_MAX_LENGTH,
                       "Error: %s compilation failed. \nFull error message:\n%s",
                     _shader_type_to_string[static_cast<ShaderType>(type)], msg);
-            Logger::log(LogLevel::ERR, "%s", err_msg);
+            if (sprintf_res == -1) {
+                Logger::log(LogLevel::ERR, "%s", "Error compiling shader. Could not retrieve error message.");
+            }
+            else {
+                Logger::log(LogLevel::ERR, "%s", err_msg);
+            }
             throw std::runtime_error("Error compiling shader");
         }
         return shader;
     }
     void Shader::initialize_shaders()
     {
-        Logger::log(LogLevel::DBG, "%s", __func__);
         if (_vertex_shader_source.empty() || _fragment_shader_source.empty()) {
             Logger::log(LogLevel::WRN, "%s",
                         "Not initializing shaders - at least vertex and fragment shaders must be loaded");
@@ -194,6 +227,7 @@ namespace mrld
             _geometry_shader = compile_shader(_geometry_shader_source.c_str(), GL_GEOMETRY_SHADER);
         }
     }
+
     GLuint Shader::get_uniform_location(const char *name) const
     {
         return glGetUniformLocation(_shader_program, name);

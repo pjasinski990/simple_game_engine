@@ -1,6 +1,9 @@
 #pragma once
 
 #include <vector>
+#include <map>
+
+#include "../../shader/shader.h"
 
 namespace mrld
 {
@@ -9,6 +12,8 @@ namespace mrld
     class Renderer
     {
     public:
+        // TODO give it a default shader, figure predefined / sample shaders
+        Renderer(const Shader *shader);
 
         virtual void begin() const {};
         virtual void end() const {};
@@ -20,10 +25,27 @@ namespace mrld
         virtual void push(const mat4 &transform, bool override = false);
         virtual void pop();
 
-        virtual const mat4 &get_last_transform() const { return *_last_transform; }
+        const mat4 &get_last_transform() const { return *_last_transform; }
+        inline uint32_t get_n_texture_slots_used() const { return _texture_id_to_texture_slot.size(); }
+        int32_t retrieve_texture_slot(uint32_t texture_id);
+
+        void set_shader(const Shader *shader) { _shader = shader; }
+
 
     protected:
+        constexpr static uint32_t ATTRIB_INDEX_POSITION = 0;
+        constexpr static uint32_t ATTRIB_INDEX_NORMAL = 1;
+        constexpr static uint32_t ATTRIB_INDEX_TEX_COORD = 2;
+        constexpr static uint32_t ATTRIB_INDEX_TEX_SLOT = 3;
+        constexpr static uint32_t ATTRIB_INDEX_COLOR = 4;
+
+        constexpr static uint32_t MAX_TEXTURE_SLOTS = 32;
+
+        const Shader *_shader;
+
         std::vector<mat4> _transform_stack;
         const mat4 *_last_transform;
+
+        std::map<uint32_t, uint32_t> _texture_id_to_texture_slot;
     };
 }

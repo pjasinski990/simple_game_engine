@@ -4,6 +4,10 @@
 
 namespace mrld
 {
+    Renderer::Renderer(const Shader *shader)
+    : _shader{shader}
+    { }
+
     void Renderer::push(const mat4 &transform, bool override /* = false */)
     {
         if (override) {
@@ -22,8 +26,27 @@ namespace mrld
             _last_transform = &_transform_stack.back();
         }
         else {
-            Logger::log(LogLevel::WRN, "Trying to pop nonexistent transformation from "
+            Logger::log(LogLevel::WRN, "Trying to pop non-existent transformation from "
                                        "transformation stack");
+        }
+    }
+
+    int32_t Renderer::retrieve_texture_slot(uint32_t texture_id)
+    {
+        if (_texture_id_to_texture_slot.contains(texture_id)) {
+            return _texture_id_to_texture_slot[texture_id];
+        }
+        else if (get_n_texture_slots_used() >= MAX_TEXTURE_SLOTS) {
+            return -1;
+        }
+
+        if (!_shader) {
+            Logger::log(LogLevel::ERR, "Trying to set sampler uniform value but shader is null.");
+            throw std::runtime_error("Error retrieving texture slot.");
+        }
+        else {
+            _texture_id_to_texture_slot[texture_id] = get_n_texture_slots_used();
+            return _texture_id_to_texture_slot[texture_id];
         }
     }
 }

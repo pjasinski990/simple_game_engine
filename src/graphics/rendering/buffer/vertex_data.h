@@ -11,7 +11,7 @@ namespace mrld
         vec3 position;
         vec3 normal;
         vec2 tex_coord;
-        float tex_index;
+        float tex_slot;
         uint32_t color;
     };
 }

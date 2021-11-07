@@ -4,9 +4,9 @@
 
 namespace mrld
 {
-    constexpr uint16_t LOGGER_MESSAGE_MAX_LENGTH = 256;
+    constexpr uint16_t LOGGER_MESSAGE_MAX_LENGTH = 512;
     constexpr uint16_t LOGGER_DATETIME_BUFFER_SIZE = 32;
-    constexpr uint16_t LOGGER_SHADER_ERR_MSG_MAX_LENGTH = 32;
+    constexpr uint16_t LOGGER_SHADER_ERR_MSG_MAX_LENGTH = 512;
 
     enum LogLevel
     {
@@ -27,9 +27,11 @@ namespace mrld
         static inline void set_log_level(LogLevel level) { _log_level = level; }
     private:
         static void log_time();
+        // TODO remove this, parametrize better
         static inline void log_debug(const std::string &msg) { fprintf(_output, "DBG: %s", msg.c_str()); }
         static inline void log_info(const std::string &msg) { fprintf(_output, "INF: %s", msg.c_str()); }
         static inline void log_warning(const std::string &msg) { fprintf(_output, "WRN: %s", msg.c_str()); }
+        // TODO include __FILE__ and __LINE__ from caller
         static inline void log_error(const std::string &msg) { fprintf(_output, "ERR: %s", msg.c_str()); }
 
         static FILE* _output;

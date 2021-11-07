@@ -17,9 +17,9 @@ namespace mrld
 
         char msg[LOGGER_MESSAGE_MAX_LENGTH];
         va_list arg_q;
-                va_start(arg_q, format);
+        va_start(arg_q, format);
         vsnprintf_s(msg, sizeof(msg), format, arg_q);
-                va_end(arg_q);
+        va_end(arg_q);
 
         log_time();
         switch (log_level) {
@@ -36,7 +36,7 @@ namespace mrld
                 log_error(msg);
                 break;
         }
-        fprintf(_output, "%s", "\n");
+        fprintf(_output, "\n");
     }
 
     void Logger::log_time()

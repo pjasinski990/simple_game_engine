@@ -7,7 +7,6 @@ namespace mrld
     {
     public:
         virtual ~Renderable() = default;
-
         virtual void submit(Renderer &renderer) const = 0;
     };
 }

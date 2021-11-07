@@ -1,15 +1,15 @@
 #include <string>
 
-#include "glad/glad.h"
 #define STB_IMAGE_IMPLEMENTATION
 #include "../../../dependencies/stb_image/stb_image.h"
-#include "../../utils/logger.h"
+#include "glad/glad.h"
 
+#include "../../utils/gl_debug.h"
 #include "texture.h"
 
 namespace mrld
 {
-    Texture::Texture(const char *filename, uint32_t slot /* = 0 */, bool reverse /* = false */)
+    Texture::Texture(const char *filename, bool reverse /* = false */)
     : _filename{filename}
     {
         stbi_set_flip_vertically_on_load(reverse);
@@ -19,14 +19,15 @@ namespace mrld
         }
         else {
             glGenTextures(1, &_id);
-            bind(slot);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
+            bind();
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, _width, _height, 0, GL_RGBA, GL_UNSIGNED_BYTE, tex_data_buffer);
+            // TODO fix blurring in scaled mipmap textures
             glGenerateMipmap(GL_TEXTURE_2D);
+
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
             unbind();
         }
         stbi_image_free(tex_data_buffer);

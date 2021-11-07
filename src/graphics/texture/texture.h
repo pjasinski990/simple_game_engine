@@ -5,13 +5,14 @@ namespace mrld
     class Texture
     {
     public:
-        Texture(const char *filename, uint32_t slot = 0, bool reverse = false);
+        Texture(const char *filename, bool reverse = false);
         ~Texture();
         void bind(uint32_t slot = 0) const;
         void unbind() const;
 
         inline uint32_t get_width() const { return _width; }
         inline uint32_t get_height() const { return _height; }
+        inline uint32_t get_id() const { return _id; }
     private:
         std::string _filename;
         uint32_t _id;
