@@ -46,6 +46,6 @@ namespace mrld
         std::vector<mat4> _transform_stack;
         const mat4 *_last_transform;
 
-        std::map<uint32_t, uint32_t> _texture_id_to_texture_slot;
+        std::unordered_map<uint32_t, uint32_t> _texture_id_to_texture_slot;
     };
 }

@@ -1,6 +1,7 @@
 #include <fstream>
 #include <sstream>
 #include <cstdio>
+#include <utility>
 
 #include <glad/glad.h>
 
@@ -158,31 +159,31 @@ namespace mrld
         glUseProgram(0);
     }
 
-    void Shader::set_bool(const char *name, bool value) const
+    void Shader::set_bool(const char *name, bool value)
 	{
         glUniform1i(get_uniform_location(name), (int)value);
 	}
-    void Shader::set_int(const char *name, int value) const
+    void Shader::set_int(const char *name, int value)
 	{
         glUniform1i(get_uniform_location(name), value);
 	}
-    void Shader::set_float(const char *name, float value) const
+    void Shader::set_float(const char *name, float value)
 	{
         glUniform1f(get_uniform_location(name), value);
 	}
-    void Shader::set_mat4(const char *name, const mat4 &value) const
+    void Shader::set_mat4(const char *name, const mat4 &value)
 	{
         glUniformMatrix4fv(get_uniform_location(name), 1, GL_FALSE, value.data);
 	}
-    void Shader::set_vec2(const char *name, const vec2 &value) const
+    void Shader::set_vec2(const char *name, const vec2 &value)
 	{
         glUniform2f(get_uniform_location(name), value.x, value.y);
 	}
-    void Shader::set_vec3(const char *name, const vec3 &value) const
+    void Shader::set_vec3(const char *name, const vec3 &value)
 	{
         glUniform3f(get_uniform_location(name), value.x, value.y, value.z);
 	}
-    void Shader::set_vec4(const char *name, const vec4 &value) const
+    void Shader::set_vec4(const char *name, const vec4 &value)
 	{
         glUniform4f(get_uniform_location(name), value.x, value.y, value.z, value.w);
 	}
@@ -228,8 +229,13 @@ namespace mrld
         }
     }
 
-    GLuint Shader::get_uniform_location(const char *name) const
+    GLuint Shader::get_uniform_location(const char *name)
     {
-        return glGetUniformLocation(_shader_program, name);
+        if (_uniform_name_to_id.contains(name)) {
+            return _uniform_name_to_id.at(name);
+        }
+        uint32_t id = glGetUniformLocation(_shader_program, name);
+        _uniform_name_to_id.insert(std::make_pair(name, id));
+        return id;
     }
 }

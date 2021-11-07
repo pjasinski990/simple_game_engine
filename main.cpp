@@ -6,7 +6,7 @@ int main(void)
 {
 //    mrld::Logger::set_log_level(mrld::LogLevel::DBG);
     mrld::Window window("Hello simulation", 800, 600);
-    mrld::KeyboardHandler handler({mrld::W, mrld::S, mrld::A, mrld::D});
+    mrld::KeyboardHandler handler({mrld::W, mrld::S, mrld::A, mrld::D, mrld::LEFT, mrld::RIGHT});
     mrld::MouseHandler m_handler({mrld::BUTTON_LEFT, mrld::BUTTON_RIGHT});
 
     mrld::Shader s(
@@ -23,19 +23,38 @@ int main(void)
 
     auto baseGroup = new mrld::Group(mrld::mat4::translate(mrld::vec3(-8.0f, -6.0f)));
     float ratio = 1.3f;
-    mrld::vec3 position(6.0f, 4.0f, 0.0f);
-    mrld::vec2 size(8.0f * ratio, 6.0f);
-    baseGroup->add(new mrld::Sprite(position + mrld::vec3(0.0f, -2.0f), mrld::vec2(2.0f, 2.0f), mrld::color::WHITE, 0, &tex1));
-    baseGroup->add(new mrld::Sprite(position, size, mrld::color::BLACK, 0, &tex2));
+    mrld::vec2 size(8.0f, 6.0f / ratio);
+    baseGroup->add(new mrld::Sprite(mrld::vec3(9.0f, 3.2f, 0), size, mrld::color::BLACK, 0, &tex1));
+    baseGroup->add(new mrld::Sprite(mrld::vec3(8.0f, 0, 0), size, mrld::color::BLACK, 0, &tex2));
     layer.add(baseGroup);
 
     uint16_t fps = 0;
     clock_t begin_time = clock();
     glClearColor(0.15f, 0.15f, 0.15f, 0.0f);
+    mrld::mat4 model = mrld::mat4::identity();
+    double now = glfwGetTime();
     while (!window.should_close()) {
-        mrld::vec2 light_pos(m_handler.get_x() / 800.0f * 16.0f - 8.0f, -m_handler.get_y() / 600.0f * 12.0f + 6.0f);
+        if (handler.is_key_down(mrld::KeyCode::W)) {
+            model *= mrld::mat4::translate(mrld::vec3(0.0f, 0.01f));
+        }
+        else if (handler.is_key_down(mrld::KeyCode::S)) {
+            model *= mrld::mat4::translate(mrld::vec3(0.0f, -0.01));
+        }
+        else if (handler.is_key_down(mrld::KeyCode::A)) {
+            model *= mrld::mat4::translate(mrld::vec3(-0.01,0.0f));
+        }
+        else if (handler.is_key_down(mrld::KeyCode::D)) {
+            model *= mrld::mat4::translate(mrld::vec3(0.01, 0.0f));
+        }
+        if (handler.is_key_down(mrld::KeyCode::LEFT)) {
+            model *= mrld::mat4::rotate_z(0.002f);
+        }
+        else if (handler.is_key_down(mrld::KeyCode::RIGHT)) {
+            model *= mrld::mat4::rotate_z(-0.002f);
+        }
+
         s.use();
-        s.set_vec2("light_position", light_pos);
+        s.set_mat4("model_matrix", model);
         s.disable();
 
         window.clear();
