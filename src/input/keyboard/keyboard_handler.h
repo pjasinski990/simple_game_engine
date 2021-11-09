@@ -16,6 +16,11 @@ namespace mrld
          */
         KeyboardHandler(const std::vector<KeyCode> &keys);
         ~KeyboardHandler();
+        KeyboardHandler(const KeyboardHandler& o) = delete;
+        KeyboardHandler& operator=(const KeyboardHandler &o) = delete;
+        KeyboardHandler(KeyboardHandler &&o) = delete;
+        KeyboardHandler& operator=(KeyboardHandler &&o) = delete;
+
         bool is_key_down(KeyCode key) const;
 
     private:

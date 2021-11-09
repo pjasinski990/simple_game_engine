@@ -14,6 +14,11 @@ namespace mrld
     public:
         MouseHandler(const std::vector<MouseButton> &mouse_buttons);
         ~MouseHandler();
+        MouseHandler(const MouseHandler& o) = delete;
+        MouseHandler& operator=(const MouseHandler &o) = delete;
+        MouseHandler(MouseHandler &&o) = delete;
+        MouseHandler& operator=(MouseHandler &&o) = delete;
+
         inline float get_x() const { return _x_pos; }
         inline float get_y() const { return _y_pos; }
         inline float get_scroll_x() const { return _x_scroll; }

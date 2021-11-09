@@ -28,11 +28,10 @@ namespace mrld
         ~Shader();
 
         void update_shader_source(const char *path, ShaderType type);
-        void create_shader_program();
+        void create_shader_program(uint32_t n_texture_slots = 32);
         void use() const;
         void disable() const;
 
-        // TODO cache uniform names against ids
         void set_bool(const char *name, bool value);
         void set_int(const char *name, int value);
         void set_float(const char *name, float value);

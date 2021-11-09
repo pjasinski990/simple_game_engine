@@ -10,9 +10,22 @@ namespace mrld
 
     Group::~Group()
     {
-        for (const Renderable *o : _children) {
-            delete o;
+        for (auto && item : _children) {
+            delete item;
         }
+    }
+
+    Group::Group(Group &&o)
+    {
+        *this = std::move(o);
+    }
+
+    Group &Group::operator=(Group &&o)
+    {
+        _transformation = std::move(o._transformation);
+        _children = std::move(o._children);
+        o._children.clear();
+        return *this;
     }
 
     void Group::add(const Renderable *o)

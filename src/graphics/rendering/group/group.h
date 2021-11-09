@@ -13,7 +13,11 @@ namespace mrld
     public:
         Group(const mat4 &transformation);
         ~Group();
-        // TODO adding by pointer, allocation on heap, find a better way?
+        Group(const Group &o) = delete;
+        Group& operator=(const Group &o) = delete;
+        Group(Group &&o);
+        Group& operator=(Group &&o);
+
         void add(const Renderable *o);
         void submit(Renderer &renderer) const override;
 

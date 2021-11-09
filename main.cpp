@@ -5,7 +5,7 @@
 
 int main(void)
 {
-//    mrld::Logger::set_log_level(mrld::LogLevel::DBG);
+    mrld::Logger::set_log_level(mrld::LogLevel::DBG);
     mrld::Window window("Hello simulation", 800, 600);
     mrld::KeyboardHandler handler({mrld::W, mrld::S, mrld::A, mrld::D, mrld::LEFT, mrld::RIGHT});
     mrld::MouseHandler m_handler({mrld::BUTTON_LEFT, mrld::BUTTON_RIGHT});
@@ -17,16 +17,15 @@ int main(void)
     s.create_shader_program();
 
     mrld::mat4 proj = mrld::mat4::orthographic(-8, 8, -6, 6, -1, 1);
-    mrld::Layer2D layer(s, proj);
+    mrld::Layer2D layer(&s, proj);
 
-    mrld::Texture tex1("../jake.png", true);
-    mrld::Texture tex2("../container.jpg");
+    mrld::Texture tex1("../mrld_icon.png", true);
+    mrld::Texture tex2("../jake_music.png", true);
 
     auto baseGroup = new mrld::Group(mrld::mat4::translate(mrld::vec3(-6.0f, -4.0f)));
-    float ratio = 1.3f;
-    mrld::vec2 size(8.0f, 6.0f / ratio);
+    mrld::vec2 size(8.0f, 6.0f);
+    baseGroup->add(new mrld::Sprite(mrld::vec3(5.0f, 3.2f, 0.0f), size, &tex1));
     baseGroup->add(new mrld::Sprite(mrld::vec3(0.0f, 0.0f, 0.0f), size, &tex2));
-    baseGroup->add(new mrld::Sprite(mrld::vec3(0.0f, 3.2f, -0.1f), size, &tex1));
     layer.add(baseGroup);
 
     uint16_t fps = 0;

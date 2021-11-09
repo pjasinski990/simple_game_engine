@@ -2,7 +2,6 @@
 
 namespace mrld
 {
-    // TODO make renderables take textures allocated on heap? unify allocation and freeing of memory across the project
     class Texture
     {
     public:

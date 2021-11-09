@@ -93,7 +93,7 @@ namespace mrld
         }
     }
 
-    void Shader::create_shader_program()
+    void Shader::create_shader_program(uint32_t n_texture_slots /* = 32 */)
     {
         initialize_shaders();
 
@@ -137,14 +137,13 @@ namespace mrld
             throw std::runtime_error("Error linking shader");
         }
 
-        // TODO this is very bad. remove magic numbers, possibly create global config, add
-        // function to set array of uniforms. also, this should be extracted to member function.
-        int slots[32];
-        for (int i = 0; i < 32; ++i) {
+        // TODO this should be in separate function
+        int slots[n_texture_slots];
+        for (int i = 0; i < n_texture_slots; ++i) {
             slots[i] = i;
         }
         use();
-        glUniform1iv(get_uniform_location("textures"), 32, slots);
+        glUniform1iv(get_uniform_location("textures"), n_texture_slots, slots);
         disable();
 
         glDeleteShader(_vertex_shader);

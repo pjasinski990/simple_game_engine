@@ -55,6 +55,21 @@ namespace mrld
         delete _ibo;
     }
 
+    Renderer2D::Renderer2D(Renderer2D &&o)
+            : Renderer(std::move(o))
+    {
+        *this = std::move(o);
+    }
+
+    Renderer2D &Renderer2D::operator=(Renderer2D &&o)
+    {
+        _vbo = o._vbo;
+        _ibo = o._ibo;
+        o._vbo = nullptr;
+        o._ibo = nullptr;
+        return *this;
+    }
+
     void Renderer2D::begin() const
     {
         _vbo->bind();
@@ -88,21 +103,17 @@ namespace mrld
 
     void Renderer2D::submit_data(const void *data, uint32_t size)
     {
-        // TODO major - this is wrong - this function should abstract from sprite data type
         if (size != SPRITE_SIZE) {
             Logger::log(LogLevel::ERR, "Submitted wrong size of renderable to Renderer2D");
         }
-
         glBufferSubData(
                 GL_ARRAY_BUFFER,
                 SPRITE_SIZE * _sprites_submitted,
                 size,
                 data
         );
-
         Logger::log(LogLevel::DBG, "Submitted %u bytes of vertex data. "
                                    "N submitted sprites: %u", size, _sprites_submitted);
-
         if (++_sprites_submitted > MAX_SPRITES) {
             Logger::log(LogLevel::DBG, "Performing early flush of Renderer2D batch (reached buffer size)");
             flush();

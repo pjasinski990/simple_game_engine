@@ -15,6 +15,10 @@ namespace mrld
     public:
         Renderer2D(const Shader *shader);
         ~Renderer2D();
+        Renderer2D(const Renderer2D &o) = delete;
+        Renderer2D& operator=(const Renderer2D &o) = delete;
+        Renderer2D(Renderer2D &&o);
+        Renderer2D& operator=(Renderer2D &&o);
 
         void begin() const override;
         void end() const override;

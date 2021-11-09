@@ -26,6 +26,7 @@ namespace mrld
         static inline void set_output_file(FILE *output) { _output = output; }
         static inline void set_log_level(LogLevel level) { _log_level = level; }
     private:
+        // TODO this function is pretty bad, it should rather return than write
         static void log_time();
         // TODO remove this, parametrize better
         static inline void log_debug(const std::string &msg) { fprintf(_output, "DBG: %s", msg.c_str()); }

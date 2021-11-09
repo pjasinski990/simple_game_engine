@@ -1,8 +1,7 @@
 #pragma once
 
 #include "../../shader/shader.h"
-#include "../renderer/renderer2d/sprite.h"
-#include "../renderer/renderer2d/renderer2d.h"
+#include "../renderer/renderer.h"
 
 namespace mrld
 {
@@ -12,10 +11,10 @@ namespace mrld
         virtual ~Layer() = default;
         virtual void draw() = 0;
     protected:
-        Layer(const Shader &shader, mat4 projection);
+        Layer(Shader *shader, Renderer *renderer, const mat4 &projection);
 
-        Shader _shader;
-        Renderer2D _renderer;
+        Shader *_shader;
+        Renderer *_renderer;
         mat4 _projection;
     };
 }

@@ -12,8 +12,8 @@ namespace mrld
     class Renderer
     {
     public:
-        // TODO give it a default shader, figure predefined / sample shaders
         Renderer(const Shader *shader);
+        virtual ~Renderer() = default;
 
         virtual void begin() const {};
         virtual void end() const {};
