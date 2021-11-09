@@ -4,6 +4,7 @@
 #include "../../../../math/vec3.h"
 #include "../../../../math/vec4.h"
 #include "../../../texture/texture.h"
+#include "../../../color.h"
 #include "../renderable.h"
 
 namespace mrld
@@ -12,12 +13,11 @@ namespace mrld
     class Sprite: public Renderable
     {
     public:
-        Sprite(const vec3 &position, const vec2 &size = vec2(), const vec4 &color = vec4(), uint32_t z_index = 0, const Texture *tex = nullptr);
+        Sprite(const vec3 &position, const vec2 &size, const Texture *tex = nullptr, const vec4 &color = color::BLACK);
         virtual void submit(Renderer &renderer) const override;
 
         inline vec2 get_size() const { return _size; }
         inline vec4 get_color() const { return _color; }
-        inline uint32_t get_z_index() const { return _z_index; }
 
         void set_texture(const Texture *tex);
         inline void set_position(const vec3 &position) { _position = position; }
@@ -27,7 +27,6 @@ namespace mrld
         vec3 _position;
         vec2 _size;
         vec4 _color;
-        uint32_t _z_index;
         const Texture *_texture;
     };
 }

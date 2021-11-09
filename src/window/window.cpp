@@ -33,6 +33,7 @@ namespace mrld
         glfwSetWindowSizeCallback(_window, on_window_resize);
         glfwSwapInterval(0);
 
+        glEnable(GL_DEPTH_TEST);
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     }

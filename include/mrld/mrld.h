@@ -28,6 +28,7 @@
 // Utils
 #include "../../src/utils/logger.h"
 #include "../../src/utils/debug.h"
+#include "../../src/utils/timer.h"
 
 // Window
 #include "../../src/window/window.h"

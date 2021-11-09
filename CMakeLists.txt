@@ -38,6 +38,7 @@ list(APPEND SOURCES ${PROJECT_SOURCE_DIR}/src/graphics/rendering/layer/layer.cpp
 list(APPEND SOURCES src/graphics/rendering/layer/layer2d.cpp)
 list(APPEND SOURCES ${PROJECT_SOURCE_DIR}/src/graphics/rendering/group/group.cpp)
 list(APPEND SOURCES ${PROJECT_SOURCE_DIR}/src/graphics/texture/texture.cpp)
+list(APPEND SOURCES ${PROJECT_SOURCE_DIR}/src/utils/timer.cpp)
 add_library(mrld ${SOURCES})
 
 # linking
