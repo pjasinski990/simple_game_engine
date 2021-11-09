@@ -37,13 +37,13 @@ namespace mrld
                 renderer.begin();
                 texture_slot = static_cast<float>(renderer.retrieve_texture_slot(_texture->get_id()));
             }
-//            _texture->bind(static_cast<uint32_t>(texture_slot));
         }
         else {
             const uint8_t r = static_cast<uint32_t>(_color.x * 255.0f);
             const uint8_t g = static_cast<uint32_t>(_color.y * 255.0f);
             const uint8_t b = static_cast<uint32_t>(_color.z * 255.0f);
             const uint8_t a = static_cast<uint32_t>(_color.w * 255.0f);
+            std::cout << "color is " << (int)r << " " << (int)g << " " << (int)b << std::endl;
             uint_color = a << 24 | b << 16 | g << 8 | r;
         }
         sprite[0] = {

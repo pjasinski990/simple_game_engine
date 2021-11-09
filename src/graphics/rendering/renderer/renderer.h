@@ -31,7 +31,6 @@ namespace mrld
 
         void set_shader(const Shader *shader) { _shader = shader; }
 
-
     protected:
         constexpr static uint32_t ATTRIB_INDEX_POSITION = 0;
         constexpr static uint32_t ATTRIB_INDEX_NORMAL = 1;

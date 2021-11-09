@@ -24,7 +24,7 @@ int main(void)
     auto baseGroup = new mrld::Group(mrld::mat4::translate(mrld::vec3(-8.0f, -6.0f)));
     float ratio = 1.3f;
     mrld::vec2 size(8.0f, 6.0f / ratio);
-    baseGroup->add(new mrld::Sprite(mrld::vec3(9.0f, 3.2f, 0), size, mrld::color::BLACK, 0, &tex1));
+    baseGroup->add(new mrld::Sprite(mrld::vec3(9.0f, 3.2f, 0), size, mrld::color::RED, 0));
     baseGroup->add(new mrld::Sprite(mrld::vec3(8.0f, 0, 0), size, mrld::color::BLACK, 0, &tex2));
     layer.add(baseGroup);
 
@@ -32,7 +32,6 @@ int main(void)
     clock_t begin_time = clock();
     glClearColor(0.15f, 0.15f, 0.15f, 0.0f);
     mrld::mat4 model = mrld::mat4::identity();
-    double now = glfwGetTime();
     while (!window.should_close()) {
         if (handler.is_key_down(mrld::KeyCode::W)) {
             model *= mrld::mat4::translate(mrld::vec3(0.0f, 0.01f));

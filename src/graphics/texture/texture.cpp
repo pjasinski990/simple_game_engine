@@ -4,7 +4,7 @@
 #include "../../../dependencies/stb_image/stb_image.h"
 #include "glad/glad.h"
 
-#include "../../utils/gl_debug.h"
+#include "../../utils/debug.h"
 #include "texture.h"
 
 namespace mrld

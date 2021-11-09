@@ -27,7 +27,7 @@
 
 // Utils
 #include "../../src/utils/logger.h"
-#include "../../src/utils/gl_debug.h"
+#include "../../src/utils/debug.h"
 
 // Window
 #include "../../src/window/window.h"
