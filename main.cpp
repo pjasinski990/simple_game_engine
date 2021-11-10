@@ -5,7 +5,7 @@
 
 int main(void)
 {
-    mrld::Logger::set_log_level(mrld::LogLevel::DBG);
+//    mrld::Logger::set_log_level(mrld::LogLevel::DBG);
     mrld::Window window("Hello simulation", 800, 600);
     mrld::KeyboardHandler handler({mrld::W, mrld::S, mrld::A, mrld::D, mrld::LEFT, mrld::RIGHT});
     mrld::MouseHandler m_handler({mrld::BUTTON_LEFT, mrld::BUTTON_RIGHT});
@@ -19,13 +19,16 @@ int main(void)
     mrld::mat4 proj = mrld::mat4::orthographic(-8, 8, -6, 6, -1, 1);
     mrld::Layer2D layer(&s, proj);
 
-    mrld::Texture tex1("../mrld_icon.png", true);
-    mrld::Texture tex2("../jake_music.png", true);
+    mrld::Texture alpha_test("../res/3px-tile.png", true);
+    mrld::Texture tex1("../res/mrld_icon.png", true);
+    mrld::Texture tex2("../res/jake.png", true);
 
     auto baseGroup = new mrld::Group(mrld::mat4::translate(mrld::vec3(-6.0f, -4.0f)));
     mrld::vec2 size(8.0f, 6.0f);
-    baseGroup->add(new mrld::Sprite(mrld::vec3(5.0f, 3.2f, 0.0f), size, &tex1));
+    // so, blending works correctly but only if rendered back to front and textures have different depth values.
     baseGroup->add(new mrld::Sprite(mrld::vec3(0.0f, 0.0f, 0.0f), size, &tex2));
+    baseGroup->add(new mrld::Sprite(mrld::vec3(5.0f, 3.2f, 0.1f), size, &tex1));
+    baseGroup->add(new mrld::Sprite(mrld::vec3(-2, -2, 0.2), mrld::vec2(16, 12), &alpha_test));
     layer.add(baseGroup);
 
     uint16_t fps = 0;

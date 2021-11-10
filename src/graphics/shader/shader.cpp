@@ -138,13 +138,14 @@ namespace mrld
         }
 
         // TODO this should be in separate function
-        int slots[n_texture_slots];
-        for (int i = 0; i < n_texture_slots; ++i) {
+        int *slots = new int[n_texture_slots];
+        for (uint32_t i = 0; i < n_texture_slots; ++i) {
             slots[i] = i;
         }
         use();
         glUniform1iv(get_uniform_location("textures"), n_texture_slots, slots);
         disable();
+        delete[] slots;
 
         glDeleteShader(_vertex_shader);
         glDeleteShader(_fragment_shader);
