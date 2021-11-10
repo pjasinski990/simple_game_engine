@@ -1,12 +1,8 @@
-#include <fstream>
-#include <sstream>
-#include <cstdio>
-#include <utility>
-
 #include <glad/glad.h>
 
 #include "shader.h"
 #include "../../utils/logger.h"
+#include "../../utils/file_handler.h"
 
 namespace mrld
 {
@@ -43,53 +39,17 @@ namespace mrld
 
     void Shader::update_shader_source(const char *path, ShaderType type)
     {
-        std::ifstream file;
-        try
-        {
-            file.open(path);
-            if (!file.is_open()) {
-                char msg[LOGGER_SHADER_ERR_MSG_MAX_LENGTH];
-                // TODO this code is being repeated a lot. move to function.
-                int sprintf_res = sprintf_s(msg,
-                          LOGGER_SHADER_ERR_MSG_MAX_LENGTH,
-                          "Error loading shader source file. File %s cannot be open for reading", path);
-                if (sprintf_res == -1) {
-                    Logger::log(LogLevel::ERR, "%s", "Error updating shader source. Could not retrieve error message.");
-                }
-                else {
-                    Logger::log(LogLevel::ERR, "%s", msg);
-                }
-                throw std::runtime_error("Error loading shader file");
-            }
-            std::stringstream stream;
-            stream << file.rdbuf();
-            file.close();
-
-            switch (type) {
-                case VERTEX_SHADER:
-                    _vertex_shader_source = stream.str();
-                    break;
-                case GEOMETRY_SHADER:
-                    _geometry_shader_source = stream.str();
-                    break;
-                case FRAGMENT_SHADER:
-                    _fragment_shader_source = stream.str();
-                    break;
-            }
-        }
-        catch (std::ifstream::failure& e) {
-            char msg[LOGGER_SHADER_ERR_MSG_MAX_LENGTH];
-            int sprintf_res = sprintf_s(msg,
-                      LOGGER_SHADER_ERR_MSG_MAX_LENGTH,
-                      "Error loading shader of type %s from file %s",
-                    _shader_type_to_string[type], path);
-            if (sprintf_res == -1) {
-                Logger::log(LogLevel::ERR, "%s", "Error updating shader source. Could not retrieve error message.");
-            }
-            else {
-                Logger::log(LogLevel::ERR, "%s", msg);
-            }
-            throw e;
+        std::string source = FileHandler::read_file_contents(path);
+        switch (type) {
+            case VERTEX_SHADER:
+                _vertex_shader_source = source;
+                break;
+            case GEOMETRY_SHADER:
+                _geometry_shader_source = source;
+                break;
+            case FRAGMENT_SHADER:
+                _fragment_shader_source = source;
+                break;
         }
     }
 
@@ -97,59 +57,23 @@ namespace mrld
     {
         initialize_shaders();
 
-        GLint success;
-        GLchar msg[LOGGER_SHADER_ERR_MSG_MAX_LENGTH];
         glAttachShader(_shader_program, _vertex_shader);
         glAttachShader(_shader_program, _fragment_shader);
         if (!_geometry_shader_source.empty()) {
             glAttachShader(_shader_program, _fragment_shader);
         }
-        glLinkProgram(_shader_program);
-        glGetProgramiv(_shader_program, GL_LINK_STATUS, &success);
-        if(!success) {
-            glGetProgramInfoLog(_shader_program, LOGGER_SHADER_ERR_MSG_MAX_LENGTH, nullptr, msg);
-            char err_msg[LOGGER_SHADER_ERR_MSG_MAX_LENGTH];
-            int sprintf_res = sprintf_s(err_msg,
-                      LOGGER_SHADER_ERR_MSG_MAX_LENGTH,
-                      "Error: shader linking failed. \nFull error message:\n%s", msg);
-            if (sprintf_res == -1) {
-                Logger::log(LogLevel::ERR, "%s", "Error updating shader source. Could not retrieve error message.");
-            }
-            else {
-                Logger::log(LogLevel::ERR, "%s", err_msg);
-            }
-            throw std::runtime_error("Error linking shader");
-        }
-        glValidateProgram(_shader_program);
-        glGetProgramiv(_shader_program, GL_VALIDATE_STATUS, &success);
-        if(!success) {
-            glGetProgramInfoLog(_shader_program, LOGGER_SHADER_ERR_MSG_MAX_LENGTH, nullptr, msg);
-            char err_msg[LOGGER_SHADER_ERR_MSG_MAX_LENGTH];
-            int sprintf_res = sprintf_s(err_msg,
-                      LOGGER_SHADER_ERR_MSG_MAX_LENGTH,
-                      "Error: shader validation failed. \nFull error message:\n%s", msg);
-            if (sprintf_res == -1) {
-                Logger::log(LogLevel::ERR, "%s", "Error creating shader program. Could not retrieve error message.");
-            }
-            else {
-                Logger::log(LogLevel::ERR, "%s", err_msg);
-            }
-            throw std::runtime_error("Error linking shader");
-        }
 
-        // TODO this should be in separate function
-        int *slots = new int[n_texture_slots];
-        for (uint32_t i = 0; i < n_texture_slots; ++i) {
-            slots[i] = i;
-        }
-        use();
-        glUniform1iv(get_uniform_location("textures"), n_texture_slots, slots);
-        disable();
-        delete[] slots;
+        link_shaders();
+        validate_shaders();
+        initialize_texture_slots(n_texture_slots);
 
         glDeleteShader(_vertex_shader);
         glDeleteShader(_fragment_shader);
+        if (!_geometry_shader_source.empty()) {
+            glDeleteShader(_geometry_shader);
+        }
     }
+
     void Shader::use() const
     {
         glUseProgram(_shader_program);
@@ -191,17 +115,17 @@ namespace mrld
     unsigned int Shader::compile_shader(const char *source_str, GLenum type)
     {
         GLint success;
-        GLchar msg[LOGGER_SHADER_ERR_MSG_MAX_LENGTH];
+        GLchar msg[LOGGER_MESSAGE_MAX_LENGTH];
 
         unsigned int shader = glCreateShader(type);
         glShaderSource(shader, 1, &source_str, nullptr);
         glCompileShader(shader);
         glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
         if(!success) {
-            glGetShaderInfoLog(shader, LOGGER_SHADER_ERR_MSG_MAX_LENGTH, nullptr, msg);
-            char err_msg[LOGGER_SHADER_ERR_MSG_MAX_LENGTH];
+            glGetShaderInfoLog(shader, LOGGER_MESSAGE_MAX_LENGTH, nullptr, msg);
+            char err_msg[LOGGER_MESSAGE_MAX_LENGTH];
             int sprintf_res = sprintf_s(err_msg,
-                      LOGGER_SHADER_ERR_MSG_MAX_LENGTH,
+                      LOGGER_MESSAGE_MAX_LENGTH,
                       "Error: %s compilation failed. \nFull error message:\n%s",
                     _shader_type_to_string[static_cast<ShaderType>(type)], msg);
             if (sprintf_res == -1) {
@@ -214,11 +138,12 @@ namespace mrld
         }
         return shader;
     }
+
     void Shader::initialize_shaders()
     {
         if (_vertex_shader_source.empty() || _fragment_shader_source.empty()) {
             Logger::log(LogLevel::WRN, "%s",
-                        "Not initializing shaders - at least vertex and fragment shaders must be loaded");
+                        "Not initializing shaders - at least vertex and fragment shaders sources must be loaded.");
             return;
         }
 
@@ -237,5 +162,64 @@ namespace mrld
         uint32_t id = glGetUniformLocation(_shader_program, name);
         _uniform_name_to_id.insert(std::make_pair(name, id));
         return id;
+    }
+
+    void Shader::link_shaders()
+    {
+        GLint success;
+        GLchar msg[LOGGER_MESSAGE_MAX_LENGTH];
+
+        glLinkProgram(_shader_program);
+        glGetProgramiv(_shader_program, GL_LINK_STATUS, &success);
+        if(!success) {
+            glGetProgramInfoLog(_shader_program, LOGGER_MESSAGE_MAX_LENGTH, nullptr, msg);
+            char err_msg[LOGGER_MESSAGE_MAX_LENGTH];
+            int sprintf_res = sprintf_s(err_msg,
+                                        LOGGER_MESSAGE_MAX_LENGTH,
+                                        "Error: shader linking failed. \nFull error message:\n%s", msg);
+            if (sprintf_res == -1) {
+                Logger::log(LogLevel::ERR, "%s", "Error linking shader. Could not retrieve error message.");
+            }
+            else {
+                Logger::log(LogLevel::ERR, "%s", err_msg);
+            }
+            throw std::runtime_error("Error linking shader");
+        }
+    }
+
+    void Shader::validate_shaders()
+    {
+        GLint success;
+        GLchar msg[LOGGER_MESSAGE_MAX_LENGTH];
+
+        glValidateProgram(_shader_program);
+        glGetProgramiv(_shader_program, GL_VALIDATE_STATUS, &success);
+        if(!success) {
+            glGetProgramInfoLog(_shader_program, LOGGER_MESSAGE_MAX_LENGTH, nullptr, msg);
+            char err_msg[LOGGER_MESSAGE_MAX_LENGTH];
+            int sprintf_res = sprintf_s(err_msg,
+                                        LOGGER_MESSAGE_MAX_LENGTH,
+                                        "Error: shader validation failed. \nFull error message:\n%s", msg);
+            if (sprintf_res == -1) {
+                Logger::log(LogLevel::ERR, "%s", "Error creating shader program. Could not retrieve error message.");
+            }
+            else {
+                Logger::log(LogLevel::ERR, "%s", err_msg);
+            }
+            throw std::runtime_error("Error linking shader");
+        }
+    }
+
+    void Shader::initialize_texture_slots(uint32_t n_texture_slots)
+    {
+        int *slots = new int[n_texture_slots];
+        for (uint32_t i = 0; i < n_texture_slots; ++i) {
+            slots[i] = i;
+        }
+        use();
+        // technically it would be better to create a function to update 1iv uniform and cache id, then use it here
+        glUniform1iv(get_uniform_location("textures"), n_texture_slots, slots);
+        disable();
+        delete[] slots;
     }
 }

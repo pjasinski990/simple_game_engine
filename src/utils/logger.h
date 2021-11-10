@@ -6,7 +6,6 @@ namespace mrld
 {
     constexpr uint16_t LOGGER_MESSAGE_MAX_LENGTH = 512;
     constexpr uint16_t LOGGER_DATETIME_BUFFER_SIZE = 32;
-    constexpr uint16_t LOGGER_SHADER_ERR_MSG_MAX_LENGTH = 512;
 
     enum LogLevel
     {
@@ -26,7 +25,7 @@ namespace mrld
         static inline void set_output_file(FILE *output) { _output = output; }
         static inline void set_log_level(LogLevel level) { _log_level = level; }
     private:
-        // TODO this function is pretty bad, it should rather return than write
+        // TODO this function is pretty bad, it should return rather than write
         static void log_time();
         // TODO remove this, parametrize better
         static inline void log_debug(const std::string &msg) { fprintf(_output, "DBG: %s", msg.c_str()); }

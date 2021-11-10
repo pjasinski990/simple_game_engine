@@ -18,8 +18,8 @@ add_subdirectory(dependencies/glfw3)
 include_directories(${PROJECT_SOURCE_DIR}/include)
 
 set(SOURCES ${PROJECT_SOURCE_DIR}/src/window/window.cpp)
-list(APPEND SOURCES src/input/mouse/mouse_handler.cpp)
-list(APPEND SOURCES src/input/keyboard/keyboard_handler.cpp)
+list(APPEND SOURCES ${PROJECT_SOURCE_DIR}/src/input/mouse/mouse_handler.cpp)
+list(APPEND SOURCES ${PROJECT_SOURCE_DIR}/src/input/keyboard/keyboard_handler.cpp)
 list(APPEND SOURCES ${PROJECT_SOURCE_DIR}/src/math/vec2.cpp)
 list(APPEND SOURCES ${PROJECT_SOURCE_DIR}/src/math/vec3.cpp)
 list(APPEND SOURCES ${PROJECT_SOURCE_DIR}/src/math/vec4.cpp)
@@ -35,10 +35,11 @@ list(APPEND SOURCES ${PROJECT_SOURCE_DIR}/src/graphics/rendering/renderer/render
 list(APPEND SOURCES ${PROJECT_SOURCE_DIR}/src/graphics/rendering/renderer/renderer.cpp)
 list(APPEND SOURCES ${PROJECT_SOURCE_DIR}/src/graphics/rendering/renderer/renderer2d/renderer2d.cpp)
 list(APPEND SOURCES ${PROJECT_SOURCE_DIR}/src/graphics/rendering/layer/layer.cpp)
-list(APPEND SOURCES src/graphics/rendering/layer/layer2d.cpp)
+list(APPEND SOURCES ${PROJECT_SOURCE_DIR}/src/graphics/rendering/layer/layer2d.cpp)
 list(APPEND SOURCES ${PROJECT_SOURCE_DIR}/src/graphics/rendering/group/group.cpp)
 list(APPEND SOURCES ${PROJECT_SOURCE_DIR}/src/graphics/texture/texture.cpp)
 list(APPEND SOURCES ${PROJECT_SOURCE_DIR}/src/utils/timer.cpp)
+list(APPEND SOURCES ${PROJECT_SOURCE_DIR}/src/utils/file_handler.cpp)
 add_library(mrld ${SOURCES})
 
 # linking

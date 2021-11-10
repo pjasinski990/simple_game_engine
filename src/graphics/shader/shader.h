@@ -44,6 +44,9 @@ namespace mrld
         GLuint get_uniform_location(const char *name);
         GLuint compile_shader(const char *source_str, GLenum type);
         void initialize_shaders();
+        void link_shaders();
+        void validate_shaders();
+        void initialize_texture_slots(uint32_t n_texture_slots);
 
     public:
         GLuint _shader_program;

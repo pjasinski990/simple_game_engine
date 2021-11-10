@@ -7,17 +7,30 @@ namespace mrld
     : Layer(s, new Renderer2D(s), projection)
     { }
 
-    void Layer2D::add(Renderable *o)
-    {
-        _objects.push_back(o);
-    }
-
     Layer2D::~Layer2D()
     {
         for (auto &&item : _objects) {
             delete item;
         }
         delete _renderer;
+    }
+
+    Layer2D::Layer2D(Layer2D &&o)
+            : Layer(std::move(o))
+    {
+        *this = std::move(o);
+    }
+
+    Layer2D &Layer2D::operator=(Layer2D &&o)
+    {
+        _objects = std::move(o._objects);
+        o._objects.clear();
+        return *this;
+    }
+
+    void Layer2D::add(Renderable *o)
+    {
+        _objects.push_back(o);
     }
 
     void Layer2D::draw()
@@ -30,18 +43,5 @@ namespace mrld
         _renderer->end();
         _renderer->flush();
 
-    }
-
-    Layer2D::Layer2D(Layer2D &&o)
-    : Layer(std::move(o))
-    {
-        *this = std::move(o);
-    }
-
-    Layer2D &Layer2D::operator=(Layer2D &&o)
-    {
-        _objects = std::move(o._objects);
-        o._objects.clear();
-        return *this;
     }
 }

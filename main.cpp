@@ -20,15 +20,15 @@ int main(void)
     mrld::Layer2D layer(&s, proj);
 
     mrld::Texture alpha_test("../res/3px-tile.png", true);
-    mrld::Texture tex1("../res/mrld_icon.png", true);
-    mrld::Texture tex2("../res/jake.png", true);
+    mrld::Texture icon("../res/mrld_icon.png", true);
+    mrld::Texture jake("../res/jake.png", true);
 
-    auto baseGroup = new mrld::Group(mrld::mat4::translate(mrld::vec3(-6.0f, -4.0f)));
-    mrld::vec2 size(8.0f, 6.0f);
+    auto baseGroup = new mrld::Group(mrld::mat4::translate(mrld::vec3(-8.0f, -6.0f)));
     // so, blending works correctly but only if rendered back to front and textures have different depth values.
-    baseGroup->add(new mrld::Sprite(mrld::vec3(0.0f, 0.0f, 0.0f), size, &tex2));
-    baseGroup->add(new mrld::Sprite(mrld::vec3(5.0f, 3.2f, 0.1f), size, &tex1));
-    baseGroup->add(new mrld::Sprite(mrld::vec3(-2, -2, 0.2), mrld::vec2(16, 12), &alpha_test));
+    // TODO there is one other problem with blending though - if i moved texture outside of the baseGroup, it would not blend at all
+    baseGroup->add(new mrld::Sprite(mrld::vec3(0.0f, 0.0f, 0.0f), mrld::vec2(16.0f, 12.0f), &jake));
+    baseGroup->add(new mrld::Sprite(mrld::vec3(0.5f, 0.5f, 0.1f), mrld::vec2(4, 4), &icon));
+    baseGroup->add(new mrld::Sprite(mrld::vec3(0.0f, 0.0f, 0.2f), mrld::vec2(16, 12), &alpha_test));
     layer.add(baseGroup);
 
     uint16_t fps = 0;
