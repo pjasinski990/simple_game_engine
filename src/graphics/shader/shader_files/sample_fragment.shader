@@ -1,6 +1,5 @@
 #version 330 core
 
-in vec4 v_pos;
 in vec2 v_tex_coord;
 in float v_tex_slot;
 in vec4 v_color;

@@ -1,5 +1,5 @@
 #include "layer2d.h"
-#include "../renderer/renderer2d/renderer2d.h"
+#include "../../renderer/renderer2d.h"
 
 namespace mrld
 {
@@ -42,6 +42,5 @@ namespace mrld
         }
         _renderer->end();
         _renderer->flush();
-
     }
 }

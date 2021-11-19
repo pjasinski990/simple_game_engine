@@ -1,8 +1,8 @@
-#include "../../../../math/vec3.h"
-#include "../../../../math/vec2.h"
-#include "../../../../utils/logger.h"
+#include "../../../math/vec3.h"
+#include "../../../math/vec2.h"
+#include "../../../utils/logger.h"
 #include "sprite.h"
-#include "renderer2d.h"
+#include "../renderer/renderer2d.h"
 
 namespace mrld
 {

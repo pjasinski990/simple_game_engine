@@ -1,6 +1,6 @@
 #include <cmath>
 
-#include "constants.h"
+#include "math_util.h"
 #include "vec3.h"
 #include "vec4.h"
 #include "mat4.h"
@@ -47,7 +47,7 @@ namespace mrld
                 }
             }
         }
-        *this = std::move(temp);
+        *this = temp;
         return *this;
     }
     mat4& mat4::operator*=(float f)
@@ -94,6 +94,17 @@ namespace mrld
             temp[i] += data[i + 3 * 4];
         }
         return temp;
+    }
+
+    mat4 mat4::transposed() const
+    {
+        mat4 res;
+        for (int i = 0; i < 4; ++i) {
+            for (int j = 0; j < 4; ++j) {
+                res.at(i, j) = at(j, i);
+            }
+        }
+        return res;
     }
 
     std::ostream &operator<<(std::ostream &out, const mat4 &o)
@@ -196,17 +207,17 @@ namespace mrld
         res.data[2 + 3 * 4] = -1.0f * (far + near) / (far - near);
         return res;
     }
+
     mat4 mat4::perspective(float aspect_ratio, float fov_degrees, float z_near, float z_far)
     {
         mat4 res;
-        float fov_rads = fov_degrees * math::constants::pi / 180.0f;
-        float atan_fov_half = std::atan(fov_rads / 2.0f);
-
-        res.data[0 + 0 * 4]= aspect_ratio * atan_fov_half;
-        res.data[1 + 1 * 4] = atan_fov_half;
+        const float fov_rads = deg_to_rad(fov_degrees);
+        const float tan_fov_half = std::tan(fov_rads / 2.0f);
+        res.data[0 + 0 * 4] = 1.0f / (aspect_ratio * tan_fov_half);
+        res.data[1 + 1 * 4] = 1.0f / tan_fov_half;
         res.data[2 + 2 * 4] = z_far / (z_far - z_near);
-        res.data[3 + 3 * 4] = 1.0f;
-        res.data[3 + 2 * 4] = -1.0f * z_far * z_near / (z_far - z_near);
+        res.data[3 + 2 * 4] = -z_far * z_near / (z_far - z_near);
+        res.data[2 + 3 * 4] = 1.0f;
         return res;
     }
 }

@@ -27,7 +27,7 @@ std::string mrld::FileHandler::read_file_contents(const char *filepath)
     }
     catch (std::ifstream::failure &e) {
         char msg[LOGGER_MESSAGE_MAX_LENGTH];
-        int sprintf_res = sprintf_s(msg, LOGGER_MESSAGE_MAX_LENGTH, "Unknown error reading file %s", filepath);
+        int sprintf_res = sprintf_s(msg, LOGGER_MESSAGE_MAX_LENGTH, "Error reading file %s - %s", filepath, e.what());
         if (sprintf_res == -1) {
             Logger::log(LogLevel::ERR, "%s", "Error reading file. Could not retrieve error message.");
         } else {

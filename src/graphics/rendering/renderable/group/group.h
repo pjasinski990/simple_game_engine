@@ -2,8 +2,8 @@
 
 #include <vector>
 
-#include "../../../math/mat4.h"
-#include "../renderer/renderable.h"
+#include "../../../../math/mat4.h"
+#include "../renderable.h"
 
 namespace mrld
 {

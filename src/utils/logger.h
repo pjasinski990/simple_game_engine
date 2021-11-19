@@ -15,6 +15,7 @@ namespace mrld
         ERR
     };
 
+    // TODO if loglevel was set as const compiler would optimize unneeded code
     class Logger
     {
     private:

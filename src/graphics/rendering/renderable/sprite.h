@@ -1,11 +1,11 @@
 #pragma once
 
-#include "../../../../math/vec2.h"
-#include "../../../../math/vec3.h"
-#include "../../../../math/vec4.h"
-#include "../../../texture/texture.h"
-#include "../../../color.h"
-#include "../renderable.h"
+#include "../../../math/vec2.h"
+#include "../../../math/vec3.h"
+#include "../../../math/vec4.h"
+#include "../../texture/texture.h"
+#include "../../color.h"
+#include "renderable.h"
 
 namespace mrld
 {

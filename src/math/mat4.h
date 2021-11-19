@@ -28,6 +28,7 @@ namespace mrld
         friend mat4 operator*(mat4 o1, float f);
         vec4 operator*(const vec4 &v) const;
         vec3 operator*(const vec3 &v) const;
+        mat4 transposed() const;
 
         friend std::ostream& operator<<(std::ostream& out, const mat4 &o);
 

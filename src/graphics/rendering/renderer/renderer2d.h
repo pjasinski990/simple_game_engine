@@ -1,11 +1,11 @@
 #pragma once
 
-#include "../../buffer/vertex_data.h"
-#include "../../buffer/vertex_array.h"
-#include "../../buffer/index_buffer.h"
-#include "../../../shader/shader.h"
-#include "../../group/group.h"
-#include "../renderer.h"
+#include "../buffer/vertex_data.h"
+#include "../buffer/vertex_array.h"
+#include "../buffer/index_buffer.h"
+#include "../../shader/shader.h"
+#include "../renderable/group/group.h"
+#include "renderer.h"
 
 namespace mrld
 {

@@ -13,10 +13,10 @@
 #include "../../src/graphics/color.h"
 
 // Graphics rendering
-#include "../../src/graphics/rendering/renderer/renderer2d/sprite.h"
-#include "../../src/graphics/rendering/renderer/renderer2d/renderer2d.h"
-#include "../../src/graphics/rendering/layer/layer.h"
-#include "../../src/graphics/rendering/layer/layer2d.h"
+#include "../../src/graphics/rendering/renderable/sprite.h"
+#include "../../src/graphics/rendering/renderer/renderer2d.h"
+#include "../../src/graphics/rendering/renderable/layer/layer.h"
+#include "../../src/graphics/rendering/renderable/layer/layer2d.h"
 #include "../../src/graphics/texture/texture.h"
 #include "../../src/graphics/shader/shader.h"
 

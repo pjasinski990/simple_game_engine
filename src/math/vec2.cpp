@@ -2,7 +2,7 @@
 #include <cmath>
 #include <stdexcept>
 
-#include "constants.h"
+#include "math_util.h"
 #include "vec2.h"
 
 namespace mrld 
@@ -121,9 +121,9 @@ namespace mrld
     }
     bool operator==(const vec2& o1, const vec2& o2)
     {
-        bool rx = (o1.x - o2.x) <= (fabs(o1.x) < fabs(o2.x) ? fabs(o1.x) : fabs(o2.x) * math::constants::epsilon);
+        bool rx = (o1.x - o2.x) <= (fabs(o1.x) < fabs(o2.x) ? fabs(o1.x) : fabs(o2.x) * math_constants::epsilon);
         if (!rx) { return false; }
-        return (o1.y - o2.y) <= (fabs(o1.y) < fabs(o2.y) ? fabs(o1.y) : fabs(o2.y) * math::constants::epsilon);
+        return (o1.y - o2.y) <= (fabs(o1.y) < fabs(o2.y) ? fabs(o1.y) : fabs(o2.y) * math_constants::epsilon);
     }
     bool operator!=(const vec2& o1, const vec2& o2)
     {
@@ -143,7 +143,7 @@ namespace mrld
 
     float vec2::magnitude() const 
     {
-        return sqrt(x*x + y*y);
+        return sqrtf(x*x + y*y);
     }
     vec2 vec2::normalized() const 
     {

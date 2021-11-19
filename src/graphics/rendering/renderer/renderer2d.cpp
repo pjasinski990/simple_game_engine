@@ -1,9 +1,9 @@
 #include <glad/glad.h>
 
-#include "../renderable.h"
-#include "sprite.h"
+#include "../renderable/renderable.h"
+#include "../renderable/sprite.h"
 #include "renderer2d.h"
-#include "../../../../utils/logger.h"
+#include "../../../utils/logger.h"
 
 #define member_floats_count(type, member) (sizeof(((type*)0)->member) / sizeof(float))
 

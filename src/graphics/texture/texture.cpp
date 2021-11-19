@@ -9,8 +9,9 @@
 
 namespace mrld
 {
-    Texture::Texture(const char *filename, bool reverse /* = false */)
+    Texture::Texture(const char *filename, bool reverse /* = false */, TextureType type /* = TextureType::TEXTURE_DIFFUSE */)
     : _filename{filename}
+    , _type{type}
     {
         stbi_set_flip_vertically_on_load(reverse);
         unsigned char *tex_data_buffer = stbi_load(_filename.c_str(), &_width, &_height, &_n_channels, 4);

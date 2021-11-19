@@ -1,10 +1,11 @@
 #include <tuple>
 #include <cmath>
 
-#include "constants.h"
+#include "math_util.h"
 #include "vec3.h"
+#include "quaternion.h"
 
-namespace mrld 
+namespace mrld
 {
     vec3::vec3(float x, float y, float z): x{x}, y{y}, z{z} {}
 
@@ -125,11 +126,11 @@ namespace mrld
     }
     bool operator==(const vec3& o1, const vec3& o2)
     {
-        bool rx = (o1.x - o2.x) <= (fabs(o1.x) < fabs(o2.x) ? fabs(o1.x) : fabs(o2.x) * math::constants::epsilon);
+        bool rx = (o1.x - o2.x) <= (fabs(o1.x) < fabs(o2.x) ? fabs(o1.x) : fabs(o2.x) * math_constants::epsilon);
         if (!rx) { return false; }
-        bool ry = (o1.y - o2.y) <= (fabs(o1.y) < fabs(o2.y) ? fabs(o1.y) : fabs(o2.y) * math::constants::epsilon);
+        bool ry = (o1.y - o2.y) <= (fabs(o1.y) < fabs(o2.y) ? fabs(o1.y) : fabs(o2.y) * math_constants::epsilon);
         if (!ry) { return false; }
-        return (o1.z - o2.z) <= (fabs(o1.z) < fabs(o2.z) ? fabs(o1.z) : fabs(o2.z) * math::constants::epsilon);
+        return (o1.z - o2.z) <= (fabs(o1.z) < fabs(o2.z) ? fabs(o1.z) : fabs(o2.z) * math_constants::epsilon);
     }
     bool operator!=(const vec3& o1, const vec3& o2)
     {
@@ -142,9 +143,14 @@ namespace mrld
         return out;
     }
 
+    void vec3::rotate(const quat &q)
+    {
+        // TODO implementation
+    }
+
     float vec3::dot(const vec3 &o) const
     {
-        return this->x * o.x + this->y + o.y + this->z * o.z;
+        return this->x*o.x + this->y*o.y + this->z*o.z;
     }
     vec3 vec3::cross(const vec3& o) const
     {
@@ -156,7 +162,7 @@ namespace mrld
 
     float vec3::magnitude() const
     {
-        return sqrt(x*x + y*y + z*z);
+        return sqrtf(x*x + y*y + z*z);
     }
     vec3 vec3::normalized() const
     {
