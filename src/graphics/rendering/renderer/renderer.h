@@ -4,10 +4,12 @@
 #include <map>
 
 #include "../../shader/shader.h"
+#include "../renderable/renderable.h"
 
 namespace mrld
 {
-    class Renderable;
+    class Drawable;
+    class Group;
     struct mat4;
     class Renderer
     {
@@ -18,9 +20,11 @@ namespace mrld
         virtual void begin() const {};
         virtual void end() const {};
 
-        virtual void submit(const Renderable &o) = 0;
+        // Can accept aggregates (groups)
+        virtual void submit(Renderable &o) { o.submit(*this); }
+        // Accepts actual models / sprites (with vertex data)
+        virtual void submit(Drawable &o) = 0;
         virtual void flush() = 0;
-        virtual void submit_data(const void *data, uint32_t size) {};
 
         virtual void push(const mat4 &transform, bool override = false);
         virtual void pop();

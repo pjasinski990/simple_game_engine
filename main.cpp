@@ -30,10 +30,14 @@ int main(void)
     mrld::Texture jake_t("../res/jake.png", true);
     mrld::Texture container_t("../res/container.jpg", false);
     mrld::Layer2D layer(&s, &cam);
+    mrld::Group *g = new mrld::Group(mrld::mat4::rotate_z(mrld::math_constants::pi4));
+    mrld::Group *g2 = new mrld::Group(mrld::mat4::rotate_y(mrld::math_constants::pi4));
     mrld::Sprite *jake = new mrld::Sprite(mrld::vec3(-4, -3, 5.0f), mrld::vec2(8, 6), &jake_t);
     mrld::Sprite *container = new mrld::Sprite(mrld::vec3(-4, -3, 0.0f), mrld::vec2(8, 6), &container_t);
-    layer.add(container);
-    layer.add(jake);
+    g->add(container);
+    g2->add(jake);
+    g->add(g2);
+    layer.add(g);
 
     uint16_t fps = 0;
     glClearColor(0.15f, 0.15f, 0.15f, 1.0f);
@@ -42,13 +46,9 @@ int main(void)
     timer.reset();
 
     while (!window.should_close()) {
-        s.use(); // shader start
-        cam.update();
-
         window.clear();
         layer.draw();
         window.update();
-        s.disable(); // shader stop
 
         if (handler.is_key_down(mrld::KeyCode::W)) {
             cam.go_forward();

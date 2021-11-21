@@ -22,11 +22,8 @@ namespace mrld
 
         void begin() const override;
         void end() const override;
-
-        void submit(const Renderable &o) override;
+        void submit(Drawable &o) override;
         void flush() override;
-
-        void submit_data(const void* data, uint32_t size) override;
 
     private:
         constexpr static uint32_t MAX_SPRITES = 8192u;

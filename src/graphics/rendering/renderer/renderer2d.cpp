@@ -1,7 +1,7 @@
 #include <glad/glad.h>
 
 #include "../renderable/renderable.h"
-#include "../renderable/sprite.h"
+#include "../renderable/drawable/sprite.h"
 #include "renderer2d.h"
 #include "../../../utils/logger.h"
 
@@ -80,9 +80,64 @@ namespace mrld
         _vbo->unbind();
     }
 
-    void Renderer2D::submit(const Renderable &r)
+    void Renderer2D::submit(Drawable &r)
     {
-        r.submit(*this);
+        VertexData *vertices = r.get_vertices();
+
+        const Texture *tex = r.get_texture();
+        if (tex) {
+            // Set texture slots in vertices if hasn't been set yet or changed - they can't be initially
+            // set in sprite, as the texture slot is provided by the renderer and is dynamic.
+            float texture_slot = static_cast<float>(retrieve_texture_slot(tex->get_id()));
+            if (texture_slot == -1.0f) {
+                Logger::log(LogLevel::DBG, "Performing early flush - no empty texture slots.");
+                end();
+                flush();
+                begin();
+                texture_slot = static_cast<float>(retrieve_texture_slot(tex->get_id()));
+            }
+
+            if (vertices->tex_slot != texture_slot) {
+                for (uint32_t i = 0; i < r.get_vertices_count(); ++i) {
+                    vertices[i].tex_slot = texture_slot;
+                }
+            }
+        }
+
+        // transform positions according to the transform stack
+        std::vector<vec3> old_positions;
+        old_positions.reserve(r.get_vertices_count());
+        if (_transform_stack.size() > 1) {
+            const mat4 &last_transform = get_last_transform();
+            for (uint32_t i = 0; i < r.get_vertices_count(); ++i) {
+                old_positions[i] = vertices[i].position;
+                vertices[i].position = last_transform * vertices[i].position;
+            }
+        }
+
+        uint32_t size = r.get_vertices_count() * VERTEX_SIZE;
+        if (size % SPRITE_SIZE) {
+            Logger::log(LogLevel::WRN, "Submitted wrong size of renderable to Renderer2D");
+        }
+        glBufferSubData(
+                GL_ARRAY_BUFFER,
+                SPRITE_SIZE * _sprites_submitted,
+                size,
+                vertices
+        );
+        Logger::log(LogLevel::DBG, "Submitted %u bytes of vertex data. "
+                                   "N submitted sprites: %u", size, _sprites_submitted);
+        if (++_sprites_submitted > MAX_SPRITES) {
+            Logger::log(LogLevel::DBG, "Performing early flush of Renderer2D batch (reached buffer size)");
+            flush();
+        }
+
+        // restore transformed positions
+        if (_transform_stack.size() > 1) {
+            for (uint32_t i = 0; i < r.get_vertices_count(); ++i) {
+                vertices[i].position = old_positions[i];
+            }
+        }
     }
 
     void Renderer2D::flush()
@@ -99,24 +154,5 @@ namespace mrld
         _vao.unbind();
         _sprites_submitted = 0;
         _texture_id_to_texture_slot.clear();
-    }
-
-    void Renderer2D::submit_data(const void *data, uint32_t size)
-    {
-        if (size != SPRITE_SIZE) {
-            Logger::log(LogLevel::ERR, "Submitted wrong size of renderable to Renderer2D");
-        }
-        glBufferSubData(
-                GL_ARRAY_BUFFER,
-                SPRITE_SIZE * _sprites_submitted,
-                size,
-                data
-        );
-        Logger::log(LogLevel::DBG, "Submitted %u bytes of vertex data. "
-                                   "N submitted sprites: %u", size, _sprites_submitted);
-        if (++_sprites_submitted > MAX_SPRITES) {
-            Logger::log(LogLevel::DBG, "Performing early flush of Renderer2D batch (reached buffer size)");
-            flush();
-        }
     }
 }

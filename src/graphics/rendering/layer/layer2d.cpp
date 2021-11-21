@@ -1,6 +1,6 @@
 #include "layer2d.h"
-#include "../../renderer/renderer2d.h"
-#include "../../../camera/camera.h"
+#include "../renderer/renderer2d.h"
+#include "../../camera/camera.h"
 
 namespace mrld
 {

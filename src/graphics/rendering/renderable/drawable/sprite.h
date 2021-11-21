@@ -1,20 +1,25 @@
 #pragma once
 
-#include "../../../math/vec2.h"
-#include "../../../math/vec3.h"
-#include "../../../math/vec4.h"
-#include "../../texture/texture.h"
-#include "../../color.h"
-#include "renderable.h"
+#include "../../../../math/vec2.h"
+#include "../../../../math/vec3.h"
+#include "../../../../math/vec4.h"
+#include "../../../texture/texture.h"
+#include "../../../color.h"
+#include "../../renderer/renderer.h"
+#include "drawable.h"
 
 namespace mrld
 {
     class Renderer2D;
-    class Sprite: public Renderable
+    class Sprite: public Drawable
     {
     public:
         Sprite(const vec3 &position, const vec2 &size, const Texture *tex = nullptr, const vec4 &color = color::BLACK);
-        virtual void submit(Renderer &renderer) const override;
+        VertexData* get_vertices() override;
+        inline uint32_t get_vertices_count() const override { return 4u; };
+        const uint32_t* get_indices() const override;
+        uint32_t get_indices_count() const override { return 6u; }
+        void submit(Renderer &r) override { r.submit(*this); }
 
         inline vec2 get_size() const { return _size; }
         inline vec4 get_color() const { return _color; }
@@ -27,6 +32,5 @@ namespace mrld
         vec3 _position;
         vec2 _size;
         vec4 _color;
-        const Texture *_texture;
     };
 }

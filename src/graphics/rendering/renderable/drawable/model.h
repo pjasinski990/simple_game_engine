@@ -2,9 +2,9 @@
 
 #include <vector>
 
-#include "renderable.h"
-#include "../../../math/quaternion.h"
-#include "../buffer/vertex_data.h"
+#include "../renderable.h"
+#include "../../../../math/quaternion.h"
+#include "../../buffer/vertex_data.h"
 
 namespace mrld
 {

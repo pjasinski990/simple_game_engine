@@ -28,19 +28,19 @@ namespace mrld
         return *this;
     }
 
-    void Group::add(const Renderable *o)
+    void Group::submit(Renderer &r)
     {
-        _children.push_back(o);
+        r.push(_transformation);
+        r.begin();
+        for (auto &&item : _children) {
+            item->submit(r);
+        }
+        r.end();
+        r.pop();
     }
 
-    void Group::submit(Renderer &renderer) const
+    void Group::add(Renderable *o)
     {
-        renderer.push(_transformation);
-        renderer.begin();
-        for (const Renderable *r : _children) {
-            r->submit(renderer);
-        }
-        renderer.end();
-        renderer.pop();
+        _children.push_back(o);
     }
 }

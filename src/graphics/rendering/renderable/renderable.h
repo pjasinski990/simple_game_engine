@@ -1,5 +1,8 @@
 #pragma once
 
+#include <vector>
+#include "../buffer/vertex_data.h"
+
 namespace mrld
 {
     class Renderer;
@@ -7,6 +10,8 @@ namespace mrld
     {
     public:
         virtual ~Renderable() = default;
-        virtual void submit(Renderer &renderer) const = 0;
+        virtual void submit(Renderer &r) = 0;
+
+    protected:
     };
 }

@@ -1,6 +1,6 @@
 #include "layer.h"
-#include "../../../shader/shader.h"
-#include "../../../camera/camera.h"
+#include "../../shader/shader.h"
+#include "../../camera/camera.h"
 
 namespace mrld
 {
