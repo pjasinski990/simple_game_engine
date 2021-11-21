@@ -3,7 +3,8 @@
 #include "math.h"
 
 // Camera
-#include "../../src/camera/camera.h"
+#include "../../src/graphics/camera/camera.h"
+#include "../../src/graphics/camera/fps_camera.h"
 
 // Graphics misc
 #include "../../src/graphics/rendering/buffer/attrib_data_buffer.h"
@@ -15,6 +16,7 @@
 // Graphics rendering
 #include "../../src/graphics/rendering/renderable/sprite.h"
 #include "../../src/graphics/rendering/renderer/renderer2d.h"
+#include "../../src/graphics/rendering/renderer/renderer3d.h"
 #include "../../src/graphics/rendering/renderable/layer/layer.h"
 #include "../../src/graphics/rendering/renderable/layer/layer2d.h"
 #include "../../src/graphics/texture/texture.h"

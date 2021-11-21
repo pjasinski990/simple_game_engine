@@ -1,5 +1,4 @@
-#ifndef MRLD_ENGINE_MAT4_H
-#define MRLD_ENGINE_MAT4_H
+#pragma once
 
 #include <iostream>
 
@@ -9,7 +8,6 @@ namespace mrld
     struct vec3;
     struct vec4;
 
-    // TODO change matrices to use row-major indexing, set "transpose" flag when loading uniform, measure performance
     struct mat4
     {
         mat4();
@@ -47,5 +45,3 @@ namespace mrld
         float data[16];
     };
 }
-
-#endif //MRLD_ENGINE_MAT4_H

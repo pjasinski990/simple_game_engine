@@ -1,20 +1,23 @@
 #pragma once
 
-#include "../../../shader/shader.h"
-#include "../../renderer/renderer.h"
+#include "../../../../math/mat4.h"
 
 namespace mrld
 {
+    class Shader;
+    class Renderer;
+    class Camera;
     class Layer
     {
     public:
         virtual ~Layer() = default;
         virtual void draw() = 0;
     protected:
-        Layer(Shader *shader, Renderer *renderer, const mat4 &projection);
+        Layer(Shader *shader, Renderer *renderer, Camera *camera);
 
         Shader *_shader;
         Renderer *_renderer;
-        mat4 _projection;
+        Camera *_camera;
+        mat4 _vp_matrix;
     };
 }

@@ -15,18 +15,20 @@ namespace mrld
 
     quat::quat(const vec3 &u)
     {
-        a = u.magnitude();
-        b = u.x;
-        c = u.y;
-        d = u.z;
+        a = cosf(u.magnitude());
+        vec3 uh = u.normalized();
+        b = uh.x;
+        c = uh.y;
+        d = uh.z;
     }
 
     quat::quat(float angle, const vec3 &u)
     {
         a = cosf(angle / 2.0f);
-        b = sinf(angle / 2.0f) * u.x;
-        c = sinf(angle / 2.0f) * u.y;
-        d = sinf(angle / 2.0f) * u.z;
+        float temp = sinf(angle / 2.0f);
+        b = temp * u.x;
+        c = temp * u.y;
+        d = temp * u.z;
     }
 
     quat &quat::operator*=(const quat &o)

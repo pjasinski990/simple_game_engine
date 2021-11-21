@@ -143,21 +143,17 @@ namespace mrld
         return out;
     }
 
-    void vec3::rotate(const quat &q)
-    {
-        // TODO implementation
-    }
-
     float vec3::dot(const vec3 &o) const
     {
         return this->x*o.x + this->y*o.y + this->z*o.z;
     }
     vec3 vec3::cross(const vec3& o) const
     {
-        float rx = this->y * o.z - this->z * o.y;
-        float ry = -1.0f * (this->x * o.z - this->z * o.x);
-        float rz = this->x * o.y - this->y * o.x;
-        return vec3(rx, ry, rz);
+        return vec3(
+            this->y * o.z - this->z * o.y,
+            this->z * o.x - this->x * o.z,
+            this->x * o.y - this->y * o.x
+            );
     }
 
     float vec3::magnitude() const

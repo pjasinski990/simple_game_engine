@@ -1,5 +1,4 @@
-#ifndef MRLD_ENGINE_VEC4_H
-#define MRLD_ENGINE_VEC4_H
+#pragma once
 
 #include <iostream>
 
@@ -52,5 +51,3 @@ namespace mrld
         float w;
     };
 }
-
-#endif //MRLD_ENGINE_VEC4_H

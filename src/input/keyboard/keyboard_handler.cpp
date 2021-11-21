@@ -1,6 +1,7 @@
 #include <algorithm>
 
 #include "keyboard_handler.h"
+#include "../../utils/timer.h"
 
 namespace mrld
 {
@@ -25,7 +26,7 @@ namespace mrld
     void KeyboardHandler::key_callback(GLFWwindow *window, int key, int scancode, int action, int mods)
     {
         for (auto q : _instances) {
-            std::unordered_map<int, bool>::iterator it = q->_key_states.find(key);
+            auto it = q->_key_states.find(key);
             if (it != q->_key_states.end()) {
                 q->_key_states[key] = action != GLFW_RELEASE;
             }
@@ -35,5 +36,15 @@ namespace mrld
     bool KeyboardHandler::is_key_down(KeyCode key) const
     {
         return _key_states.at(static_cast<int>(key));
+    }
+
+    void KeyboardHandler::debounce(KeyCode key)
+    {
+        for (auto q : _instances) {
+            auto it = q->_key_states.find(key);
+            if (it != q->_key_states.end()) {
+                q->_key_states[key] = false;
+            }
+        }
     }
 }

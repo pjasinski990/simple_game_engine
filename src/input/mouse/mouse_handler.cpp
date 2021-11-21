@@ -29,7 +29,7 @@ namespace mrld
     void MouseHandler::mouse_button_callback(GLFWwindow *window, int button, int action, int mods)
     {
         for (auto q : _instances) {
-            std::unordered_map<int, bool>::iterator it = q->_mouse_button_states.find(button);
+            auto it = q->_mouse_button_states.find(button);
             if (it != q->_mouse_button_states.end()) {
                 q->_mouse_button_states[button] = action != GLFW_RELEASE;
             }

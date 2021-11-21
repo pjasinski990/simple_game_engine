@@ -215,9 +215,9 @@ namespace mrld
         const float tan_fov_half = std::tan(fov_rads / 2.0f);
         res.data[0 + 0 * 4] = 1.0f / (aspect_ratio * tan_fov_half);
         res.data[1 + 1 * 4] = 1.0f / tan_fov_half;
-        res.data[2 + 2 * 4] = z_far / (z_far - z_near);
-        res.data[3 + 2 * 4] = -z_far * z_near / (z_far - z_near);
-        res.data[2 + 3 * 4] = 1.0f;
+        res.data[2 + 2 * 4] = - (z_far + z_near) / (z_far - z_near);
+        res.data[3 + 2 * 4] = -1.0f;
+        res.data[2 + 3 * 4] = -2.0f * z_far * z_near / (z_far - z_near);
         return res;
     }
 }

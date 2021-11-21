@@ -1,5 +1,4 @@
-#ifndef MRLD_ENGINE_VEC3_H
-#define MRLD_ENGINE_VEC3_H
+#pragma once
 
 #include <iostream>
 
@@ -42,8 +41,6 @@ namespace mrld
 
         friend std::ostream& operator<<(std::ostream& out, const vec3& o);
 
-        void rotate(const quat &q);
-
         float dot(const vec3 &o) const;
         vec3 cross(const vec3 &o) const;
 
@@ -55,5 +52,3 @@ namespace mrld
         float z;
     };
 };
-
-#endif //MRLD_ENGINE_VEC3_H

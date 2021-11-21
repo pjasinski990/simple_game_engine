@@ -22,8 +22,10 @@ namespace mrld
         KeyboardHandler& operator=(KeyboardHandler &&o) = delete;
 
         bool is_key_down(KeyCode key) const;
+        void debounce(KeyCode key);
 
     private:
+
         static void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods);
         static std::vector<KeyboardHandler*> _instances;
         std::unordered_map<int, bool> _key_states;

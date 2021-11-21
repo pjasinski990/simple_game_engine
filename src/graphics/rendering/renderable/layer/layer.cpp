@@ -1,15 +1,18 @@
 #include "layer.h"
+#include "../../../shader/shader.h"
+#include "../../../camera/camera.h"
 
 namespace mrld
 {
-    // TODO projection set by layer? figure this out
-    Layer::Layer(Shader *shader, Renderer *r, const mat4 &projection)
+    Layer::Layer(Shader *shader, Renderer *r, Camera *camera)
     : _shader {shader}
     , _renderer{r}
-    , _projection{projection}
+    , _camera{camera}
     {
-//        _shader->use();
-//        _shader->set_mat4("projection_matrix", _projection);
-//        _shader->disable();
+        _camera->update();
+        _vp_matrix = _camera->get_proj() * _camera->get_view();
+        _shader->use();
+        _shader->set_mat4("vp_matrix", _vp_matrix);
+        _shader->disable();
     }
 }

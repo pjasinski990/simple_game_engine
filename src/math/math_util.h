@@ -6,6 +6,8 @@ namespace mrld
     {
         constexpr float epsilon = 1e-6f;
         constexpr float pi = 3.14159265f;
+        constexpr float pi2 = pi / 2.0f;
+        constexpr float pi4 = pi / 4.0f;
     }
 
     inline float rad_to_deg(float theta) {

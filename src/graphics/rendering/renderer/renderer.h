@@ -37,14 +37,11 @@ namespace mrld
         constexpr static uint32_t ATTRIB_INDEX_TEX_COORD = 2;
         constexpr static uint32_t ATTRIB_INDEX_TEX_SLOT = 3;
         constexpr static uint32_t ATTRIB_INDEX_COLOR = 4;
-
         constexpr static uint32_t MAX_TEXTURE_SLOTS = 32;
 
         const Shader *_shader;
-
         std::vector<mat4> _transform_stack;
         const mat4 *_last_transform;
-
         std::unordered_map<uint32_t, uint32_t> _texture_id_to_texture_slot;
     };
 }

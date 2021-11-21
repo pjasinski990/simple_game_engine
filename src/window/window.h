@@ -17,6 +17,8 @@ namespace mrld
         bool should_close() const;
         inline uint16_t get_width() const {return _width;}
         inline uint16_t get_height() const {return _height;}
+        inline GLFWwindow *get_glfw_window() const { return _window; }
+        inline void close() { glfwSetWindowShouldClose(_window, GL_TRUE); }
 
     private:
         GLFWwindow* _window;
