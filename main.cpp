@@ -1,7 +1,9 @@
 #include <thread>
 #include <chrono>
 #include <glad/glad.h>
+
 #include "mrld/mrld.h"
+#include "res/cube_vertices.h"
 
 int main(void)
 {
@@ -26,18 +28,28 @@ int main(void)
             100.0f,
             45.0f
             );
+//    mrld::Texture jake_t("../res/jake.png", true);
+//    mrld::Renderer2D r(&s);
+//    mrld::Layer layer(&s, &r, &cam);
+//    mrld::Group *g = new mrld::Group(mrld::mat4::translate(mrld::vec3(0.0f, 0.0f, -15.0f)) * mrld::mat4::rotate_z(mrld::math_constants::pi4));
+//    mrld::Sprite *jake = new mrld::Sprite(mrld::vec3(-4, -3, 5.0f), mrld::vec2(8, 6), &jake_t);
+//    mrld::Sprite *container = new mrld::Sprite(mrld::vec3(-4, -3, 0.0f), mrld::vec2(8, 6), &container_t);
+//    g->add(container);
+//    g->add(jake);
+//    layer.add(g);
 
-    mrld::Texture jake_t("../res/jake.png", true);
     mrld::Texture container_t("../res/container.jpg", false);
-    mrld::Layer2D layer(&s, &cam);
-    mrld::Group *g = new mrld::Group(mrld::mat4::rotate_z(mrld::math_constants::pi4));
-    mrld::Group *g2 = new mrld::Group(mrld::mat4::rotate_y(mrld::math_constants::pi4));
-    mrld::Sprite *jake = new mrld::Sprite(mrld::vec3(-4, -3, 5.0f), mrld::vec2(8, 6), &jake_t);
-    mrld::Sprite *container = new mrld::Sprite(mrld::vec3(-4, -3, 0.0f), mrld::vec2(8, 6), &container_t);
-    g->add(container);
-    g2->add(jake);
-    g->add(g2);
-    layer.add(g);
+    mrld::Group *cube_group = new mrld::Group(mrld::mat4::scale(mrld::vec3(5.0f, 5.0f, 5.0f)));
+    mrld::Group *cube_group2 = new mrld::Group(mrld::mat4::translate(mrld::vec3(-10, 0, 0)) * mrld::mat4::scale(mrld::vec3(5.0f, 5.0f, 5.0f)));
+
+    // todo set model matrix on render of model, add a way to modify it (transform methods on model class)
+    cube_group->add(new mrld::Model(mrld::cube_vertices, 24, mrld::cube_indices, 36, &container_t));
+    cube_group2->add(new mrld::Model(mrld::cube_vertices, 24, mrld::cube_indices, 36, &container_t));
+
+    mrld::Renderer3D r3(&s);
+    mrld::Layer layer3d(&s, &r3, &cam);
+    layer3d.add(cube_group);
+    layer3d.add(cube_group2);
 
     uint16_t fps = 0;
     glClearColor(0.15f, 0.15f, 0.15f, 1.0f);
@@ -47,7 +59,7 @@ int main(void)
 
     while (!window.should_close()) {
         window.clear();
-        layer.draw();
+        layer3d.draw();
         window.update();
 
         if (handler.is_key_down(mrld::KeyCode::W)) {

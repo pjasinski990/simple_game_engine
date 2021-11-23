@@ -1,11 +1,11 @@
 #pragma once
 
+#include "renderer.h"
 #include "../buffer/vertex_data.h"
 #include "../buffer/vertex_array.h"
 #include "../buffer/index_buffer.h"
 #include "../../shader/shader.h"
 #include "../renderable/group/group.h"
-#include "renderer.h"
 
 namespace mrld
 {
@@ -22,12 +22,12 @@ namespace mrld
 
         void begin() const override;
         void end() const override;
+        using Renderer::submit;
         void submit(Drawable &o) override;
         void flush() override;
 
     private:
         constexpr static uint32_t MAX_SPRITES = 8192u;
-        constexpr static uint32_t VERTEX_SIZE = sizeof(VertexData);
         constexpr static uint32_t SPRITE_SIZE = VERTEX_SIZE * 4;
         constexpr static uint32_t BUFFER_SIZE = MAX_SPRITES * SPRITE_SIZE;
         constexpr static uint32_t MAX_INDICES = MAX_SPRITES * 6;

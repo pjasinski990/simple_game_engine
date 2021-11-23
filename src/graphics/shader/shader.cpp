@@ -217,7 +217,7 @@ namespace mrld
             slots[i] = i;
         }
         use();
-        // technically it would be better to create a function to update 1iv uniform and cache id, then use it here
+        // technically it would be better to create a function to update 1iv uniform, cache id, use it here
         glUniform1iv(get_uniform_location("textures"), n_texture_slots, slots);
         disable();
         delete[] slots;

@@ -5,8 +5,6 @@
 #include "renderer2d.h"
 #include "../../../utils/logger.h"
 
-#define member_floats_count(type, member) (sizeof(((type*)0)->member) / sizeof(float))
-
 namespace mrld
 {
     Renderer2D::Renderer2D(const Shader *shader)
@@ -104,10 +102,10 @@ namespace mrld
             }
         }
 
-        // transform positions according to the transform stack
+        // Transform positions according to the transform stack
         std::vector<vec3> old_positions;
         old_positions.reserve(r.get_vertices_count());
-        if (_transform_stack.size() > 1) {
+        if (has_transforms_on_stack()) {
             const mat4 &last_transform = get_last_transform();
             for (uint32_t i = 0; i < r.get_vertices_count(); ++i) {
                 old_positions[i] = vertices[i].position;
@@ -127,13 +125,15 @@ namespace mrld
         );
         Logger::log(LogLevel::DBG, "Submitted %u bytes of vertex data. "
                                    "N submitted sprites: %u", size, _sprites_submitted);
-        if (++_sprites_submitted > MAX_SPRITES) {
+        _sprites_submitted += size / SPRITE_SIZE;
+        if (_sprites_submitted > MAX_SPRITES) {
             Logger::log(LogLevel::DBG, "Performing early flush of Renderer2D batch (reached buffer size)");
             flush();
         }
 
-        // restore transformed positions
-        if (_transform_stack.size() > 1) {
+        // Restore transformed positions
+        // Faster than copying entire vertex data and altering the copy
+        if (has_transforms_on_stack()) {
             for (uint32_t i = 0; i < r.get_vertices_count(); ++i) {
                 vertices[i].position = old_positions[i];
             }
@@ -152,7 +152,7 @@ namespace mrld
         glDrawElements(GL_TRIANGLES, _sprites_submitted * 6, GL_UNSIGNED_SHORT, nullptr);
         _ibo->unbind();
         _vao.unbind();
-        _sprites_submitted = 0;
+        _sprites_submitted = 0u;
         _texture_id_to_texture_slot.clear();
     }
 }

@@ -17,9 +17,8 @@ namespace mrld
         Sprite(const vec3 &position, const vec2 &size, const Texture *tex = nullptr, const vec4 &color = color::BLACK);
         VertexData* get_vertices() override;
         inline uint32_t get_vertices_count() const override { return 4u; };
-        const uint32_t* get_indices() const override;
+        const uint16_t* get_indices() const override;
         uint32_t get_indices_count() const override { return 6u; }
-        void submit(Renderer &r) override { r.submit(*this); }
 
         inline vec2 get_size() const { return _size; }
         inline vec4 get_color() const { return _color; }

@@ -1,5 +1,7 @@
 #pragma once
 
+#define member_floats_count(type, member) (sizeof(((type*)0)->member) / sizeof(float))
+
 #include <vector>
 #include <map>
 
@@ -14,6 +16,7 @@ namespace mrld
     class Renderer
     {
     public:
+        Renderer() = default;
         Renderer(const Shader *shader);
         virtual ~Renderer() = default;
 
@@ -29,6 +32,8 @@ namespace mrld
         virtual void push(const mat4 &transform, bool override = false);
         virtual void pop();
 
+        // Assume transform stack is empty when it has only one identity matrix
+        inline bool has_transforms_on_stack() const { return _transform_stack.size() > 1; }
         const mat4 &get_last_transform() const { return *_last_transform; }
         inline uint32_t get_n_texture_slots_used() const { return _texture_id_to_texture_slot.size(); }
         int32_t retrieve_texture_slot(uint32_t texture_id);
@@ -42,6 +47,7 @@ namespace mrld
         constexpr static uint32_t ATTRIB_INDEX_TEX_SLOT = 3;
         constexpr static uint32_t ATTRIB_INDEX_COLOR = 4;
         constexpr static uint32_t MAX_TEXTURE_SLOTS = 32;
+        constexpr static uint32_t VERTEX_SIZE = sizeof(VertexData);
 
         const Shader *_shader;
         std::vector<mat4> _transform_stack;

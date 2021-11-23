@@ -72,7 +72,7 @@ namespace mrld
         return _vertices.data();
     }
 
-    const uint32_t* Sprite::get_indices() const
+    const uint16_t* Sprite::get_indices() const
     {
         return _indices.data();
     }

@@ -3,20 +3,18 @@
 
 namespace mrld
 {
-    Model::Model(VertexData *vertices, uint32_t count)
-            : _vertices{}
-            , _position{vec3()}
-            , _scale{vec3()}
-            , _rotation{quat()}
+    Model::Model(VertexData *vertices, uint32_t v_count, uint16_t *indices, uint32_t i_count, const Texture *tex /* = nullptr */)
+    : Drawable(tex)
+    , _v_count{v_count}
+    , _i_count{i_count}
     {
-        _vertices.reserve(count);
-        for (uint32_t i = 0; i < count; ++i) {
+        _vertices.reserve(_v_count);
+        for (uint32_t i = 0; i < _v_count; ++i) {
             _vertices.push_back(vertices[i]);
         }
-    }
-
-    void Model::submit(Renderer &renderer) const
-    {
-
+        _indices.reserve(_i_count);
+        for (uint32_t i = 0; i < _i_count; ++i) {
+            _indices.push_back(indices[i]);
+        }
     }
 }
