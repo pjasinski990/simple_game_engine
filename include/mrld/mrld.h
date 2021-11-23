@@ -3,8 +3,8 @@
 #include "math.h"
 
 // Camera
-#include "../../src/graphics/camera/camera.h"
-#include "../../src/graphics/camera/fps_camera.h"
+#include "../../src/camera/camera.h"
+#include "../../src/camera/fps_camera.h"
 
 // Graphics misc
 #include "../../src/graphics/rendering/buffer/attrib_data_buffer.h"

@@ -1,9 +1,9 @@
 #pragma once
 
-#include "../../math/vec3.h"
-#include "../../math/mat4.h"
+#include "../math/vec3.h"
+#include "../math/mat4.h"
 #include "camera.h"
-#include "../../input/mouse/mouse_handler.h"
+#include "../input/mouse/mouse_handler.h"
 
 namespace mrld
 {

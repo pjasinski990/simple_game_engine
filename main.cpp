@@ -25,7 +25,7 @@ int main(void)
             mrld::vec3(0.0f, 1.0f, 0.0f),
             4.0f/3.0f,
             1.0f,
-            100.0f,
+            500.0f,
             45.0f
             );
 //    mrld::Texture jake_t("../res/jake.png", true);
@@ -39,17 +39,24 @@ int main(void)
 //    layer.add(g);
 
     mrld::Texture container_t("../res/container.jpg", false);
+    mrld::Texture dirt_t("../res/dirt.png", true);
     mrld::Group *cube_group = new mrld::Group(mrld::mat4::scale(mrld::vec3(5.0f, 5.0f, 5.0f)));
     mrld::Group *cube_group2 = new mrld::Group(mrld::mat4::translate(mrld::vec3(-10, 0, 0)) * mrld::mat4::scale(mrld::vec3(5.0f, 5.0f, 5.0f)));
 
     // todo set model matrix on render of model, add a way to modify it (transform methods on model class)
-    cube_group->add(new mrld::Model(mrld::cube_vertices, 24, mrld::cube_indices, 36, &container_t));
-    cube_group2->add(new mrld::Model(mrld::cube_vertices, 24, mrld::cube_indices, 36, &container_t));
-
+//    mrld::Model *box = new mrld::Model(mrld::cube_vertices, 24, mrld::cube_indices, 36, &container_t);
+//    cube_group->add(box);
+//    cube_group2->add(box);
     mrld::Renderer3D r3(&s);
     mrld::Layer layer3d(&s, &r3, &cam);
-    layer3d.add(cube_group);
-    layer3d.add(cube_group2);
+    for (int i = 0; i < 20; ++i) {
+        for (int j = 0; j < 20; ++j) {
+            mrld::Model *box = new mrld::Model(mrld::cube_vertices, 24, mrld::cube_indices, 36, &container_t);
+            box->scale(mrld::vec3(10.0f, 10.0f, 10.0f));
+            box->translate(mrld::vec3(i * 1.0f, 0.0f, j * -1.0f));
+            layer3d.add(box);
+        }
+    }
 
     uint16_t fps = 0;
     glClearColor(0.15f, 0.15f, 0.15f, 1.0f);

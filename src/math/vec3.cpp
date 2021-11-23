@@ -3,7 +3,6 @@
 
 #include "math_util.h"
 #include "vec3.h"
-#include "quaternion.h"
 
 namespace mrld
 {

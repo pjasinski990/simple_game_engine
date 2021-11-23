@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../../math/vec3.h"
-#include "../../math/mat4.h"
+#include "../math/vec3.h"
+#include "../math/mat4.h"
 
 namespace mrld
 {
@@ -35,6 +35,6 @@ namespace mrld
         mat4 _view;
         mat4 _proj;
 
-        float _speed = 0.02f;
+        float _speed = 0.05f;
     };
 }

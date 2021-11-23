@@ -14,10 +14,14 @@ namespace mrld
     {
     public:
         Model(VertexData *vertices, uint32_t v_count, uint16_t *indices, uint32_t i_count, const Texture *tex = nullptr);
+        void submit(Renderer &r) override;
         VertexData* get_vertices() override { return _vertices.data(); }
         uint32_t get_vertices_count() const override { return _v_count; }
         const uint16_t* get_indices() const override { return _indices.data(); }
         uint32_t get_indices_count() const override { return _i_count; }
+        inline void translate(const vec3 &o) { _model_matrix *= mat4::translate(o); };
+        inline void scale(const vec3 &o) { _model_matrix *= mat4::scale(o); };
+        inline void rotate(const vec3 &axis, float angle_rads) { /* TODO implementation */};
 
     private:
         mat4 _model_matrix;
