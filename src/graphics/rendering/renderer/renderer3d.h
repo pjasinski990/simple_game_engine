@@ -31,7 +31,7 @@ namespace mrld
         VertexArray _vao;
         AttribDataBuffer *_vbo;
         IndexBuffer *_ibo;
-        uint32_t _vbo_buffer_pointer;
-        uint32_t _ibo_buffer_pointer;
+        uint32_t _n_submitted_vertices;
+        uint32_t _n_submitted_indices;
     };
 }

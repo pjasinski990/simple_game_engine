@@ -10,8 +10,8 @@ namespace mrld
 {
     Renderer3D::Renderer3D(Shader *shader)
             : Renderer(shader)
-            , _vbo_buffer_pointer{0}
-            , _ibo_buffer_pointer{0}
+            , _n_submitted_vertices{0}
+            , _n_submitted_indices{0}
     {
         _ibo = IndexBuffer::create_dynamic(MAX_INDICES);
         _vbo = AttribDataBuffer::create_dynamic(
@@ -81,37 +81,30 @@ namespace mrld
         const uint32_t n_indices = d.get_indices_count();
 
         const Texture *tex = d.get_texture();
-        if (tex) {
+        if (tex && vertices->tex_slot == -1.0f) {
             // Set texture slots in vertices if hasn't been set yet or changed - they can't be initially
             // set in sprite, as the texture slot is provided by the renderer and is dynamic.
             float texture_slot = static_cast<float>(retrieve_texture_slot(tex->get_id()));
             if (texture_slot == -1.0f) {
-                Logger::log(LogLevel::DBG, "Performing early flush - no empty texture slots.");
+                Logger::log(LogLevel::WRN, "Could not find texture slot for model - skipping rendering");
                 end();
-                flush();
-                begin();
-                texture_slot = static_cast<float>(retrieve_texture_slot(tex->get_id()));
+                return;
             }
-
-            if (vertices->tex_slot != texture_slot) {
-                for (uint32_t i = 0; i < n_vertices; ++i) {
-                    vertices[i].tex_slot = texture_slot;
-                }
+            for (uint32_t i = 0; i < n_vertices; ++i) {
+                vertices[i].tex_slot = texture_slot;
             }
         }
 
         // Transform positions according to the transform stack
+        // Models own model matrix should be pushed before submitting
         _shader->set_mat4("model_matrix", *_last_transform);
 
-        // TODO handle size is bigger than the buffer itself
         uint32_t size = n_vertices * VERTEX_SIZE;
+        uint32_t size_i = n_indices * sizeof(uint16_t);
         if (size > BUFFER_SIZE) {
             Logger::log(LogLevel::WRN, "Not rendering passed model - vertices size is too large for the buffer");
             return;
         }
-
-        // todo optimize
-        uint32_t size_i = n_indices * sizeof(uint16_t);
         if (n_indices > MAX_INDICES) {
             Logger::log(LogLevel::WRN, "Not rendering passed model - indices size is too large for the buffer");
             return;
@@ -124,7 +117,6 @@ namespace mrld
                 vertices
         );
         Logger::log(LogLevel::DBG, "Submitted %u bytes of vertex data", size);
-
         glBufferSubData(
                 GL_ELEMENT_ARRAY_BUFFER,
                 0u,
@@ -133,15 +125,15 @@ namespace mrld
         );
         Logger::log(LogLevel::DBG, "Submitted %u bytes of index data", size_i);
 
-        _vbo_buffer_pointer += size;
-        _ibo_buffer_pointer += size_i;
+        _n_submitted_vertices += n_vertices;
+        _n_submitted_indices += n_indices;
         flush();
     }
 
     void Renderer3D::flush()
     {
-        Logger::log(LogLevel::DBG, "Flushing renderer batch, vertices size=%u, indices size=%u",
-                    _vbo_buffer_pointer, _ibo_buffer_pointer);
+        Logger::log(LogLevel::DBG, "Flushing renderer batch, vertices count=%u, indices count=%u",
+                    _n_submitted_vertices, _n_submitted_indices);
 
         for (const auto &val: _texture_id_to_texture_slot) {
             glActiveTexture(GL_TEXTURE0 + val.second);
@@ -150,11 +142,11 @@ namespace mrld
 
         _vao.bind();
         _ibo->bind();
-        glDrawElements(GL_TRIANGLES, _ibo_buffer_pointer / sizeof(uint16_t), GL_UNSIGNED_SHORT, nullptr);
+        glDrawElements(GL_TRIANGLES, _n_submitted_indices, GL_UNSIGNED_SHORT, nullptr);
         _ibo->unbind();
         _vao.unbind();
-        _vbo_buffer_pointer = 0u;
-        _ibo_buffer_pointer = 0u;
+        _n_submitted_vertices = 0u;
+        _n_submitted_indices = 0u;
         _texture_id_to_texture_slot.clear();
     }
 }
