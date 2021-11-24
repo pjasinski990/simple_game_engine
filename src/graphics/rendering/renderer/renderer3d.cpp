@@ -1,9 +1,10 @@
+#include <cstring>
+
 #include "renderer3d.h"
 #include "../buffer/index_buffer.h"
 #include "../renderable/drawable/drawable.h"
 #include "../../../utils/logger.h"
 #include "../../texture/texture.h"
-#include "../../../utils/debug.h"
 
 namespace mrld
 {

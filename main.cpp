@@ -3,7 +3,7 @@
 #include <glad/glad.h>
 
 #include "mrld/mrld.h"
-#include "res/cube_vertices.h"
+#include "cube_vertices.h"
 
 int main(void)
 {

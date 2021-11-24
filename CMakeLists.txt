@@ -3,6 +3,9 @@ project(mrld_engine)
 set(CMAKE_CXX_STANDARD 20)
 add_executable(mrld_engine main.cpp)
 
+# gl
+find_package(OpenGL REQUIRED)
+
 # glad
 include_directories(dependencies/glad/include)
 add_library(GLAD dependencies/glad/src/glad.c)
@@ -45,4 +48,8 @@ list(APPEND SOURCES src/utils/file_handler.cpp)
 add_library(mrld ${SOURCES})
 
 # linking
-target_link_libraries(mrld_engine mrld GLAD glfw)
+IF (WIN32)
+    target_link_libraries(mrld_engine mrld GLAD glfw opengl32)
+ELSE ()
+    target_link_libraries(mrld_engine mrld GLAD glfw OpenGL)
+ENDIF ()

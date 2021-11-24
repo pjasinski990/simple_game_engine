@@ -18,7 +18,7 @@ namespace mrld
         char msg[LOGGER_MESSAGE_MAX_LENGTH];
         va_list arg_q;
         va_start(arg_q, format);
-        vsnprintf_s(msg, sizeof(msg), format, arg_q);
+        vsnprintf(msg, sizeof(msg), format, arg_q);
         va_end(arg_q);
 
         log_time();
@@ -44,11 +44,14 @@ namespace mrld
         std::chrono::time_point const now = std::chrono::system_clock::now();
         std::time_t now_tt = std::chrono::system_clock::to_time_t(now);
         tm tm;
+#ifdef _WIN32
         gmtime_s(&tm, &now_tt);
-
+#else
+        gmtime_r(&now_tt, &tm);
+#endif
         /* Format datetime as 24-hour yyyy-mm-dd hh:mm:ss */
         char buffer[LOGGER_DATETIME_BUFFER_SIZE];
-        sprintf_s(buffer, sizeof(buffer), "[%04d-%02d-%02d %02d:%02d:%02d] ",
+        snprintf(buffer, sizeof(buffer), "[%04d-%02d-%02d %02d:%02d:%02d] ",
                   1900 + tm.tm_year,
                   tm.tm_mon,
                   tm.tm_mday,

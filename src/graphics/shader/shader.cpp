@@ -124,7 +124,7 @@ namespace mrld
         if(!success) {
             glGetShaderInfoLog(shader, LOGGER_MESSAGE_MAX_LENGTH, nullptr, msg);
             char err_msg[LOGGER_MESSAGE_MAX_LENGTH];
-            int sprintf_res = sprintf_s(err_msg,
+            int sprintf_res = snprintf(err_msg,
                       LOGGER_MESSAGE_MAX_LENGTH,
                       "Error: %s compilation failed. \nFull error message:\n%s",
                     _shader_type_to_string[static_cast<ShaderType>(type)], msg);
@@ -174,7 +174,7 @@ namespace mrld
         if(!success) {
             glGetProgramInfoLog(_shader_program, LOGGER_MESSAGE_MAX_LENGTH, nullptr, msg);
             char err_msg[LOGGER_MESSAGE_MAX_LENGTH];
-            int sprintf_res = sprintf_s(err_msg,
+            int sprintf_res = snprintf(err_msg,
                                         LOGGER_MESSAGE_MAX_LENGTH,
                                         "Error: shader linking failed. \nFull error message:\n%s", msg);
             if (sprintf_res == -1) {
@@ -197,7 +197,7 @@ namespace mrld
         if(!success) {
             glGetProgramInfoLog(_shader_program, LOGGER_MESSAGE_MAX_LENGTH, nullptr, msg);
             char err_msg[LOGGER_MESSAGE_MAX_LENGTH];
-            int sprintf_res = sprintf_s(err_msg,
+            int sprintf_res = snprintf(err_msg,
                                         LOGGER_MESSAGE_MAX_LENGTH,
                                         "Error: shader validation failed. \nFull error message:\n%s", msg);
             if (sprintf_res == -1) {

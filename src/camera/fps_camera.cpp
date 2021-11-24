@@ -1,4 +1,7 @@
+#include <cmath>
+
 #include <GLFW/glfw3.h>
+
 #include "fps_camera.h"
 #include "../window/window.h"
 #include "../math/math_util.h"
@@ -52,9 +55,9 @@ namespace mrld
         _last_y = mouse_y;
 
         vec3 direction;
-        direction.z = cos(_yaw) * cos(_pitch);
-        direction.y = sin(_pitch);
-        direction.x = sin(_yaw) * cos(_pitch);
+        direction.z = cosf(_yaw) * cosf(_pitch);
+        direction.y = sinf(_pitch);
+        direction.x = sinf(_yaw) * cosf(_pitch);
         _direction = direction.normalized();
         update_view();
     }

@@ -1,4 +1,4 @@
-#version 330 core
+#version 460
 
 in vec2 v_tex_coord;
 in float v_tex_slot;
