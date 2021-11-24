@@ -25,4 +25,10 @@ namespace mrld
         r.submit(*this);
         r.pop();
     }
+
+    void Model::rotate(const vec3 &axis, float angle_rads)
+    {
+        quat q(axis, angle_rads);
+        _model_matrix = q.create_rotation_matrix() * _model_matrix;
+    }
 }

@@ -35,6 +35,6 @@ namespace mrld
         mat4 _view;
         mat4 _proj;
 
-        float _speed = 0.05f;
+        float _speed = 0.15f;
     };
 }

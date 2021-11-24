@@ -22,7 +22,7 @@ namespace mrld
         d = uh.z;
     }
 
-    quat::quat(float angle, const vec3 &u)
+    quat::quat(const vec3 &u, float angle)
     {
         a = cosf(angle / 2.0f);
         float temp = sinf(angle / 2.0f);
@@ -50,5 +50,27 @@ namespace mrld
     quat quat::conjugate() const
     {
         return quat(a, -b, -c, -d);
+    }
+
+    mat4 quat::create_rotation_matrix() const
+    {
+        mat4 res;
+        // row0
+        res.data[0 * 4 + 0] = 2.0f * (a * a + b * b) - 1.0f;
+        res.data[0 * 4 + 1] = 2.0f * (b * c - a * d);
+        res.data[0 * 4 + 2] = 2.0f * (b * d + a * c);
+
+        // row1
+        res.data[1 * 4 + 0] = 2.0f * (b * c + a * d);
+        res.data[1 * 4 + 1] = 2.0f * (a * a + c * c) - 1.0f;
+        res.data[1 * 4 + 2] = 2.0f * (c * d - a * b);
+
+        // row2
+        res.data[2 * 4 + 0] = 2.0f * (b * d - a * c);
+        res.data[2 * 4 + 1] = 2.0f * (c * d + a * b);
+        res.data[2 * 4 + 2] = 2.0f * (a * a + d * d) - 1.0f;
+
+        res.data[15] = 1.0f;
+        return res;
     }
 }

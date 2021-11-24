@@ -43,9 +43,9 @@ namespace mrld
                     0xffff0000  // color - blue
             },
             {
-                    vec3(1.0f, 0.0f, 0.0f),
+                    vec3(0.0f, 1.0f, 0.0f),
                     vec3(0.0f, 0.0f, -1.0f),
-                    vec2(1.0f, 0.0f),
+                    vec2(0.0f, 1.0f),
                     -1.0f,
                     0xffff0000
             },
@@ -57,9 +57,9 @@ namespace mrld
                     0xffff0000
             },
             {
-                    vec3(0.0f, 1.0f, 0.0f),
+                    vec3(1.0f, 0.0f, 0.0f),
                     vec3(0.0f, 0.0f, -1.0f),
-                    vec2(0.0f, 1.0f),
+                    vec2(1.0f, 0.0f),
                     -1.0f,
                     0xffff0000
             },
@@ -94,28 +94,28 @@ namespace mrld
             },
             // right face
             {
-                    vec3(1.0f, 0.0f, 0.0f),   // position
+                    vec3(1.0f, 0.0f, 1.0f),   // position
                     vec3(1.0f, 0.0f, 0.0f),   // normal
                     vec2(0.0f, 0.0f),    // tex coords
                     -1.0f,  // tex slot
                     0xff0000ff  // color - red
             },
             {
-                    vec3(1.0f, 0.0f, 1.0f),
+                    vec3(1.0f, 0.0f, 0.0f),
                     vec3(1.0f, 0.0f, 0.0f),
                     vec2(1.0f, 0.0f),
                     -1.0f,
                     0xff0000ff
             },
             {
-                    vec3(1.0f, 1.0f, 1.0f),
+                    vec3(1.0f, 1.0f, 0.0f),
                     vec3(1.0f, 0.0f, 0.0f),
                     vec2(1.0f, 1.0f),
                     -1.0f,
                     0xff0000ff
             },
             {
-                    vec3(1.0f, 1.0f, 0.0f),
+                    vec3(1.0f, 1.0f, 1.0f),
                     vec3(1.0f, 0.0f, 0.0f),
                     vec2(0.0f, 1.0f),
                     -1.0f,
@@ -159,7 +159,7 @@ namespace mrld
                     0xff00ff00  // color - green
             },
             {
-                    vec3(0.0f, 0.0f, 1.0f),
+                    vec3(1.0f, 0.0f, 0.0f),
                     vec3(0.0f, -1.0f, 0.0f),
                     vec2(1.0f, 0.0f),
                     -1.0f,
@@ -173,7 +173,7 @@ namespace mrld
                     0xff00ff00
             },
             {
-                    vec3(1.0f, 0.0f, 0.0f),
+                    vec3(0.0f, 0.0f, 1.0f),
                     vec3(0.0f, -1.0f, 0.0f),
                     vec2(0.0f, 1.0f),
                     -1.0f,
