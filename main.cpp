@@ -49,8 +49,8 @@ int main(void)
 //    cube_group2->add(box);
     mrld::Renderer3D r3(&s);
     mrld::Layer layer3d(&s, &r3, &cam);
-    for (int i = 0; i < 20; ++i) {
-        for (int j = 0; j < 20; ++j) {
+    for (int i = 0; i < 40; ++i) {
+        for (int j = 0; j < 40; ++j) {
             mrld::Model *box = new mrld::Model(mrld::cube_vertices, 24, mrld::cube_indices, 36, &container_t);
             box->scale(mrld::vec3(10.0f, 10.0f, 10.0f));
             box->translate(mrld::vec3(i * 1.0f, 0.0f, j * -1.0f));

@@ -8,7 +8,7 @@
 
 namespace mrld
 {
-    Renderer3D::Renderer3D(const Shader *shader)
+    Renderer3D::Renderer3D(Shader *shader)
             : Renderer(shader)
             , _vbo_buffer_pointer{0}
             , _ibo_buffer_pointer{0}
@@ -61,14 +61,16 @@ namespace mrld
 
     void Renderer3D::begin() const
     {
+        _shader->use();
         _vbo->bind();
         _ibo->bind();
     }
 
     void Renderer3D::end() const
     {
-        _vbo->unbind();
         _ibo->unbind();
+        _vbo->unbind();
+        _shader->disable();
     }
 
     void Renderer3D::submit(Drawable &d)
@@ -92,72 +94,48 @@ namespace mrld
             }
 
             if (vertices->tex_slot != texture_slot) {
-                for (uint32_t i = 0; i < d.get_vertices_count(); ++i) {
+                for (uint32_t i = 0; i < n_vertices; ++i) {
                     vertices[i].tex_slot = texture_slot;
                 }
             }
         }
 
         // Transform positions according to the transform stack
-        std::vector<vec3> old_positions;
-        old_positions.reserve(d.get_vertices_count());
-        if (has_transforms_on_stack()) {
-            const mat4 &last_transform = get_last_transform();
-            for (uint32_t i = 0; i < d.get_vertices_count(); ++i) {
-                old_positions[i] = vertices[i].position;
-                vertices[i].position = last_transform * vertices[i].position;
-            }
-        }
+        _shader->set_mat4("model_matrix", *_last_transform);
 
         // TODO handle size is bigger than the buffer itself
-        uint32_t size = d.get_vertices_count() * VERTEX_SIZE;
-        if (_vbo_buffer_pointer + size > BUFFER_SIZE) {
-            Logger::log(LogLevel::DBG, "Performing early flush of Renderer2D batch (reached buffer size)");
-            flush();
+        uint32_t size = n_vertices * VERTEX_SIZE;
+        if (size > BUFFER_SIZE) {
+            Logger::log(LogLevel::WRN, "Not rendering passed model - vertices size is too large for the buffer");
+            return;
         }
 
         // todo optimize
         uint32_t size_i = n_indices * sizeof(uint16_t);
-        if ((_ibo_buffer_pointer + size_i) * sizeof(uint16_t) > MAX_INDICES) {
-            Logger::log(LogLevel::DBG, "Performing early flush of Renderer2D batch (reached max indices)");
-            flush();
+        if (n_indices > MAX_INDICES) {
+            Logger::log(LogLevel::WRN, "Not rendering passed model - indices size is too large for the buffer");
+            return;
         }
 
         glBufferSubData(
                 GL_ARRAY_BUFFER,
-                _vbo_buffer_pointer,
+                0u,
                 size,
                 vertices
         );
-        Logger::log(LogLevel::DBG, "Submitted %u bytes of vertex data at offset %u", size, _vbo_buffer_pointer);
+        Logger::log(LogLevel::DBG, "Submitted %u bytes of vertex data", size);
 
-        uint16_t *indices_copy = new uint16_t[n_indices];
-        memcpy(indices_copy, indices, size_i);
-        if (_ibo_buffer_pointer > 0) {
-            uint32_t indices_offset = _vbo_buffer_pointer / VERTEX_SIZE;
-            for (uint32_t i = 0; i < n_indices; ++i) {
-                indices_copy[i] += indices_offset;
-            }
-        }
         glBufferSubData(
                 GL_ELEMENT_ARRAY_BUFFER,
-                _ibo_buffer_pointer,
+                0u,
                 size_i,
-                indices_copy
+                indices
         );
-        Logger::log(LogLevel::DBG, "Submitted %u bytes of index data at offset %u", size_i, _ibo_buffer_pointer);
-        delete[] indices_copy;
+        Logger::log(LogLevel::DBG, "Submitted %u bytes of index data", size_i);
 
         _vbo_buffer_pointer += size;
         _ibo_buffer_pointer += size_i;
-
-        // Restore transformed positions
-        // This way is faster than copying entire vertex data and altering the copy
-        if (has_transforms_on_stack()) {
-            for (uint32_t i = 0; i < d.get_vertices_count(); ++i) {
-                vertices[i].position = old_positions[i];
-            }
-        }
+        flush();
     }
 
     void Renderer3D::flush()

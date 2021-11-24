@@ -17,7 +17,7 @@ namespace mrld
     {
     public:
         Renderer() = default;
-        Renderer(const Shader *shader);
+        Renderer(Shader *shader);
         virtual ~Renderer() = default;
 
         virtual void begin() const {};
@@ -38,7 +38,7 @@ namespace mrld
         inline uint32_t get_n_texture_slots_used() const { return _texture_id_to_texture_slot.size(); }
         int32_t retrieve_texture_slot(uint32_t texture_id);
 
-        void set_shader(const Shader *shader) { _shader = shader; }
+        void set_shader(Shader *shader) { _shader = shader; }
 
     protected:
         constexpr static uint32_t ATTRIB_INDEX_POSITION = 0;
@@ -49,7 +49,7 @@ namespace mrld
         constexpr static uint32_t MAX_TEXTURE_SLOTS = 32;
         constexpr static uint32_t VERTEX_SIZE = sizeof(VertexData);
 
-        const Shader *_shader;
+        Shader *_shader;
         std::vector<mat4> _transform_stack;
         const mat4 *_last_transform;
         std::unordered_map<uint32_t, uint32_t> _texture_id_to_texture_slot;

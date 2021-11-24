@@ -13,7 +13,7 @@ namespace mrld
     class Renderer2D: public Renderer
     {
     public:
-        Renderer2D(const Shader *shader);
+        Renderer2D(Shader *shader);
         ~Renderer2D();
         Renderer2D(const Renderer2D &o) = delete;
         Renderer2D& operator=(const Renderer2D &o) = delete;

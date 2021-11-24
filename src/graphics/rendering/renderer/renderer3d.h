@@ -10,7 +10,7 @@ namespace mrld
     class Renderer3D: public Renderer
     {
     public:
-        Renderer3D(const Shader *shader);
+        Renderer3D(Shader *shader);
         ~Renderer3D();
         Renderer3D(const Renderer3D &o) = delete;
         Renderer3D& operator=(const Renderer3D &o) = delete;

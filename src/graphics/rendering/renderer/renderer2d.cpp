@@ -7,7 +7,7 @@
 
 namespace mrld
 {
-    Renderer2D::Renderer2D(const Shader *shader)
+    Renderer2D::Renderer2D(Shader *shader)
     : Renderer(shader)
     , _sprites_submitted{0}
     {

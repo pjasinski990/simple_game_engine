@@ -4,7 +4,7 @@
 
 namespace mrld
 {
-    Renderer::Renderer(const Shader *shader)
+    Renderer::Renderer(Shader *shader)
     : _shader{shader}
     { }
 
