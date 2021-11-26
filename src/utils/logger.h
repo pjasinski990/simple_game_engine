@@ -7,7 +7,7 @@ namespace mrld
     constexpr uint16_t LOGGER_MESSAGE_MAX_LENGTH = 512;
     constexpr uint16_t LOGGER_DATETIME_BUFFER_SIZE = 32;
 
-    enum LogLevel
+    enum class LogLevel
     {
         DBG,
         INF,

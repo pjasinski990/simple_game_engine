@@ -7,6 +7,7 @@ namespace mrld
     struct vec2;
     struct vec3;
     struct vec4;
+    struct quat;
 
     struct mat4
     {
@@ -34,6 +35,7 @@ namespace mrld
         static mat4 diagonal(float f);
 
         static mat4 translate(const vec3 &v);
+        static mat4 rotate(const quat &q);
         static mat4 rotate_x(float angle_rads);
         static mat4 rotate_y(float angle_rads);
         static mat4 rotate_z(float angle_rads);

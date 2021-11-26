@@ -3,26 +3,26 @@
 #include <glad/glad.h>
 
 #include "mrld/mrld.h"
-#include "cube_vertices.h"
+#include "res/cube_vertices.h"
 
 int main(void)
 {
 //    mrld::Logger::set_log_level(mrld::LogLevel::DBG);
     mrld::Window window("Hello test", 800, 600);
     mrld::KeyboardHandler handler({
-        mrld::W,
-        mrld::S,
-        mrld::A,
-        mrld::D,
-        mrld::LEFT,
-        mrld::RIGHT,
-        mrld::SPACE,
-        mrld::LEFT_SHIFT,
-        mrld::ESCAPE,
-        mrld::KEYPAD_1,
-        mrld::KEYPAD_2
+        mrld::KeyCode::W,
+        mrld::KeyCode::S,
+        mrld::KeyCode::A,
+        mrld::KeyCode::D,
+        mrld::KeyCode::LEFT,
+        mrld::KeyCode::RIGHT,
+        mrld::KeyCode::SPACE,
+        mrld::KeyCode::LEFT_SHIFT,
+        mrld::KeyCode::ESCAPE,
+        mrld::KeyCode::KEYPAD_1,
+        mrld::KeyCode::KEYPAD_2
         });
-    mrld::MouseHandler m_handler({mrld::BUTTON_LEFT, mrld::BUTTON_RIGHT});
+    mrld::MouseHandler m_handler({mrld::MouseButton::BUTTON_LEFT, mrld::MouseButton::BUTTON_RIGHT});
 
     mrld::Shader s(
             "../src/graphics/shader/shader_files/sample_vertex.shader",
@@ -46,15 +46,16 @@ int main(void)
 
     mrld::Renderer3D r3(&s);
     mrld::Layer layer3d(&s, &r3, &cam);
-    for (int i = 0; i < 50; ++i) {
-        for (int j = 0; j < 50; ++j) {
-            mrld::Model *box = new mrld::Model(mrld::cube_vertices, 24, mrld::cube_indices, 36, &container_t);
+    for (int i = 0; i < 40; ++i) {
+        for (int j = 0; j < 40; ++j) {
+            mrld::Model *box = new mrld::Model(mrld::cube::vertices, mrld::cube::vertex_count, mrld::cube::indices, mrld::cube::index_count, &container_t);
             box->scale(mrld::vec3(10.0f, 10.0f, 10.0f));
             box->rotate(mrld::vec3(0.0f, 0.0f, 1.0f), mrld::math_constants::pi8);
             box->translate(mrld::vec3(i * 12.0f, 3.80f, j * -12.0f));
             layer3d.add(box);
         }
     }
+
     mrld::VertexData floor[4] = {
             { mrld::vec3(-1000, 0, -1000),
             mrld::vec3(0, 1, 0),
@@ -83,6 +84,19 @@ int main(void)
     uint16_t floor_indices[] = {0, 1, 2, 2, 3, 0};
     layer3d.add(new mrld::Model(floor, 4, floor_indices, 6));
 
+    mrld::physics_properties cube_props;
+    cube_props.position = mrld::vec3();
+    cube_props.velocity = mrld::vec3(0.0f, 10.0f, 0.0f);
+    cube_props.acceleration = mrld::vec3();
+    cube_props.mass = 1.0f;
+    cube_props.bounciness = 0.0f;
+    mrld::Model *cube = new mrld::Model(mrld::cube::vertices, mrld::cube::vertex_count, mrld::cube::indices, mrld::cube::index_count);
+    mrld::Object *cube_o = new mrld::Object(cube, new mrld::SphereCollider(1.0f), cube_props);
+    layer3d.add(cube_o->get_model());
+
+    mrld::PhysicsEngine world;
+    world.add(cube_o);
+
     uint16_t fps = 0;
     glClearColor(0.15f, 0.15f, 0.15f, 1.0f);
 
@@ -90,6 +104,7 @@ int main(void)
     timer.reset();
 
     while (!window.should_close()) {
+        world.step(0.003f);
         window.clear();
         layer3d.draw();
         window.update();

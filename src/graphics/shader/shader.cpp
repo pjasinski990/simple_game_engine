@@ -7,9 +7,9 @@
 namespace mrld
 {
     std::unordered_map<ShaderType, const char*> Shader::_shader_type_to_string = {
-            {VERTEX_SHADER, "VERTEX_SHADER"},
-            {GEOMETRY_SHADER, "GEOMETRY_SHADER"},
-            {FRAGMENT_SHADER, "FRAGMENT_SHADER"}
+            {ShaderType::VERTEX_SHADER, "VERTEX_SHADER"},
+            {ShaderType::GEOMETRY_SHADER, "GEOMETRY_SHADER"},
+            {ShaderType::FRAGMENT_SHADER, "FRAGMENT_SHADER"}
     };
 
     Shader::Shader()
@@ -20,16 +20,16 @@ namespace mrld
     Shader::Shader(const char *vertex_path, const char *fragment_path)
     {
         _shader_program = glCreateProgram();
-        update_shader_source(vertex_path, VERTEX_SHADER);
-        update_shader_source(fragment_path, FRAGMENT_SHADER);
+        update_shader_source(vertex_path, ShaderType::VERTEX_SHADER);
+        update_shader_source(fragment_path, ShaderType::FRAGMENT_SHADER);
     }
 
     Shader::Shader(const char *vertex_path, const char *geometry_path, const char *fragment_path)
     {
         _shader_program = glCreateProgram();
-        update_shader_source(vertex_path, VERTEX_SHADER);
-        update_shader_source(geometry_path, GEOMETRY_SHADER);
-        update_shader_source(fragment_path, FRAGMENT_SHADER);
+        update_shader_source(vertex_path, ShaderType::VERTEX_SHADER);
+        update_shader_source(geometry_path, ShaderType::GEOMETRY_SHADER);
+        update_shader_source(fragment_path, ShaderType::FRAGMENT_SHADER);
     }
 
     Shader::~Shader()
@@ -41,13 +41,13 @@ namespace mrld
     {
         std::string source = FileHandler::read_file_contents(path);
         switch (type) {
-            case VERTEX_SHADER:
+            case ShaderType::VERTEX_SHADER:
                 _vertex_shader_source = source;
                 break;
-            case GEOMETRY_SHADER:
+            case ShaderType::GEOMETRY_SHADER:
                 _geometry_shader_source = source;
                 break;
-            case FRAGMENT_SHADER:
+            case ShaderType::FRAGMENT_SHADER:
                 _fragment_shader_source = source;
                 break;
         }

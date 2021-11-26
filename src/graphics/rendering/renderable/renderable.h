@@ -10,7 +10,7 @@ namespace mrld
     {
     public:
         virtual ~Renderable() = default;
-        virtual void submit(Renderer &r) = 0;
+        virtual void submit_self(Renderer &r) = 0;
 
     protected:
     };

@@ -12,7 +12,7 @@
 
 namespace mrld
 {
-    enum ShaderType
+    enum class ShaderType
     {
         VERTEX_SHADER = GL_VERTEX_SHADER,
         GEOMETRY_SHADER = GL_GEOMETRY_SHADER,

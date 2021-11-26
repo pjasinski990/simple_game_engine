@@ -25,6 +25,17 @@
 #include "../../src/graphics/texture/texture.h"
 #include "../../src/graphics/shader/shader.h"
 
+// Physics
+#include "../../src/physics/transform.h"
+#include "../../src/physics/object.h"
+#include "../../src/physics/physics_engine.h"
+#include "../../src/physics/physics_properties.h"
+#include "../../src/physics/collisions/collision_algo.h"
+#include "../../src/physics/collisions/collision_point.h"
+#include "../../src/physics/collisions/collider.h"
+#include "../../src/physics/collisions/colliders/sphere_collider.h"
+#include "../../src/physics/collisions/colliders/plane_collider.h"
+
 // IO
 #include "../../src/input/key_code.h"
 #include "../../src/input/keyboard/keyboard_handler.h"

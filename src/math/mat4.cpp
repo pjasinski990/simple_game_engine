@@ -1,6 +1,7 @@
 #include <cmath>
 
 #include "math_util.h"
+#include "quaternion.h"
 #include "vec3.h"
 #include "vec4.h"
 #include "mat4.h"
@@ -145,6 +146,10 @@ namespace mrld
         res.data[2 + 3 * 4] = v.z;
         return res;
     }
+    mat4 mat4::rotate(const quat &q)
+    {
+        return q.create_rotation_matrix();
+    }
     mat4 mat4::rotate_x(float angle_rads)
     {
         mat4 res;
@@ -220,4 +225,5 @@ namespace mrld
         res.data[2 + 3 * 4] = -2.0f * z_far * z_near / (z_far - z_near);
         return res;
     }
+
 }

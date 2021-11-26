@@ -2,7 +2,7 @@
 
 namespace mrld
 {
-    enum TextureType {
+    enum class TextureType {
         TEXTURE_DIFFUSE,
         TEXTURE_SPECULAR
     };

@@ -14,7 +14,7 @@ namespace mrld
         virtual uint32_t get_vertices_count() const = 0;
         virtual const uint16_t* get_indices() const = 0;
         virtual uint32_t get_indices_count() const = 0;
-        virtual void submit(Renderer &r) override { r.submit(*this); }
+        virtual void submit_self(Renderer &r) override { r.submit(*this); }
 
         virtual const Texture* get_texture() const { return _texture; }
 

@@ -12,7 +12,7 @@ namespace mrld
         _instances.push_back(this);
         _key_states.reserve(keys.size());
         for (auto k : keys) {
-            _key_states[static_cast<int>(k)] = false;
+            _key_states[k] = false;
         }
         glfwSetKeyCallback(glfwGetCurrentContext(), key_callback);
     }
@@ -26,16 +26,16 @@ namespace mrld
     void KeyboardHandler::key_callback(GLFWwindow *window, int key, int scancode, int action, int mods)
     {
         for (auto q : _instances) {
-            auto it = q->_key_states.find(key);
+            auto it = q->_key_states.find(static_cast<KeyCode>(key));
             if (it != q->_key_states.end()) {
-                q->_key_states[key] = action != GLFW_RELEASE;
+                q->_key_states[static_cast<KeyCode>(key)] = action != GLFW_RELEASE;
             }
         }
     }
 
     bool KeyboardHandler::is_key_down(KeyCode key) const
     {
-        return _key_states.at(static_cast<int>(key));
+        return _key_states.at(key);
     }
 
     void KeyboardHandler::debounce(KeyCode key)

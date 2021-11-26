@@ -19,7 +19,7 @@ namespace mrld
         }
     }
 
-    void Model::submit(Renderer &r)
+    void Model::submit_self(Renderer &r)
     {
         r.push(_model_matrix);
         r.submit(*this);

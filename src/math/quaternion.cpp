@@ -4,6 +4,14 @@
 
 namespace mrld
 {
+    quat::quat()
+    : a{1.0f}
+    , b{0.0f}
+    , c{0.0f}
+    , d{0.0f}
+    {
+    }
+
     quat::quat(float a, float b, float c, float d)
     : a{a}
     , b{b}
@@ -73,4 +81,5 @@ namespace mrld
         res.data[15] = 1.0f;
         return res;
     }
+
 }

@@ -23,16 +23,16 @@ namespace mrld
 
         log_time();
         switch (log_level) {
-            case DBG:
+            case LogLevel::DBG:
                 log_debug(msg);
                 break;
-            case INF:
+            case LogLevel::INF:
                 log_info(msg);
                 break;
-            case WRN:
+            case LogLevel::WRN:
                 log_warning(msg);
                 break;
-            case ERR:
+            case LogLevel::ERR:
                 log_error(msg);
                 break;
         }

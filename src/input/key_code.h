@@ -4,7 +4,7 @@
 
 namespace mrld
 {
-    enum MouseButton
+    enum class MouseButton
     {
         BUTTON_LEFT = GLFW_MOUSE_BUTTON_1,
         BUTTON_RIGHT = GLFW_MOUSE_BUTTON_2,
@@ -17,7 +17,7 @@ namespace mrld
         MOUSE_LAST = BUTTON_8,
     };
 
-    enum KeyCode
+    enum class KeyCode
     {
         SPACE = GLFW_KEY_SPACE,
         APOSTROPHE = GLFW_KEY_APOSTROPHE, /* ' */

@@ -9,7 +9,7 @@ namespace mrld
     struct vec3;
     struct quat
     {
-        quat() = default;
+        quat();
         quat(float a, float b, float c, float d);
         explicit quat(const vec3 &u);
         quat(const vec3 &axis, float angle_rads);

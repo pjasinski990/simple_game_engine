@@ -28,6 +28,6 @@ namespace mrld
 
         static void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods);
         static std::vector<KeyboardHandler*> _instances;
-        std::unordered_map<int, bool> _key_states;
+        std::unordered_map<KeyCode, bool> _key_states;
     };
 }

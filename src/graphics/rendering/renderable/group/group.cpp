@@ -28,12 +28,12 @@ namespace mrld
         return *this;
     }
 
-    void Group::submit(Renderer &r)
+    void Group::submit_self(Renderer &r)
     {
         r.push(_transformation);
         r.begin();
         for (auto &&item : _children) {
-            item->submit(r);
+            item->submit_self(r);
         }
         r.end();
         r.pop();

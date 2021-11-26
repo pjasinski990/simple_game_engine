@@ -24,7 +24,7 @@ namespace mrld
         virtual void end() const {};
 
         // Can accept aggregates (groups)
-        virtual void submit(Renderable &o) { o.submit(*this); }
+        virtual void submit(Renderable &o) { o.submit_self(*this); }
         // Accepts actual models / sprites (with vertex data)
         virtual void submit(Drawable &o) = 0;
         virtual void flush() = 0;

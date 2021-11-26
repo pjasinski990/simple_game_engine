@@ -18,7 +18,7 @@ namespace mrld
         Group(Group &&o);
         Group& operator=(Group &&o);
 
-        void submit(Renderer &r) override;
+        void submit_self(Renderer &r) override;
         void add(Renderable *o);
         const std::vector<Renderable*>& get_children() const { return _children; }
         const mat4& get_transformation() const { return _transformation; }
