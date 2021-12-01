@@ -46,15 +46,6 @@ int main(void)
     mrld::Renderer3D r3(&s);
     mrld::Layer layer3d(&s, &r3, &cam);
     mrld::Texture container_t("../res/container.jpg", false);
-    for (int i = 0; i < 40; ++i) {
-        for (int j = 0; j < 40; ++j) {
-//            mrld::Model *box = new mrld::Model(mrld::cube::vertices, mrld::cube::vertex_count, mrld::cube::indices, mrld::cube::index_count, &container_t);
-//            box->scale(mrld::vec3(10.0f, 10.0f, 10.0f));
-//            box->rotate(mrld::vec3(0.0f, 0.0f, 1.0f), mrld::math_constants::pi8);
-//            box->translate(mrld::vec3(i * 12.0f, 3.80f, j * -12.0f));
-//            layer3d.add(box);
-        }
-    }
 
     mrld::VertexData floor[4] = {
             { mrld::vec3(-1000, 0, -1000),
@@ -87,16 +78,18 @@ int main(void)
     floor_o->has_physics = true;
     floor_o->is_fixed = true;
     floor_o->t.position = mrld::vec3(0.0f, -3.0f, 0.0f);
-    floor_o->update();
+    floor_o->update_model();
     layer3d.add(floor_o->get_model());
 
     mrld::physics_properties cube_props;
     cube_props.velocity = mrld::vec3(0.0f, 10.0f, 0.0f);
-    cube_props.bounciness = 0.8f;
+    cube_props.bounciness = 0.4f;
     cube_props.mass = 1.0f;
+    cube_props.mass_inv = 1.0f;
     mrld::Model *cube = new mrld::Model(mrld::cube::vertices, mrld::cube::vertex_count, mrld::cube::indices, mrld::cube::index_count);
     mrld::Object *cube_o = new mrld::Object(cube, new mrld::SphereCollider(mrld::vec3(0.5f, 0.5f, 0.5f), 0.5f), cube_props);
     mrld::Model *cube_a = new mrld::Model(mrld::cube::vertices, mrld::cube::vertex_count, mrld::cube::indices, mrld::cube::index_count);
+    cube_props.velocity = mrld::vec3(0.0f, 10.0f, 0.0f);
     mrld::Object *cube_ao = new mrld::Object(cube_a, new mrld::SphereCollider(mrld::vec3(0.5f, 0.5f, 0.5f), 0.5f), cube_props);
     cube_o->t.position = mrld::vec3(0.0f, 5.0f, 0.0f);
     layer3d.add(cube_o->get_model());
@@ -109,7 +102,6 @@ int main(void)
     world.add(cube_ao);
     world.add(floor_o);
 
-    uint16_t fps = 0;
     glClearColor(0.15f, 0.15f, 0.15f, 1.0f);
 
     mrld::Timer timer;
@@ -119,7 +111,8 @@ int main(void)
     float dtf = dt * 0.000001f;
     uint64_t accumulator = 0u;
     uint64_t current_time = timer.get_elapsed_micros();
-    uint64_t t = 0u;
+    uint16_t fps = 0;
+    uint64_t fps_timer = 0u;
 
     while (!window.should_close()) {
         uint64_t new_time = timer.get_elapsed_micros();
@@ -130,14 +123,21 @@ int main(void)
         while (accumulator > dt) {
             world.step(dtf);
             accumulator -= dt;
+
+            // leaving in next iteration
+            if (accumulator < dt) {
+                world.update_models();
+            }
         }
+        world.interpolate_previous_state(static_cast<float>(accumulator)/ static_cast<float>(dt));
+
         handle_keys(handler, cam, cube_o, dtf);
         window.clear();
         layer3d.draw();
         window.update();
-        if (timer.get_elapsed_millis() - t > 1000u) {
+        if (timer.get_elapsed_millis() - fps_timer > 1000u) {
             std::cout << fps << " fps" << std::endl;
-            t = timer.get_elapsed_millis();
+            fps_timer = timer.get_elapsed_millis();
             fps = 0;
         }
         ++fps;

@@ -16,7 +16,7 @@ namespace mrld
         inline Model *get_model() { return _model; }
         inline const Model *get_model() const { return _model; }
         inline const Collider *get_collider() const { return _collider; }
-        void update();
+        void update_model();
 
         physics_properties phys_properties;
         transform t;

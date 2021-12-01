@@ -14,7 +14,7 @@ namespace mrld
         /* no-op */
     }
 
-    void Object::update()
+    void Object::update_model()
     {
         _model->set_model_matrix(
                 mat4::translate(t.position)
