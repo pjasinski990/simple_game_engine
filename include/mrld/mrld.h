@@ -32,9 +32,13 @@
 #include "../../src/physics/physics_properties.h"
 #include "../../src/physics/collisions/collision_algo.h"
 #include "../../src/physics/collisions/collision_point.h"
+#include "../../src/physics/collisions/collision.h"
 #include "../../src/physics/collisions/collider.h"
 #include "../../src/physics/collisions/colliders/sphere_collider.h"
 #include "../../src/physics/collisions/colliders/plane_collider.h"
+#include "../../src/physics/collisions/solver/solver.h"
+#include "../../src/physics/collisions/solver/impulse_solver.h"
+#include "../../src/physics/collisions/solver/position_correction_solver.h"
 
 // IO
 #include "../../src/input/key_code.h"
