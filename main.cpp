@@ -88,7 +88,7 @@ int main(void)
     world.add(floor_o);
 
     mrld::physics_properties cube_props;
-    cube_props.velocity = mrld::vec3(0.0f, 2.0f, 0.0f);
+    cube_props.velocity = mrld::vec3(0.0f, 0.0f, 0.0f);
     cube_props.bounciness = 0.4f;
     float dist = 10.0f;
     for (int i = 0; i < 50; ++i) {

@@ -15,7 +15,7 @@ namespace mrld
             else {
                 inv_mass_sum = collision.a->phys_properties.mass_inv + collision.b->phys_properties.mass_inv;
             }
-            const float bounciness = std::min(collision.a->phys_properties.bounciness, collision.b->phys_properties.bounciness);
+            const float bounciness = collision.a->phys_properties.bounciness * collision.b->phys_properties.bounciness;
 
             for (uint32_t i = 0; i < _n_iterations; ++i) {
                 const vec3 v_rel = collision.b->phys_properties.velocity - collision.a->phys_properties.velocity;

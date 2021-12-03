@@ -11,12 +11,12 @@ namespace mrld
                 Logger::log(LogLevel::WRN, "Request for solving of collision between two fixed objects detected");
                 return;
             }
-            if (!collision.a->is_fixed) {
-                collision.a->t.position -= collision.coll_p.normal * collision.coll_p.collision_depth;
-            }
-            else {
-                collision.b->t.position += collision.coll_p.normal * collision.coll_p.collision_depth;
-            }
+
+            const float m = std::max(2.0f - collision.a->is_fixed - collision.b->is_fixed, 1.0f);
+            const float a_displacement_ratio = (1.0f - collision.a->is_fixed) * m;
+            const float b_displacement_ratio = (1.0f - collision.b->is_fixed) * m;
+            collision.a->t.position -= collision.coll_p.normal * collision.coll_p.collision_depth * a_displacement_ratio;
+            collision.b->t.position += collision.coll_p.normal * collision.coll_p.collision_depth * b_displacement_ratio;
         }
     }
 }
