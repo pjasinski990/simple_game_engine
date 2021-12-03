@@ -77,35 +77,30 @@ int main(void)
     mrld::Object *floor_o = new mrld::Object(floor_model, new mrld::PlaneCollider(mrld::vec3(0.0f, 1.0f, 0.0f), 0.0f), mrld::physics_properties());
     floor_o->has_physics = true;
     floor_o->is_fixed = true;
+    floor_o->phys_properties.mass_inv = 0.0f;
     floor_o->t.position = mrld::vec3(0.0f, -3.0f, 0.0f);
     floor_o->update_model();
     layer3d.add(floor_o->get_model());
 
-    mrld::physics_properties cube_props;
-    cube_props.velocity = mrld::vec3(0.0f, 2.0f, 0.0f);
-    cube_props.bounciness = 0.4f;
-    cube_props.mass = 2.0f;
-    cube_props.mass_inv = 0.5f;
-    mrld::Model *cube = new mrld::Model(mrld::cube::vertices, mrld::cube::vertex_count, mrld::cube::indices, mrld::cube::index_count);
-    mrld::Object *cube_o = new mrld::Object(cube, new mrld::SphereCollider(mrld::vec3(0.5f, 0.5f, 0.5f), 0.5f), cube_props);
-    cube_o->is_fixed = false;
-
-    mrld::Model *cube_a = new mrld::Model(mrld::cube::vertices, mrld::cube::vertex_count, mrld::cube::indices, mrld::cube::index_count);
-    cube_props.velocity = mrld::vec3(0.0f, 10.0f, 0.0f);
-    cube_props.mass = 10.0f;
-    cube_props.mass_inv = 0.1f;
-    mrld::Object *cube_ao = new mrld::Object(cube_a, new mrld::SphereCollider(mrld::vec3(0.5f, 0.5f, 0.5f), 0.5f), cube_props);
-    cube_ao->is_fixed = false;
-    cube_o->t.position = mrld::vec3(0.0f, 5.0f, 0.0f);
-    layer3d.add(cube_o->get_model());
-    layer3d.add(cube_ao->get_model());
-
     mrld::PhysicsEngine world;
     world.add_solver(new mrld::ImpulseSolver());
     world.add_solver(new mrld::PositionCorrectionSolver());
-    world.add(cube_o);
-    world.add(cube_ao);
     world.add(floor_o);
+
+    mrld::physics_properties cube_props;
+    cube_props.velocity = mrld::vec3(0.0f, 2.0f, 0.0f);
+    cube_props.bounciness = 0.4f;
+    float dist = 10.0f;
+    for (int i = 0; i < 50; ++i) {
+        mrld::Model *cube = new mrld::Model(mrld::cube::vertices, mrld::cube::vertex_count, mrld::cube::indices, mrld::cube::index_count);
+        mrld::Object *cube_o = new mrld::Object(cube, new mrld::SphereCollider(mrld::vec3(0.5f, 0.5f, 0.5f), 0.5f), cube_props);
+        const float rand_x = static_cast<float>(rand()) / RAND_MAX * dist - dist / 2.0f;
+        const float rand_y = static_cast<float>(rand()) / RAND_MAX * dist;
+        const float rand_z = static_cast<float>(rand()) / RAND_MAX * dist - dist / 2.0f;
+        cube_o->t.position = mrld::vec3(rand_x, rand_y, rand_z);
+        layer3d.add(cube_o->get_model());
+        world.add(cube_o);
+    }
 
     glClearColor(0.15f, 0.15f, 0.15f, 1.0f);
 
@@ -136,7 +131,7 @@ int main(void)
         }
         world.interpolate_previous_state(static_cast<float>(accumulator)/ static_cast<float>(dt));
 
-        handle_keys(handler, cam, cube_o, dtf);
+        handle_keys(handler, cam, nullptr, dtf);
         window.clear();
         layer3d.draw();
         window.update();

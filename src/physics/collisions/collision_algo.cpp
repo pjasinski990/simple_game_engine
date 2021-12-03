@@ -34,7 +34,21 @@ namespace mrld
 
         collision_point sphere_plane_collision(const transform &ta, const SphereCollider *a, const transform &tb, const PlaneCollider *b)
         {
-            return plane_sphere_collision(tb, b, ta, a);
+            // This cannot be implemented simply as reverse version with swapped arguments, as caller expects parameter
+            // Object types to be ordered as passed
+            collision_point res;
+            vec3 sphere_center_actual_pos = ta.position + a->get_center();
+            vec3 sphere_center_relative_pos = sphere_center_actual_pos - tb.position - b->get_normal() * b->get_distance();
+            float dist = (sphere_center_relative_pos).dot(b->get_normal());
+            res.has_collision = fabs(dist) < a->get_radius();
+            if (res.has_collision) {
+                res.a = sphere_center_actual_pos - b->get_normal() * a->get_radius();
+                res.b = sphere_center_actual_pos - b->get_normal() * dist;
+                vec3 diff = res.b - res.a;
+                res.collision_depth = diff.magnitude();
+                res.normal = diff.normalized();
+            }
+            return res;
         }
 
         collision_point sphere_sphere_collision(const transform &ta, const SphereCollider *a, const transform &tb, const SphereCollider *b)

@@ -10,8 +10,8 @@ namespace mrld
         , bounciness{1.0f}
         , friction_s{0.5f}
         , friction_d{0.5f}
-        , mass{0.0f}
-        , mass_inv{0.0f}
+        , mass{1.0f}
+        , mass_inv{1.0f}
         {
             /* no-op */
         }

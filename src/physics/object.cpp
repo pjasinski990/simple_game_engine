@@ -9,7 +9,7 @@ namespace mrld
     , phys_properties{properties}
     , t{vec3(), vec3(1.0f, 1.0f, 1.0f), quat()}
     , has_physics{true}
-    , is_fixed{true}
+    , is_fixed{false}
     {
         /* no-op */
     }

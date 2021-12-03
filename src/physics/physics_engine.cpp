@@ -96,7 +96,7 @@ namespace mrld
         // TODO rewrite this and solvers to use multiple collision points for each colliding body
         for (uint32_t i = 0; i < _objects.size(); ++i) {
             for (uint32_t j = i + 1; j < _objects.size(); ++j) {
-                if (!_objects[i]->get_collider() || !_objects[j]->get_collider()) { continue; }    // Both have collider
+                if (!_objects[i]->get_collider() || !_objects[j]->get_collider()) { continue; }   // Both have collider
 
                 collision_point coll = _objects[i]->get_collider()->check_collision(
                         _objects[i]->t,
