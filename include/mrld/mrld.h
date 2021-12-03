@@ -27,7 +27,8 @@
 
 // Physics
 #include "../../src/physics/transform.h"
-#include "../../src/physics/object.h"
+#include "../../src/physics/body.h"
+#include "../../src/physics/rigidbody.h"
 #include "../../src/physics/physics_engine.h"
 #include "../../src/physics/physics_properties.h"
 #include "../../src/physics/collisions/collision_algo.h"

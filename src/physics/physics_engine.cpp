@@ -1,5 +1,6 @@
 #include "../utils/logger.h"
-#include "object.h"
+#include "body.h"
+#include "rigidbody.h"
 #include "physics_engine.h"
 #include "collisions/collider.h"
 #include "collisions/colliders/sphere_collider.h"
@@ -37,14 +38,14 @@ namespace mrld
         }
     }
 
-    void PhysicsEngine::add(Object *o)
+    void PhysicsEngine::add(Body *o)
     {
         _objects.push_back(o);
         _previous_state.push_back(o->t);
         _current_state.push_back(o->t);
     }
 
-    void PhysicsEngine::remove(Object *o)
+    void PhysicsEngine::remove(Body *o)
     {
         auto target = std::find(_objects.begin(), _objects.end(), o);
         if (target != _objects.end()) {
@@ -78,14 +79,12 @@ namespace mrld
     {
         for (uint32_t i = 0; i < _objects.size(); ++i) {
             _previous_state[i] = _current_state[i];
-            if (_objects[i]->has_physics) {
-                if (!_objects[i]->is_fixed) {
-                    physics_properties &props = _objects[i]->phys_properties;
-                    props.acceleration += _gravity * props.mass;
-                    props.velocity += props.acceleration / props.mass * dt;
-                    _objects[i]->t.position += props.velocity * dt;
-                    props.acceleration = vec3();
-                }
+            if (_objects[i]->is_dynamic()) {
+                physics_properties &props = _objects[i]->phys_properties;
+                props.acceleration += _gravity * props.mass;
+                props.velocity += props.acceleration / props.mass * dt;
+                _objects[i]->t.position += props.velocity * dt;
+                props.acceleration = vec3();
             }
         }
     }

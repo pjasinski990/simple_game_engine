@@ -5,7 +5,7 @@
 #include "mrld/mrld.h"
 #include "res/cube_vertices.h"
 
-void handle_keys(mrld::KeyboardHandler& handler, mrld::FPSCamera &cam, mrld::Object *cube, float dt);
+void handle_keys(mrld::KeyboardHandler& handler, mrld::FPSCamera &cam, mrld::RigidBody *cube, float dt);
 
 int main(void)
 {
@@ -74,9 +74,7 @@ int main(void)
     };
     uint16_t floor_indices[] = {0, 1, 2, 2, 3, 0};
     mrld::Model *floor_model = new mrld::Model(floor, 4, floor_indices, 6);
-    mrld::Object *floor_o = new mrld::Object(floor_model, new mrld::PlaneCollider(mrld::vec3(0.0f, 1.0f, 0.0f), 0.0f), mrld::physics_properties());
-    floor_o->has_physics = true;
-    floor_o->is_fixed = true;
+    mrld::Body *floor_o = new mrld::Body(floor_model, new mrld::PlaneCollider(mrld::vec3(0.0f, 1.0f, 0.0f), 0.0f), mrld::physics_properties());
     floor_o->phys_properties.mass_inv = 0.0f;
     floor_o->t.position = mrld::vec3(0.0f, -3.0f, 0.0f);
     floor_o->update_model();
@@ -85,7 +83,6 @@ int main(void)
     mrld::PhysicsEngine world;
     world.add_solver(new mrld::ImpulseSolver());
     world.add_solver(new mrld::PositionCorrectionSolver());
-    world.add(floor_o);
 
     mrld::physics_properties cube_props;
     cube_props.velocity = mrld::vec3(0.0f, 0.0f, 0.0f);
@@ -93,7 +90,7 @@ int main(void)
     float dist = 10.0f;
     for (int i = 0; i < 50; ++i) {
         mrld::Model *cube = new mrld::Model(mrld::cube::vertices, mrld::cube::vertex_count, mrld::cube::indices, mrld::cube::index_count);
-        mrld::Object *cube_o = new mrld::Object(cube, new mrld::SphereCollider(mrld::vec3(0.5f, 0.5f, 0.5f), 0.5f), cube_props);
+        mrld::RigidBody *cube_o = new mrld::RigidBody(cube, new mrld::SphereCollider(mrld::vec3(0.5f, 0.5f, 0.5f), 0.5f), cube_props);
         const float rand_x = static_cast<float>(rand()) / RAND_MAX * dist - dist / 2.0f;
         const float rand_y = static_cast<float>(rand()) / RAND_MAX * dist;
         const float rand_z = static_cast<float>(rand()) / RAND_MAX * dist - dist / 2.0f;
@@ -101,6 +98,14 @@ int main(void)
         layer3d.add(cube_o->get_model());
         world.add(cube_o);
     }
+//    for (int i = 0; i < 10; ++i) {
+//        mrld::Model *cube = new mrld::Model(mrld::cube::vertices, mrld::cube::vertex_count, mrld::cube::indices, mrld::cube::index_count);
+//        mrld::RigidBody *cube_o = new mrld::RigidBody(cube, new mrld::SphereCollider(mrld::vec3(0.5f, 0.5f, 0.5f), 0.5f), cube_props);
+//        cube_o->t.position = mrld::vec3(0.0f, 2.0f * i, 0.0f);
+//        layer3d.add(cube_o->get_model());
+//        world.add(cube_o);
+//    }
+    world.add(floor_o);
 
     glClearColor(0.15f, 0.15f, 0.15f, 1.0f);
 
@@ -145,7 +150,7 @@ int main(void)
     return 0;
 }
 
-void handle_keys(mrld::KeyboardHandler& handler, mrld::FPSCamera &cam, mrld::Object *cube_o, float dt)
+void handle_keys(mrld::KeyboardHandler& handler, mrld::FPSCamera &cam, mrld::RigidBody *cube_o, float dt)
 {
     if (handler.is_key_down(mrld::KeyCode::W)) {
         cam.go_forward(dt);

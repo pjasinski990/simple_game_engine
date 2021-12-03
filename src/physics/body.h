@@ -7,23 +7,22 @@ namespace mrld
 {
     class Model;
     class Collider;
-    class Object
+    class Body
     {
     public:
-        // TODO rename Object to Body, inherit from it in RigidBody which has dynamic properties instead of only being collidible
-        Object(Model *model, Collider *collider, const physics_properties &properties);
+        Body(Model *model, Collider *collider, const physics_properties &properties);
 
+        bool is_dynamic() const { return _is_dynamic; }
         inline Model *get_model() { return _model; }
-        inline const Model *get_model() const { return _model; }
         inline const Collider *get_collider() const { return _collider; }
         void update_model();
 
         physics_properties phys_properties;
         transform t;
-        bool has_physics;
-        bool is_fixed;
 
-    private:
+    protected:
+        bool _is_dynamic;
+
         Model *_model;
         Collider *_collider;
     };

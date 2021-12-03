@@ -6,7 +6,7 @@
 
 namespace mrld
 {
-    class Object;
+    class Body;
     class Solver;
     class PhysicsEngine
     {
@@ -17,8 +17,8 @@ namespace mrld
         void step(float dt);
         void interpolate_previous_state(float ratio);
         void update_models();
-        void add(Object *o);
-        void remove(Object *o);
+        void add(Body *o);
+        void remove(Body *o);
         void add_solver(Solver *o);
         void remove_solver(Solver *o);
     private:
@@ -27,7 +27,7 @@ namespace mrld
         void solve_collisions(float dt, std::vector<collision> &collisions);
 
         vec3 _gravity;
-        std::vector<Object*> _objects;
+        std::vector<Body*> _objects;
         std::vector<transform> _previous_state;
         std::vector<transform> _current_state;
         std::vector<Solver*> _solvers;

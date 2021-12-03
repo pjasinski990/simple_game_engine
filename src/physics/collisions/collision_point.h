@@ -4,7 +4,6 @@
 
 namespace mrld
 {
-    class Object;
     struct collision_point
     {
         vec3 a;                 // deepest point of obj A in obj B

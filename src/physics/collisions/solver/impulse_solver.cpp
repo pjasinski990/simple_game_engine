@@ -1,5 +1,5 @@
 #include "impulse_solver.h"
-#include "../../object.h"
+#include "../../rigidbody.h"
 #include "../../../utils/logger.h"
 
 namespace mrld
@@ -24,10 +24,10 @@ namespace mrld
 
                 float impulse_a = 1.0f * (1.0f + bounciness) * v_on_normal / inv_mass_sum;
                 float impulse_b = -1.0f * impulse_a;
-                if (!collision.a->is_fixed) {
+                if (collision.a->is_dynamic()) {
                     collision.a->phys_properties.velocity += collision.coll_p.normal * impulse_a * collision.a->phys_properties.mass_inv;
                 }
-                if (!collision.b->is_fixed) {
+                if (collision.b->is_dynamic()) {
                     collision.b->phys_properties.velocity += collision.coll_p.normal * impulse_b * collision.b->phys_properties.mass_inv;
                 }
             }
