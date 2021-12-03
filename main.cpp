@@ -82,15 +82,20 @@ int main(void)
     layer3d.add(floor_o->get_model());
 
     mrld::physics_properties cube_props;
-    cube_props.velocity = mrld::vec3(0.0f, 10.0f, 0.0f);
+    cube_props.velocity = mrld::vec3(0.0f, 2.0f, 0.0f);
     cube_props.bounciness = 0.4f;
-    cube_props.mass = 1.0f;
-    cube_props.mass_inv = 1.0f;
+    cube_props.mass = 2.0f;
+    cube_props.mass_inv = 0.5f;
     mrld::Model *cube = new mrld::Model(mrld::cube::vertices, mrld::cube::vertex_count, mrld::cube::indices, mrld::cube::index_count);
     mrld::Object *cube_o = new mrld::Object(cube, new mrld::SphereCollider(mrld::vec3(0.5f, 0.5f, 0.5f), 0.5f), cube_props);
+    cube_o->is_fixed = false;
+
     mrld::Model *cube_a = new mrld::Model(mrld::cube::vertices, mrld::cube::vertex_count, mrld::cube::indices, mrld::cube::index_count);
     cube_props.velocity = mrld::vec3(0.0f, 10.0f, 0.0f);
+    cube_props.mass = 10.0f;
+    cube_props.mass_inv = 0.1f;
     mrld::Object *cube_ao = new mrld::Object(cube_a, new mrld::SphereCollider(mrld::vec3(0.5f, 0.5f, 0.5f), 0.5f), cube_props);
+    cube_ao->is_fixed = false;
     cube_o->t.position = mrld::vec3(0.0f, 5.0f, 0.0f);
     layer3d.add(cube_o->get_model());
     layer3d.add(cube_ao->get_model());

@@ -11,15 +11,10 @@ namespace mrld
                 Logger::log(LogLevel::WRN, "Request for solving of collision between two fixed objects detected");
                 return;
             }
-
-            const vec3 v_rel = collision.b->phys_properties.velocity - collision.a->phys_properties.velocity;
-            const float v_on_normal = v_rel.dot(collision.coll_p.normal);
-            if (v_on_normal < 0.0f) { return; } // bodies moving away
-
             if (!collision.a->is_fixed) {
                 collision.a->t.position -= collision.coll_p.normal * collision.coll_p.collision_depth;
             }
-            if (!collision.b->is_fixed) {
+            else {
                 collision.b->t.position += collision.coll_p.normal * collision.coll_p.collision_depth;
             }
         }

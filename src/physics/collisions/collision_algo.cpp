@@ -45,9 +45,9 @@ namespace mrld
             float dist = (sphere_center_actual_pos_a - sphere_center_actual_pos_b).magnitude();
             res.has_collision = fabs(dist) < a->get_radius() + b->get_radius();
             if (res.has_collision) {
-                res.normal = (sphere_center_actual_pos_b - sphere_center_actual_pos_a).normalized();
-                res.a = sphere_center_actual_pos_a + res.normal * a->get_radius();
-                res.b = sphere_center_actual_pos_b - res.normal * b->get_radius();
+                res.normal = (sphere_center_actual_pos_a - sphere_center_actual_pos_b).normalized();
+                res.a = sphere_center_actual_pos_a - res.normal * a->get_radius();
+                res.b = sphere_center_actual_pos_b + res.normal * b->get_radius();
                 res.collision_depth = a->get_radius() + b->get_radius() - dist;
             }
             return res;
