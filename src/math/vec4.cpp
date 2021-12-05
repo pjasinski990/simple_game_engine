@@ -116,7 +116,7 @@ namespace mrld
 
     bool operator<(const vec4& o1, const vec4& o2)
     {
-        return std::tie(o1.x, o1.y, o1.z, o1.w) < std::tie(o2.x, o2.y, o2.z, o2.w);
+        return o1.magnitude_squared() < o2.magnitude_squared();
     }
     bool operator>(const vec4& o1, const vec4& o2)
     {
@@ -158,7 +158,11 @@ namespace mrld
 
     float vec4::magnitude() const
     {
-        return sqrtf(x*x + y*y + z*z + w*w);
+        return sqrtf(magnitude_squared());
+    }
+    float vec4::magnitude_squared() const
+    {
+        return x*x + y*y + z*z + w*w;
     }
     vec4 vec4::normalized() const
     {

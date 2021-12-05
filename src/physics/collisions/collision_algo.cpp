@@ -34,8 +34,6 @@ namespace mrld
 
         collision_point sphere_plane_collision(const transform &ta, const SphereCollider *a, const transform &tb, const PlaneCollider *b)
         {
-            // This cannot be implemented simply as reverse version with swapped arguments, as caller expects parameter
-            // Object types to be ordered as passed
             collision_point res;
             vec3 sphere_center_actual_pos = ta.position + a->get_center();
             vec3 sphere_center_relative_pos = sphere_center_actual_pos - tb.position - b->get_normal() * b->get_distance();

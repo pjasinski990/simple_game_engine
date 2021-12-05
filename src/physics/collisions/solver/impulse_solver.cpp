@@ -1,36 +1,49 @@
+#include <unordered_map>
+
 #include "impulse_solver.h"
-#include "../../rigidbody.h"
 #include "../../../utils/logger.h"
 
 namespace mrld
 {
-    void ImpulseSolver::solve(std::vector<collision> &collisions, float dt)
+    void ImpulseSolver::solve(std::vector<collision> &cols, float dt)
     {
-        for (collision &collision : collisions) {
-            float inv_mass_sum = collision.a->phys_properties.mass_inv + collision.b->phys_properties.mass_inv;
+        for (uint32_t i = 0; i < 1; ++i) {
+            apply_impulse(cols);
+        }
+    }
+
+    void ImpulseSolver::apply_impulse(std::vector<collision> &collisions)
+    {
+        std::unordered_map<Body*, vec3> velocity_changes;
+        for (collision &col : collisions) {
+            Body *body = col.a;
+            Body *other = col.b;
+            float inv_mass_sum = body->phys_properties.mass_inv + other->phys_properties.mass_inv;
             if (inv_mass_sum == 0.0f) {
-                Logger::log(LogLevel::WRN, "Request for solving of collision between two fixed objects detected");
+                Logger::log(LogLevel::WRN, "Request for solving of col between two fixed objects detected");
                 return;
             }
             else {
-                inv_mass_sum = collision.a->phys_properties.mass_inv + collision.b->phys_properties.mass_inv;
+                inv_mass_sum = body->phys_properties.mass_inv + other->phys_properties.mass_inv;
             }
-            const float bounciness = collision.a->phys_properties.bounciness * collision.b->phys_properties.bounciness;
 
-            for (uint32_t i = 0; i < _n_iterations; ++i) {
-                const vec3 v_rel = collision.b->phys_properties.velocity - collision.a->phys_properties.velocity;
-                const float v_on_normal = v_rel.dot(collision.coll_p.normal);
-                if (v_on_normal > 0.0f) { continue; } // bodies moving away
+            const float bounciness = body->phys_properties.bounciness * other->phys_properties.bounciness;
+            const vec3 v_rel = other->phys_properties.velocity - body->phys_properties.velocity;
+            const float v_on_normal = v_rel.dot(col.coll_p.normal);
+            if (v_on_normal < 0.0f) { continue; } // bodies moving away
 
-                float impulse_a = 1.0f * (1.0f + bounciness) * v_on_normal / inv_mass_sum;
-                float impulse_b = -1.0f * impulse_a;
-                if (collision.a->is_dynamic()) {
-                    collision.a->phys_properties.velocity += collision.coll_p.normal * impulse_a * collision.a->phys_properties.mass_inv;
-                }
-                if (collision.b->is_dynamic()) {
-                    collision.b->phys_properties.velocity += collision.coll_p.normal * impulse_b * collision.b->phys_properties.mass_inv;
-                }
+            float impulse_a = (1.0f + bounciness) * v_on_normal / inv_mass_sum;
+            float impulse_b = -1.0f * impulse_a;
+            if (body->is_dynamic()) {
+                velocity_changes[body] += col.coll_p.normal * impulse_a * body->phys_properties.mass_inv;
             }
+            if (other->is_dynamic()) {
+                velocity_changes[other] += col.coll_p.normal * impulse_b * other->phys_properties.mass_inv;
+            }
+        }
+
+        for (auto &[body, change] : velocity_changes) {
+            body->phys_properties.velocity += change;
         }
     }
 }

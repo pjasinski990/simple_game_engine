@@ -4,7 +4,7 @@
 
 namespace mrld
 {
-    class PositionCorrectionSolver: public Solver
+    class SimplePositionCorrectionSolver: public Solver
     {
     public:
         void solve(std::vector<collision> &collisions, float dt) override;

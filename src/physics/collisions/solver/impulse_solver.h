@@ -9,6 +9,7 @@ namespace mrld
     public:
         void solve(std::vector<collision> &collisions, float dt) override;
     private:
+        void apply_impulse(std::vector<collision> &contacts);
         const uint32_t _n_iterations = 8u;
     };
 }

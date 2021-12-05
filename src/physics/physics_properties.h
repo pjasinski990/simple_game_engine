@@ -5,7 +5,8 @@ namespace mrld
 {
     struct physics_properties {
         physics_properties()
-        : velocity{vec3()}
+        : center_of_mass{vec3()}
+        , velocity{vec3()}
         , acceleration{vec3()}
         , bounciness{1.0f}
         , friction_s{0.5f}
@@ -16,6 +17,7 @@ namespace mrld
             /* no-op */
         }
 
+        vec3 center_of_mass;
         vec3 velocity;
         vec3 acceleration;
 

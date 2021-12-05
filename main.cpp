@@ -5,7 +5,7 @@
 #include "mrld/mrld.h"
 #include "res/cube_vertices.h"
 
-void handle_keys(mrld::KeyboardHandler& handler, mrld::FPSCamera &cam, mrld::RigidBody *cube, float dt);
+void handle_keys(mrld::KeyboardHandler& handler, mrld::FPSCamera &cam, float dt);
 
 int main(void)
 {
@@ -82,30 +82,37 @@ int main(void)
 
     mrld::PhysicsEngine world;
     world.add_solver(new mrld::ImpulseSolver());
-    world.add_solver(new mrld::PositionCorrectionSolver());
+    world.add_solver(new mrld::RecursivePositionCorrectionSolver());
+//    world.add_solver(new mrld::SimplePositionCorrectionSolver());
+    world.add(floor_o);
 
     mrld::physics_properties cube_props;
     cube_props.velocity = mrld::vec3(0.0f, 0.0f, 0.0f);
-    cube_props.bounciness = 0.4f;
+    cube_props.bounciness = 0.6f;
     float dist = 10.0f;
-    for (int i = 0; i < 50; ++i) {
-        mrld::Model *cube = new mrld::Model(mrld::cube::vertices, mrld::cube::vertex_count, mrld::cube::indices, mrld::cube::index_count);
-        mrld::RigidBody *cube_o = new mrld::RigidBody(cube, new mrld::SphereCollider(mrld::vec3(0.5f, 0.5f, 0.5f), 0.5f), cube_props);
-        const float rand_x = static_cast<float>(rand()) / RAND_MAX * dist - dist / 2.0f;
-        const float rand_y = static_cast<float>(rand()) / RAND_MAX * dist;
-        const float rand_z = static_cast<float>(rand()) / RAND_MAX * dist - dist / 2.0f;
-        cube_o->t.position = mrld::vec3(rand_x, rand_y, rand_z);
-        layer3d.add(cube_o->get_model());
-        world.add(cube_o);
-    }
-//    for (int i = 0; i < 10; ++i) {
-//        mrld::Model *cube = new mrld::Model(mrld::cube::vertices, mrld::cube::vertex_count, mrld::cube::indices, mrld::cube::index_count);
-//        mrld::RigidBody *cube_o = new mrld::RigidBody(cube, new mrld::SphereCollider(mrld::vec3(0.5f, 0.5f, 0.5f), 0.5f), cube_props);
-//        cube_o->t.position = mrld::vec3(0.0f, 2.0f * i, 0.0f);
+//    for (int i = 0; i < 200; ++i) {
+//        mrld::Model *cube = new mrld::Model(mrld::cube::vertices, mrld::cube::vertex_count, mrld::cube::indices, mrld::cube::index_count, &container_t);
+//        mrld::RigidBody *cube_o = new mrld::RigidBody(cube, new mrld::SphereCollider(mrld::vec3(0.5f, 0.5f, 0.5f), sqrtf(2.0f)), cube_props);
+//        const float rand_x = static_cast<float>(rand()) / RAND_MAX * dist - dist / 2.0f;
+//        const float rand_y = static_cast<float>(rand()) / RAND_MAX * dist;
+//        const float rand_z = static_cast<float>(rand()) / RAND_MAX * dist - dist / 2.0f;
+//        cube_o->t.position = mrld::vec3(rand_x, rand_y, rand_z);
+//        cube_o->t.rotation = mrld::quat(mrld::vec3(0.0f, 1.0f, 0.0f), 5.0f * rand() / RAND_MAX);
+//        cube_o->t.scale = mrld::vec3(1.4f, 1.4f, 1.4f);
 //        layer3d.add(cube_o->get_model());
 //        world.add(cube_o);
 //    }
-    world.add(floor_o);
+    for (int i = 0; i < 10; ++i) {
+        mrld::Model *cube = new mrld::Model(mrld::cube::vertices, mrld::cube::vertex_count, mrld::cube::indices, mrld::cube::index_count, &container_t);
+        mrld::RigidBody *cube_o = new mrld::RigidBody(cube, new mrld::SphereCollider(mrld::vec3(0.5f, 0.5f, 0.5f), 0.5f), cube_props);
+//        cube_o->t.position = mrld::vec3(0.0f, 16.0f - 2.0f * i, 0.0f);
+        cube_o->t.position = mrld::vec3(0.0f, 2.0f * i, 0.0f);
+        cube_o->t.rotation = mrld::quat(mrld::vec3(0.0f, 1.0f, 0.0f), 1.0f * rand() / RAND_MAX);
+        layer3d.add(cube_o->get_model());
+        world.add(cube_o);
+        std::cout << "floor addr " << floor_o << std::endl;
+        std::cout << "cube addr " << cube_o << std::endl;
+    }
 
     glClearColor(0.15f, 0.15f, 0.15f, 1.0f);
 
@@ -136,7 +143,7 @@ int main(void)
         }
         world.interpolate_previous_state(static_cast<float>(accumulator)/ static_cast<float>(dt));
 
-        handle_keys(handler, cam, nullptr, dtf);
+        handle_keys(handler, cam, dtf);
         window.clear();
         layer3d.draw();
         window.update();
@@ -150,7 +157,7 @@ int main(void)
     return 0;
 }
 
-void handle_keys(mrld::KeyboardHandler& handler, mrld::FPSCamera &cam, mrld::RigidBody *cube_o, float dt)
+void handle_keys(mrld::KeyboardHandler& handler, mrld::FPSCamera &cam, float dt)
 {
     if (handler.is_key_down(mrld::KeyCode::W)) {
         cam.go_forward(dt);
@@ -179,8 +186,5 @@ void handle_keys(mrld::KeyboardHandler& handler, mrld::FPSCamera &cam, mrld::Rig
     }
     else if (handler.is_key_down(mrld::KeyCode::KEYPAD_2)) {
         glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
-    }
-    else if (handler.is_key_down(mrld::KeyCode::KEYPAD_3)) {
-        cube_o->t.position = mrld::vec3(0.0f, 3.0f, 0.0f);
     }
 }

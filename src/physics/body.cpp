@@ -1,6 +1,5 @@
 #include "body.h"
 #include "../graphics/rendering/renderable/drawable/model.h"
-#include "../math/quaternion.h"
 
 namespace mrld
 {

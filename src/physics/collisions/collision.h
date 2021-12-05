@@ -11,5 +11,6 @@ namespace mrld
         Body *a;
         Body *b;
         collision_point coll_p;
+
     };
 }

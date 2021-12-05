@@ -45,6 +45,7 @@ namespace mrld
         vec3 cross(const vec3 &o) const;
 
         float magnitude() const;
+        float magnitude_squared() const;
         vec3 normalized() const;
 
         float x;

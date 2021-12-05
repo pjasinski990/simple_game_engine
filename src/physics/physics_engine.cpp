@@ -92,18 +92,18 @@ namespace mrld
     std::vector<collision> PhysicsEngine::detect_collisions(float dt)
     {
         std::vector<collision> collisions;
-        // TODO rewrite this and solvers to use multiple collision points for each colliding body
         for (uint32_t i = 0; i < _objects.size(); ++i) {
             for (uint32_t j = i + 1; j < _objects.size(); ++j) {
-                if (!_objects[i]->get_collider() || !_objects[j]->get_collider()) { continue; }   // Both have collider
-
+                if (_objects[i] == _objects[j]) { continue; }
+                if (!_objects[i]->get_collider() || !_objects[j]->get_collider()) { continue; }
                 collision_point coll = _objects[i]->get_collider()->check_collision(
                         _objects[i]->t,
                         _objects[j]->get_collider(),
                         _objects[j]->t);
 
                 if (coll.has_collision) {
-                    collisions.emplace_back(_objects[i], _objects[j], coll);
+                    // Objects are stored as a base pointer, collision will be detected in a dispatched call with reversed arguments
+                    collisions.emplace_back(_objects[j], _objects[i], coll);
                 }
             }
         }

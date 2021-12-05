@@ -22,7 +22,7 @@ namespace mrld
             , _cursor_enabled{true}
             , _first_mouse_update{true}
     {
-        _proj = mat4::perspective(aspect_ratio, fov, z_near, z_far);
+        _proj = mat4::perspective(_ratio, _fov, _z_near, _z_far);
         update_view();
     }
 

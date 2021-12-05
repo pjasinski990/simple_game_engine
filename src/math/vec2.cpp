@@ -105,7 +105,7 @@ namespace mrld
 
     bool operator<(const vec2& o1, const vec2& o2)
     {
-        return std::tie(o1.x, o1.y) < std::tie(o2.x, o2.y);
+        return o1.magnitude_squared() < o2.magnitude_squared();
     }
     bool operator>(const vec2& o1, const vec2& o2)
     {
@@ -143,9 +143,13 @@ namespace mrld
 
     float vec2::magnitude() const 
     {
-        return sqrtf(x*x + y*y);
+        return sqrtf(magnitude_squared());
     }
-    vec2 vec2::normalized() const 
+    float vec2::magnitude_squared() const
+    {
+        return x*x + y*y;
+    }
+    vec2 vec2::normalized() const
     {
         return *this / magnitude();
     }

@@ -43,6 +43,7 @@ namespace mrld
         float dot(const vec4 &o) const;
 
         float magnitude() const;
+        float magnitude_squared() const;
         vec4 normalized() const;
 
         float x;

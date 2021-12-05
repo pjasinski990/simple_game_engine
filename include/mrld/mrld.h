@@ -39,7 +39,8 @@
 #include "../../src/physics/collisions/colliders/plane_collider.h"
 #include "../../src/physics/collisions/solver/solver.h"
 #include "../../src/physics/collisions/solver/impulse_solver.h"
-#include "../../src/physics/collisions/solver/position_correction_solver.h"
+#include "../../src/physics/collisions/solver/recursive_position_correction_solver.h"
+#include "../../src/physics/collisions/solver/simple_position_correction_solver.h"
 
 // IO
 #include "../../src/input/key_code.h"
