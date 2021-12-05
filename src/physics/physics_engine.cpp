@@ -1,6 +1,5 @@
 #include "../utils/logger.h"
 #include "body.h"
-#include "rigidbody.h"
 #include "physics_engine.h"
 #include "collisions/collider.h"
 #include "collisions/colliders/sphere_collider.h"
@@ -79,6 +78,15 @@ namespace mrld
     {
         for (uint32_t i = 0; i < _objects.size(); ++i) {
             _previous_state[i] = _current_state[i];
+        }
+
+        apply_gravity(dt);
+        handle_floor_friction(dt);
+    }
+
+    void PhysicsEngine::apply_gravity(float dt)
+    {
+        for (uint32_t i = 0; i < _objects.size(); ++i) {
             if (_objects[i]->is_dynamic()) {
                 physics_properties &props = _objects[i]->phys_properties;
                 props.acceleration += _gravity * props.mass;
@@ -89,7 +97,27 @@ namespace mrld
         }
     }
 
-    std::vector<collision> PhysicsEngine::detect_collisions(float dt)
+    void PhysicsEngine::handle_floor_friction(float dt)
+    {
+        for (uint32_t i = 0; i < _objects.size(); ++i) {
+            if (_objects[i]->is_dynamic()) {
+                physics_properties &props = _objects[i]->phys_properties;
+
+                if (fabs(props.velocity.x) < _velocity_clipping_threshold) {
+                    props.velocity.x = 0.0f;
+                }
+                if (fabs(props.velocity.z) < _velocity_clipping_threshold) {
+                    props.velocity.z = 0.0f;
+                }
+
+                if (fabs(props.velocity.dot(_gravity.normalized())) < _floor_detection_velocity_threshold) {
+                    props.acceleration += props.velocity * props.mass * props.friction_d * _gravity.magnitude() * -1.0f;
+                }
+            }
+        }
+    }
+
+        std::vector<collision> PhysicsEngine::detect_collisions(float dt)
     {
         std::vector<collision> collisions;
         for (uint32_t i = 0; i < _objects.size(); ++i) {

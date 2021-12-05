@@ -80,16 +80,16 @@ int main(void)
     layer3d.add(floor_o->get_model());
 
     mrld::PhysicsEngine world;
+    world.add_solver(new mrld::SimplePositionCorrectionSolver());
     world.add_solver(new mrld::ImpulseSolver());
-    world.add_solver(new mrld::RecursivePositionCorrectionSolver());
-//    world.add_solver(new mrld::SimplePositionCorrectionSolver());
+//    world.add_solver(new mrld::RecursivePositionCorrectionSolver());
     world.add(floor_o);
 
     mrld::physics_properties cube_props;
     cube_props.velocity = mrld::vec3(0.0f, 0.0f, 0.0f);
     cube_props.bounciness = 0.6f;
     float dist = 10.0f;
-    for (int i = 0; i < 200; ++i) {
+    for (int i = 0; i < 400; ++i) {
         mrld::Model *cube = new mrld::Model(mrld::cube::vertices, mrld::cube::vertex_count, mrld::cube::indices, mrld::cube::index_count, &container_t);
         mrld::Body *cube_o = new mrld::RigidBody(cube, new mrld::SphereCollider(mrld::vec3(0.5f, 0.5f, 0.5f), sqrtf(2.0f)), cube_props);
         const float rand_x = static_cast<float>(rand()) / RAND_MAX * dist - dist / 2.0f;

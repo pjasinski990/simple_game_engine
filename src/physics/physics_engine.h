@@ -23,8 +23,14 @@ namespace mrld
         void remove_solver(Solver *o);
     private:
         void update_dynamics(float dt);
+        void apply_gravity(float dt);
+        void handle_floor_friction(float dt);
+
         std::vector<collision> detect_collisions(float dt);
         void solve_collisions(float dt, std::vector<collision> &collisions);
+
+        const float _velocity_clipping_threshold = 0.2f;
+        const float _floor_detection_velocity_threshold = 0.2f;
 
         vec3 _gravity;
         std::vector<Body*> _objects;

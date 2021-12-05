@@ -4,8 +4,7 @@
 
 namespace mrld
 {
-    struct quat;
-    struct vec3 
+    struct vec3
     {
         explicit vec3(float x = 0.0f, float y = 0.0f, float z = 0.0f);
 
@@ -14,23 +13,15 @@ namespace mrld
 
         vec3& operator+=(const vec3& o);
         vec3& operator-=(const vec3& o);
-        vec3& operator*=(const vec3& o);
-        vec3& operator/=(const vec3& o);
-
-        friend vec3 operator+(vec3 o1, const vec3& o2);
-        friend vec3 operator-(vec3 o1, const vec3& o2);
-        friend vec3 operator*(vec3 o1, const vec3& o2);
-        friend vec3 operator/(vec3 o1, const vec3& o2);
-
-        vec3& operator+=(float f);
-        vec3& operator-=(float f);
         vec3& operator*=(float f);
         vec3& operator/=(float f);
 
-        friend vec3 operator+(vec3 o1, float f);
-        friend vec3 operator-(vec3 o1, float f);
-        friend vec3 operator*(vec3 o1, float f);
-        friend vec3 operator/(vec3 o1, float f);
+        friend vec3 operator+(vec3 o, const vec3& o2);
+        friend vec3 operator-(vec3 o, const vec3& o2);
+        friend vec3 operator*(vec3 o, float f);
+        friend vec3 operator/(vec3 o, float f);
+        friend vec3 operator*(float f, vec3 o);
+        friend vec3 operator/(float f, vec3 o);
 
         friend bool operator<(const vec3& o1, const vec3& o2);
         friend bool operator>(const vec3& o1, const vec3& o2);

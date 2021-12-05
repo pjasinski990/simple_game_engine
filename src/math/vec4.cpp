@@ -1,7 +1,5 @@
-#include <tuple>
 #include <cmath>
 
-#include "math_util.h"
 #include "vec4.h"
 
 namespace mrld
@@ -41,23 +39,22 @@ namespace mrld
         this->w -= o.w;
         return *this;
     }
-    vec4& vec4::operator*=(const vec4& o)
+    vec4& vec4::operator*=(float f)
     {
-        this->x *= o.x;
-        this->y *= o.y;
-        this->z *= o.z;
-        this->w *= o.w;
+        this->x *= f;
+        this->y *= f;
+        this->z *= f;
+        this->w *= f;
         return *this;
     }
-    vec4& vec4::operator/=(const vec4& o)
+    vec4& vec4::operator/=(float f)
     {
-        this->x /= o.x;
-        this->y /= o.y;
-        this->z /= o.z;
-        this->w /= o.w;
+        this->x /= f;
+        this->y /= f;
+        this->z /= f;
+        this->w /= f;
         return *this;
     }
-
 
     vec4 operator+(vec4 o1, const vec4& o2)
     {
@@ -67,51 +64,21 @@ namespace mrld
     {
         return o1 -= o2;
     }
-    vec4 operator*(vec4 o1, const vec4& o2)
-    {
-        return o1 *= o2;
-    }
-    vec4 operator/(vec4 o1, const vec4& o2)
-    {
-        return o1 /= o2;
-    }
-
-    vec4& vec4::operator+=(float f)
-    {
-        *this += vec4(f, f, f, f);
-        return *this;
-    }
-    vec4& vec4::operator-=(float f)
-    {
-        *this -= vec4(f, f, f, f);
-        return *this;
-    }
-    vec4& vec4::operator*=(float f)
-    {
-        *this *= vec4(f, f, f, f);
-        return *this;
-    }
-    vec4& vec4::operator/=(float f)
-    {
-        *this /= vec4(f, f, f, f);
-        return *this;
-    }
-
-    vec4 operator+(vec4 o, float f)
-    {
-        return vec4(o) += f;
-    }
-    vec4 operator-(vec4 o, float f)
-    {
-        return vec4(o) -= f;
-    }
     vec4 operator*(vec4 o, float f)
     {
-        return vec4(o) *= f;
+        return o *= f;
     }
     vec4 operator/(vec4 o, float f)
     {
-        return vec4(o) /= f;
+        return o /= f;
+    }
+    vec4 operator*(float f, vec4 o)
+    {
+        return o *= f;
+    }
+    vec4 operator/(float f, vec4 o)
+    {
+        return o /= f;
     }
 
     bool operator<(const vec4& o1, const vec4& o2)
@@ -132,13 +99,7 @@ namespace mrld
     }
     bool operator==(const vec4& o1, const vec4& o2)
     {
-        bool rx = (o1.x - o2.x) <= (fabs(o1.x) < fabs(o2.x) ? fabs(o1.x) : fabs(o2.x) * math_constants::epsilon);
-        if (!rx) { return false; }
-        bool ry = (o1.y - o2.y) <= (fabs(o1.y) < fabs(o2.y) ? fabs(o1.y) : fabs(o2.y) * math_constants::epsilon);
-        if (!ry) { return false; }
-        bool rz = (o1.z - o2.z) <= (fabs(o1.z) < fabs(o2.z) ? fabs(o1.z) : fabs(o2.z) * math_constants::epsilon);
-        if (!rz) { return false; }
-        return (o1.w - o2.w) <= (fabs(o1.w) < fabs(o2.w) ? fabs(o1.w) : fabs(o2.w) * math_constants::epsilon);
+        return o1.magnitude_squared() == o2.magnitude_squared();
     }
     bool operator!=(const vec4& o1, const vec4& o2)
     {

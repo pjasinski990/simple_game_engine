@@ -1,7 +1,5 @@
-#include <tuple>
 #include <cmath>
 
-#include "math_util.h"
 #include "vec3.h"
 
 namespace mrld
@@ -37,57 +35,19 @@ namespace mrld
         this->z -= o.z;
         return *this;
     }
-    vec3& vec3::operator*=(const vec3& o)
-    {
-        this->x *= o.x;
-        this->y *= o.y;
-        this->z *= o.z;
-        return *this;
-    }
-    vec3& vec3::operator/=(const vec3& o)
-    {
-        this->x /= o.x;
-        this->y /= o.y;
-        this->z /= o.z;
-        return *this;
-    }
-
-    vec3& vec3::operator+=(float f)
-    {
-        *this += vec3(f, f, f);
-        return *this;
-    }
-    vec3& vec3::operator-=(float f)
-    {
-        *this -= vec3(f, f, f);
-        return *this;
-    }
     vec3& vec3::operator*=(float f)
     {
-        *this *= vec3(f, f, f);
+        this->x *= f;
+        this->y *= f;
+        this->z *= f;
         return *this;
     }
     vec3& vec3::operator/=(float f)
     {
-        *this /= vec3(f, f, f);
+        this->x /= f;
+        this->y /= f;
+        this->z /= f;
         return *this;
-    }
-
-    vec3 operator+(vec3 o, float f)
-    {
-        return vec3(o) += f;
-    }
-    vec3 operator-(vec3 o, float f)
-    {
-        return vec3(o) -= f;
-    }
-    vec3 operator*(vec3 o, float f)
-    {
-        return vec3(o) *= f;
-    }
-    vec3 operator/(vec3 o, float f)
-    {
-        return vec3(o) /= f;
     }
 
     vec3 operator+(vec3 o1, const vec3& o2)
@@ -98,13 +58,21 @@ namespace mrld
     {
         return o1 -= o2;
     }
-    vec3 operator*(vec3 o1, const vec3& o2)
+    vec3 operator*(vec3 o, float f)
     {
-        return o1 *= o2;
+        return o *= f;
     }
-    vec3 operator/(vec3 o1, const vec3& o2)
+    vec3 operator/(vec3 o, float f)
     {
-        return o1 /= o2;
+        return o /= f;
+    }
+    vec3 operator*(float f, vec3 o)
+    {
+        return o *= f;
+    }
+    vec3 operator/(float f, vec3 o)
+    {
+        return o /= f;
     }
 
     bool operator<(const vec3& o1, const vec3& o2)
@@ -125,11 +93,7 @@ namespace mrld
     }
     bool operator==(const vec3& o1, const vec3& o2)
     {
-        bool rx = (o1.x - o2.x) <= (fabs(o1.x) < fabs(o2.x) ? fabs(o1.x) : fabs(o2.x) * math_constants::epsilon);
-        if (!rx) { return false; }
-        bool ry = (o1.y - o2.y) <= (fabs(o1.y) < fabs(o2.y) ? fabs(o1.y) : fabs(o2.y) * math_constants::epsilon);
-        if (!ry) { return false; }
-        return (o1.z - o2.z) <= (fabs(o1.z) < fabs(o2.z) ? fabs(o1.z) : fabs(o2.z) * math_constants::epsilon);
+        return o1.magnitude_squared() == o2.magnitude_squared();
     }
     bool operator!=(const vec3& o1, const vec3& o2)
     {

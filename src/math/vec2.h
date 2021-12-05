@@ -13,28 +13,17 @@ namespace mrld
 
         vec2& operator+=(const vec2& o);
         vec2& operator-=(const vec2& o);
-        vec2& operator*=(const vec2& o);
-        vec2& operator/=(const vec2& o);
 
-        friend vec2 operator+(vec2 o1, const vec2& o2);
-        friend vec2 operator-(vec2 o1, const vec2& o2);
-        friend vec2 operator*(vec2 o1, const vec2& o2);
-        friend vec2 operator/(vec2 o1, const vec2& o2);
-
-        vec2& operator+=(float f);
-        vec2& operator-=(float f);
         vec2& operator*=(float f);
         vec2& operator/=(float f);
 
-        friend vec2 operator+(vec2 o1, float f);
-        friend vec2 operator-(vec2 o1, float f);
-        friend vec2 operator*(vec2 o1, float f);
-        friend vec2 operator/(vec2 o1, float f);
+        friend vec2 operator*(vec2 o, float f);
+        friend vec2 operator/(vec2 o, float f);
+        friend vec2 operator*(float f, vec2 o);
+        friend vec2 operator/(float f, vec2 o);
 
         friend vec2 operator+(vec2 o1, const vec2& o2);
         friend vec2 operator-(vec2 o1, const vec2& o2);
-        friend vec2 operator*(vec2 o1, const vec2& o2);
-        friend vec2 operator/(vec2 o1, const vec2& o2);
 
         friend bool operator<(const vec2& o1, const vec2& o2);
         friend bool operator>(const vec2& o1, const vec2& o2);

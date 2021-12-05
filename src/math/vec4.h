@@ -13,23 +13,15 @@ namespace mrld
 
         vec4& operator+=(const vec4& o);
         vec4& operator-=(const vec4& o);
-        vec4& operator*=(const vec4& o);
-        vec4& operator/=(const vec4& o);
-
-        friend vec4 operator+(vec4 o1, const vec4& o2);
-        friend vec4 operator-(vec4 o1, const vec4& o2);
-        friend vec4 operator*(vec4 o1, const vec4& o2);
-        friend vec4 operator/(vec4 o1, const vec4& o2);
-
-        vec4& operator+=(float f);
-        vec4& operator-=(float f);
         vec4& operator*=(float f);
         vec4& operator/=(float f);
 
-        friend vec4 operator+(vec4 o1, float f);
-        friend vec4 operator-(vec4 o1, float f);
+        friend vec4 operator+(vec4 o1, const vec4& o2);
+        friend vec4 operator-(vec4 o1, const vec4& o2);
         friend vec4 operator*(vec4 o1, float f);
         friend vec4 operator/(vec4 o1, float f);
+        friend vec4 operator*(float f, vec4 o);
+        friend vec4 operator/(float f, vec4 o);
 
         friend bool operator<(const vec4& o1, const vec4& o2);
         friend bool operator>(const vec4& o1, const vec4& o2);

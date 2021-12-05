@@ -1,8 +1,6 @@
-#include <tuple>
 #include <cmath>
 #include <stdexcept>
 
-#include "math_util.h"
 #include "vec2.h"
 
 namespace mrld 
@@ -34,19 +32,18 @@ namespace mrld
         this->y -= o.y;
         return *this;
     }
-    vec2& vec2::operator*=(const vec2& o)
+    vec2& vec2::operator*=(float f)
     {
-        this->x *= o.x;
-        this->y *= o.y;
+        this->x *= f;
+        this->y *= f;
         return *this;
     }
-    vec2& vec2::operator/=(const vec2& o)
+    vec2& vec2::operator/=(float f)
     {
-        this->x /= o.x;
-        this->y /= o.y;
+        this->x /= f;
+        this->y /= f;
         return *this;
     }
-
 
     vec2 operator+(vec2 o1, const vec2& o2)
     {
@@ -56,51 +53,21 @@ namespace mrld
     {
         return o1 -= o2;
     }
-    vec2 operator*(vec2 o1, const vec2& o2)
-    {
-        return o1 *= o2;
-    }
-    vec2 operator/(vec2 o1, const vec2& o2)
-    {
-        return o1 /= o2;
-    }
-
-    vec2& vec2::operator+=(float f)
-    {
-        *this += vec2(f, f);
-        return *this;
-    }
-    vec2& vec2::operator-=(float f)
-    {
-        *this -= vec2(f, f);
-        return *this;
-    }
-    vec2& vec2::operator*=(float f)
-    {
-        *this *= vec2(f, f);
-        return *this;
-    }
-    vec2& vec2::operator/=(float f)
-    {
-        *this /= vec2(f, f);
-        return *this;
-    }
-
-    vec2 operator+(vec2 o, float f)
-    {
-        return vec2(o) += f;
-    }
-    vec2 operator-(vec2 o, float f)
-    {
-        return vec2(o) -= f;
-    }
     vec2 operator*(vec2 o, float f)
     {
-        return vec2(o) *= f;
+        return o *= f;
     }
     vec2 operator/(vec2 o, float f)
     {
-        return vec2(o) /= f;
+        return o /= f;
+    }
+    vec2 operator*(float f, vec2 o)
+    {
+        return o *= f;
+    }
+    vec2 operator/(float f, vec2 o)
+    {
+        return o /= f;
     }
 
     bool operator<(const vec2& o1, const vec2& o2)
@@ -121,9 +88,7 @@ namespace mrld
     }
     bool operator==(const vec2& o1, const vec2& o2)
     {
-        bool rx = (o1.x - o2.x) <= (fabs(o1.x) < fabs(o2.x) ? fabs(o1.x) : fabs(o2.x) * math_constants::epsilon);
-        if (!rx) { return false; }
-        return (o1.y - o2.y) <= (fabs(o1.y) < fabs(o2.y) ? fabs(o1.y) : fabs(o2.y) * math_constants::epsilon);
+        return o1.magnitude_squared() == o2.magnitude_squared();
     }
     bool operator!=(const vec2& o1, const vec2& o2)
     {
