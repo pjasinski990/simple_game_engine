@@ -1,5 +1,4 @@
-#ifndef MRLD_ENGINE_WINDOW_H
-#define MRLD_ENGINE_WINDOW_H
+#pragma once
 
 #include <stdexcept>
 
@@ -29,5 +28,3 @@ namespace mrld
 
     void on_window_resize(GLFWwindow *window, int width, int height);
 }
-
-#endif //MRLD_ENGINE_WINDOW_H

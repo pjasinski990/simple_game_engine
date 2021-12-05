@@ -1,6 +1,5 @@
 #include <thread>
 #include <chrono>
-#include <glad/glad.h>
 
 #include "mrld/mrld.h"
 #include "res/cube_vertices.h"
@@ -90,28 +89,26 @@ int main(void)
     cube_props.velocity = mrld::vec3(0.0f, 0.0f, 0.0f);
     cube_props.bounciness = 0.6f;
     float dist = 10.0f;
-//    for (int i = 0; i < 200; ++i) {
-//        mrld::Model *cube = new mrld::Model(mrld::cube::vertices, mrld::cube::vertex_count, mrld::cube::indices, mrld::cube::index_count, &container_t);
-//        mrld::RigidBody *cube_o = new mrld::RigidBody(cube, new mrld::SphereCollider(mrld::vec3(0.5f, 0.5f, 0.5f), sqrtf(2.0f)), cube_props);
-//        const float rand_x = static_cast<float>(rand()) / RAND_MAX * dist - dist / 2.0f;
-//        const float rand_y = static_cast<float>(rand()) / RAND_MAX * dist;
-//        const float rand_z = static_cast<float>(rand()) / RAND_MAX * dist - dist / 2.0f;
-//        cube_o->t.position = mrld::vec3(rand_x, rand_y, rand_z);
-//        cube_o->t.rotation = mrld::quat(mrld::vec3(0.0f, 1.0f, 0.0f), 5.0f * rand() / RAND_MAX);
-//        cube_o->t.scale = mrld::vec3(1.4f, 1.4f, 1.4f);
-//        layer3d.add(cube_o->get_model());
-//        world.add(cube_o);
-//    }
+    for (int i = 0; i < 200; ++i) {
+        mrld::Model *cube = new mrld::Model(mrld::cube::vertices, mrld::cube::vertex_count, mrld::cube::indices, mrld::cube::index_count, &container_t);
+        mrld::Body *cube_o = new mrld::RigidBody(cube, new mrld::SphereCollider(mrld::vec3(0.5f, 0.5f, 0.5f), sqrtf(2.0f)), cube_props);
+        const float rand_x = static_cast<float>(rand()) / RAND_MAX * dist - dist / 2.0f;
+        const float rand_y = static_cast<float>(rand()) / RAND_MAX * dist;
+        const float rand_z = static_cast<float>(rand()) / RAND_MAX * dist - dist / 2.0f;
+        cube_o->t.position = mrld::vec3(rand_x, rand_y, rand_z);
+        cube_o->t.rotation = mrld::quat(mrld::vec3(0.0f, 1.0f, 0.0f), 5.0f * rand() / RAND_MAX);
+        cube_o->t.scale = mrld::vec3(1.4f, 1.4f, 1.4f);
+        layer3d.add(cube_o->get_model());
+        world.add(cube_o);
+    }
     for (int i = 0; i < 10; ++i) {
         mrld::Model *cube = new mrld::Model(mrld::cube::vertices, mrld::cube::vertex_count, mrld::cube::indices, mrld::cube::index_count, &container_t);
         mrld::RigidBody *cube_o = new mrld::RigidBody(cube, new mrld::SphereCollider(mrld::vec3(0.5f, 0.5f, 0.5f), 0.5f), cube_props);
-//        cube_o->t.position = mrld::vec3(0.0f, 16.0f - 2.0f * i, 0.0f);
+ //        cube_o->t.position = mrld::vec3(0.0f, 16.0f - 2.0f * i, 0.0f);
         cube_o->t.position = mrld::vec3(0.0f, 2.0f * i, 0.0f);
         cube_o->t.rotation = mrld::quat(mrld::vec3(0.0f, 1.0f, 0.0f), 1.0f * rand() / RAND_MAX);
         layer3d.add(cube_o->get_model());
         world.add(cube_o);
-        std::cout << "floor addr " << floor_o << std::endl;
-        std::cout << "cube addr " << cube_o << std::endl;
     }
 
     glClearColor(0.15f, 0.15f, 0.15f, 1.0f);

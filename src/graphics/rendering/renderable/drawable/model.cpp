@@ -19,6 +19,23 @@ namespace mrld
         }
     }
 
+    Model::Model(VertexData *vertices, uint32_t v_count, const Texture *tex)
+    : Drawable(tex)
+    , _model_matrix{mat4::identity()}
+    , _v_count{v_count}
+    , _i_count{v_count}
+    {
+        _vertices.reserve(_v_count);
+        for (uint32_t i = 0; i < _v_count; ++i) {
+            _vertices.push_back(vertices[i]);
+        }
+        _indices.reserve(_i_count);
+        uint32_t k = 0;
+        for (uint32_t i = 0; i < _i_count; ++i) {
+            _indices.push_back(k++);
+        }
+    }
+
     void Model::submit_self(Renderer &r)
     {
         r.push(_model_matrix);

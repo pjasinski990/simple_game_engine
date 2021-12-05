@@ -14,6 +14,7 @@ namespace mrld
     {
     public:
         Model(VertexData *vertices, uint32_t v_count, uint16_t *indices, uint32_t i_count, const Texture *tex = nullptr);
+        Model(VertexData *vertices, uint32_t v_count, const Texture *tex = nullptr);
 
         void submit_self(Renderer &r) override;
         VertexData* get_vertices() override { return _vertices.data(); }

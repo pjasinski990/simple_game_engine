@@ -1,24 +1,6 @@
 cmake_minimum_required(VERSION 3.7)
-project(mrld_engine)
+project(mrld)
 set(CMAKE_CXX_STANDARD 20)
-add_executable(mrld_engine main.cpp)
-
-# gl
-find_package(OpenGL REQUIRED)
-
-# glad
-include_directories(dependencies/glad/include)
-add_library(GLAD dependencies/glad/src/glad.c)
-
-# glfw
-set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
-set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
-set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
-include_directories(dependencies/glfw3/include)
-add_subdirectory(dependencies/glfw3)
-
-# mrld
-include_directories(${PROJECT_SOURCE_DIR}/include)
 
 set(SOURCES src/window/window.cpp)
 list(APPEND SOURCES src/input/mouse/mouse_handler.cpp)
@@ -53,11 +35,33 @@ list(APPEND SOURCES src/graphics/rendering/renderable/group/group.cpp)
 list(APPEND SOURCES src/graphics/texture/texture.cpp)
 list(APPEND SOURCES src/utils/timer.cpp)
 list(APPEND SOURCES src/utils/file_handler.cpp)
+
 add_library(mrld ${SOURCES})
 
-# linking
+# gl
+find_package(OpenGL REQUIRED)
+
+# glad
+include_directories(dependencies/glad/include)
+target_include_directories(mrld PUBLIC dependencies/glad/include)
+add_library(GLAD dependencies/glad/src/glad.c)
+
+# glfw
+set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
+set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+include_directories(dependencies/glfw3/include)
+target_include_directories(mrld PRIVATE dependencies/glfw3/include)
+add_subdirectory(dependencies/glfw3)
+
+target_include_directories(mrld PUBLIC ${PROJECT_SOURCE_DIR}/include)
+set_target_properties(mrld PROPERTIES PUBLIC_HEADER include/mrld/mrld.h)
+
 IF (WIN32)
-    target_link_libraries(mrld_engine mrld GLAD glfw opengl32)
+    target_link_libraries(mrld GLAD glfw opengl32)
 ELSE ()
-    target_link_libraries(mrld_engine mrld GLAD glfw OpenGL)
+    target_link_libraries(mrld GLAD glfw OpenGL)
 ENDIF ()
+
+add_executable(mrld_engine main.cpp)
+target_link_libraries(mrld_engine mrld)
