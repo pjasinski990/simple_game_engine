@@ -35,6 +35,7 @@ list(APPEND SOURCES src/graphics/rendering/renderable/group/group.cpp)
 list(APPEND SOURCES src/graphics/texture/texture.cpp)
 list(APPEND SOURCES src/utils/timer.cpp)
 list(APPEND SOURCES src/utils/file_handler.cpp)
+list(APPEND SOURCES src/utils/obj_model_parser.cpp)
 
 add_library(mrld ${SOURCES})
 

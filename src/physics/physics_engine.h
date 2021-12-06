@@ -21,6 +21,10 @@ namespace mrld
         void remove(Body *o);
         void add_solver(Solver *o);
         void remove_solver(Solver *o);
+
+        inline void set_gravity(const vec3& gravity) { _gravity = gravity; }
+        inline vec3 get_gravity() { return _gravity; }
+
     private:
         void update_dynamics(float dt);
         void apply_gravity(float dt);

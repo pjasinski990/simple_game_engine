@@ -148,5 +148,6 @@ namespace mrld
         _n_submitted_vertices = 0u;
         _n_submitted_indices = 0u;
         _texture_id_to_texture_slot.clear();
+
     }
 }

@@ -1,5 +1,6 @@
 #include "model.h"
 #include "../../../texture/texture.h"
+#include "../../../../utils/logger.h"
 
 namespace mrld
 {
@@ -48,4 +49,5 @@ namespace mrld
         quat q(axis, angle_rads);
         _model_matrix = q.create_rotation_matrix() * _model_matrix;
     }
+
 }

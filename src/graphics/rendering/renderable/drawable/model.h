@@ -5,6 +5,7 @@
 #include "../../renderer/renderer.h"
 #include "../../../../math/quaternion.h"
 #include "../../buffer/vertex_data.h"
+#include "../../../material.h"
 #include "drawable.h"
 
 namespace mrld
@@ -35,5 +36,6 @@ namespace mrld
         mat4 _model_matrix;
         uint32_t _v_count;
         uint32_t _i_count;
+        std::vector<material> materials;
     };
 }
