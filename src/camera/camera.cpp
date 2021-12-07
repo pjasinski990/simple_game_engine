@@ -1,4 +1,5 @@
 #include "camera.h"
+#include "../graphics/shader/shader.h"
 
 namespace mrld
 {
@@ -34,4 +35,5 @@ namespace mrld
         _view.at(1, 3) = -_up.dot(_eye);
         _view.at(2, 3) = _direction.dot(_eye);
     }
+
 }

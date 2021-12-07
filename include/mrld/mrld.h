@@ -12,6 +12,7 @@
 // Camera
 #include "../../src/camera/camera.h"
 #include "../../src/camera/fps_camera.h"
+#include "../../src/camera/orthographic_camera.h"
 
 // Graphics misc
 #include "../../src/graphics/rendering/buffer/attrib_data_buffer.h"

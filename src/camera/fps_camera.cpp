@@ -1,7 +1,5 @@
 #include <cmath>
 
-#include <GLFW/glfw3.h>
-
 #include "fps_camera.h"
 #include "../window/window.h"
 #include "../math/math_util.h"
@@ -59,6 +57,7 @@ namespace mrld
         direction.y = sinf(_pitch);
         direction.x = sinf(_yaw) * cosf(_pitch);
         _direction = direction.normalized();
+
         update_view();
     }
 

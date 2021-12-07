@@ -34,11 +34,13 @@ namespace mrld
         glVertexAttribPointer(ATTRIB_INDEX_NORMAL, member_floats_count(VertexData, normal), GL_FLOAT, GL_FALSE, VERTEX_SIZE, (const void*) offsetof(VertexData, normal));
         glVertexAttribPointer(ATTRIB_INDEX_TEX_COORD, member_floats_count(VertexData, tex_coord), GL_FLOAT, GL_FALSE, VERTEX_SIZE, (const void*) offsetof(VertexData, tex_coord));
         glVertexAttribPointer(ATTRIB_INDEX_TEX_SLOT, 1, GL_FLOAT, GL_FALSE, VERTEX_SIZE, (const void*) offsetof(VertexData, tex_slot));
+        glVertexAttribPointer(ATTRIB_INDEX_MATERIAL_SLOT, 1, GL_FLOAT, GL_FALSE, VERTEX_SIZE, (const void*) offsetof(VertexData, material_slot));
         glVertexAttribPointer(ATTRIB_INDEX_COLOR, sizeof(uint32_t), GL_UNSIGNED_BYTE, GL_TRUE, VERTEX_SIZE, (const void*) offsetof(VertexData, color));
         glEnableVertexAttribArray(ATTRIB_INDEX_POSITION);
         glEnableVertexAttribArray(ATTRIB_INDEX_NORMAL);
         glEnableVertexAttribArray(ATTRIB_INDEX_TEX_COORD);
         glEnableVertexAttribArray(ATTRIB_INDEX_TEX_SLOT);
+        glEnableVertexAttribArray(ATTRIB_INDEX_MATERIAL_SLOT);
         glEnableVertexAttribArray(ATTRIB_INDEX_COLOR);
         _vbo->unbind();
         _vao.unbind();

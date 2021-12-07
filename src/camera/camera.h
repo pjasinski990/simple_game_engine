@@ -11,7 +11,7 @@ namespace mrld
     public:
         Camera(const Window *window, const vec3 &eye_position, const vec3 &target_position, const vec3 &up);
         virtual ~Camera() = default;
-        virtual void update() {}
+        virtual void update() = 0;
 
         inline void go_up(float dt) { _eye += _world_up * dt * _speed; }
         inline void go_down(float dt) { _eye -= _world_up * dt *_speed; }
@@ -25,6 +25,9 @@ namespace mrld
         inline const mat4& get_view() const { return _view; }
         inline void set_proj(const mat4 &proj) { _proj = proj; }
         inline const mat4& get_proj() const { return _proj; }
+
+        inline const vec3& get_position() const { return _eye; }
+        inline const vec3& get_direction() const { return _direction; }
 
     protected:
         const Window *_window;

@@ -36,6 +36,5 @@ namespace mrld
         mat4 _model_matrix;
         uint32_t _v_count;
         uint32_t _i_count;
-        std::vector<material> materials;
     };
 }

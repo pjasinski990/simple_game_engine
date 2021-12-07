@@ -45,7 +45,8 @@ namespace mrld
         constexpr static uint32_t ATTRIB_INDEX_NORMAL = 1;
         constexpr static uint32_t ATTRIB_INDEX_TEX_COORD = 2;
         constexpr static uint32_t ATTRIB_INDEX_TEX_SLOT = 3;
-        constexpr static uint32_t ATTRIB_INDEX_COLOR = 4;
+        constexpr static uint32_t ATTRIB_INDEX_MATERIAL_SLOT = 4;
+        constexpr static uint32_t ATTRIB_INDEX_COLOR = 5;
         constexpr static uint32_t MAX_TEXTURE_SLOTS = 32;
         constexpr static uint32_t VERTEX_SIZE = sizeof(VertexData);
 

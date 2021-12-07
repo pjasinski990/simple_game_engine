@@ -1,4 +1,5 @@
 #include <cstring>
+#include <sstream>
 
 #include "renderer3d.h"
 #include "../buffer/index_buffer.h"
@@ -25,11 +26,13 @@ namespace mrld
         glVertexAttribPointer(ATTRIB_INDEX_NORMAL, member_floats_count(VertexData, normal), GL_FLOAT, GL_FALSE, VERTEX_SIZE, (const void*) offsetof(VertexData, normal));
         glVertexAttribPointer(ATTRIB_INDEX_TEX_COORD, member_floats_count(VertexData, tex_coord), GL_FLOAT, GL_FALSE, VERTEX_SIZE, (const void*) offsetof(VertexData, tex_coord));
         glVertexAttribPointer(ATTRIB_INDEX_TEX_SLOT, 1, GL_FLOAT, GL_FALSE, VERTEX_SIZE, (const void*) offsetof(VertexData, tex_slot));
+        glVertexAttribPointer(ATTRIB_INDEX_MATERIAL_SLOT, 1, GL_FLOAT, GL_FALSE, VERTEX_SIZE, (const void*) offsetof(VertexData, material_slot));
         glVertexAttribPointer(ATTRIB_INDEX_COLOR, sizeof(uint32_t), GL_UNSIGNED_BYTE, GL_TRUE, VERTEX_SIZE, (const void*) offsetof(VertexData, color));
         glEnableVertexAttribArray(ATTRIB_INDEX_POSITION);
         glEnableVertexAttribArray(ATTRIB_INDEX_NORMAL);
         glEnableVertexAttribArray(ATTRIB_INDEX_TEX_COORD);
         glEnableVertexAttribArray(ATTRIB_INDEX_TEX_SLOT);
+        glEnableVertexAttribArray(ATTRIB_INDEX_MATERIAL_SLOT);
         glEnableVertexAttribArray(ATTRIB_INDEX_COLOR);
         _vbo->unbind();
         _vao.unbind();
@@ -95,6 +98,11 @@ namespace mrld
             }
         }
 
+        const std::vector<material> &materials = d.get_materials();
+        for (uint32_t i = 0; i < materials.size(); ++i) {
+            set_shader_material(materials[i], i);
+        }
+
         // Transform positions according to the transform stack
         // Models own model matrix should be pushed before submitting
         _shader->set_mat4("model_matrix", *_last_transform);
@@ -137,4 +145,29 @@ namespace mrld
         _n_submitted_indices = 0u;
         _texture_id_to_texture_slot.clear();
     }
+
+    void Renderer3D::set_shader_material(const material &m, uint32_t at_index)
+    {
+        std::stringstream ss;
+        _shader->use();
+        ss << "materials[" << at_index << "].ambient";
+        _shader->set_vec3(ss.str().c_str(), m.ambient);
+        ss.str(std::string());
+
+        ss << "materials[" << at_index << "].diffuse";
+        _shader->set_vec3(ss.str().c_str(), m.diffuse);
+        ss.str(std::string());
+
+        ss << "materials[" << at_index << "].specular";
+        _shader->set_vec3(ss.str().c_str(), m.specular);
+        ss.str(std::string());
+
+        ss << "materials[" << at_index << "].specular_e";
+        _shader->set_float(ss.str().c_str(), m.specular_e);
+        ss.str(std::string());
+
+        ss << "materials[" << at_index << "].dissolve";
+        _shader->set_float(ss.str().c_str(), m.dissolve);
+    }
+
 }

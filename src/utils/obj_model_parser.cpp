@@ -10,6 +10,7 @@ namespace mrld
 {
     namespace ObjModelParser
     {
+        // TODO separate adding material indices to other function
         Model *parse_obj_to_model(const std::string &filepath)
         {
             std::vector<vec3> positions;
@@ -20,7 +21,7 @@ namespace mrld
             std::vector<uint32_t> indices_tex_coords;
 
             std::vector<material> materials;
-            std::vector<uint16_t> material_indices;
+            std::vector<uint16_t> indices_materials;
             int32_t current_material_index = -1;
             bool has_materials;
 
@@ -82,9 +83,9 @@ namespace mrld
                     indices_normals.push_back(n2 - 1);
                     indices_normals.push_back(n3 - 1);
 
-                    material_indices.push_back(current_material_index);
-                    material_indices.push_back(current_material_index);
-                    material_indices.push_back(current_material_index);
+                    indices_materials.push_back(current_material_index);
+                    indices_materials.push_back(current_material_index);
+                    indices_materials.push_back(current_material_index);
                 }
             }
 
@@ -96,14 +97,7 @@ namespace mrld
                 next.tex_coord = tex_coords[indices_tex_coords[i]];
                 next.normal = normals[indices_normals[i]];
                 next.tex_slot = -1.0f;
-                if (has_materials) {
-                    vec3 color = materials[material_indices[i]].diffuse;
-                    uint8_t r = static_cast<uint8_t>(color.x * 255.0f);
-                    uint8_t g = static_cast<uint8_t>(color.y * 255.0f);
-                    uint8_t b = static_cast<uint8_t>(color.z * 255.0f);
-                    uint8_t a = static_cast<uint8_t>(materials[material_indices[i]].dissolve * 255.0f);
-                    next.color = a << 24 | b << 16 | g << 8 | r;
-                }
+                next.material_slot = has_materials ? indices_materials[i] : -1.0f;
                 res_vertices[i] = next;
                 res_indices[i] = i;
             }

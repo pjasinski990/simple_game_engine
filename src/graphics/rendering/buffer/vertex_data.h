@@ -12,6 +12,7 @@ namespace mrld
         vec3 normal;
         vec2 tex_coord;
         float tex_slot;
+        float material_slot;
         uint32_t color;
 
         friend std::ostream& operator<<(std::ostream& out, const VertexData& o);

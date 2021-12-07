@@ -2,7 +2,6 @@
 #include "../../../../math/vec2.h"
 #include "../../../../utils/logger.h"
 #include "sprite.h"
-#include "../../renderer/renderer2d.h"
 
 namespace mrld
 {
@@ -35,6 +34,7 @@ namespace mrld
                 vec3(0.0f, 0.0f, 1.0f),
                 vec2(0.0f, 0.0f),
                 texture_slot,
+                -1.0f,
                 uint_color
             }
         );
@@ -44,6 +44,7 @@ namespace mrld
                 vec3(0.0f, 0.0f, 1.0f),
                 vec2(1.0f, 0.0f),
                 texture_slot,
+                -1.0f,
                 uint_color
             }
         );
@@ -53,6 +54,7 @@ namespace mrld
                 vec3(0.0f, 0.0f, 1.0f),
                 vec2(1.0f, 1.0f),
                 texture_slot,
+                -1.0f,
                 uint_color
             }
         );
@@ -62,6 +64,7 @@ namespace mrld
                 vec3(0.0f, 0.0f, 1.0f),
                 vec2(0.0f, 1.0f),
                 texture_slot,
+                -1.0f,
                 uint_color
             }
         );

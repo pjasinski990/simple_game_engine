@@ -3,6 +3,7 @@
 #include <vector>
 
 #include "../../../math/mat4.h"
+#include "../../lighting/light.h"
 
 namespace mrld
 {
@@ -21,7 +22,9 @@ namespace mrld
         Layer& operator=(Layer &&o);
 
         virtual void draw();
+        virtual void draw_on_top();
         virtual void add(Renderable *o);
+        virtual void add_light(const light &l);
 
     protected:
         Shader *_shader;
@@ -29,6 +32,7 @@ namespace mrld
         Camera *_camera;
         mat4 _vp_matrix;
 
-        std::vector<Renderable *> _objects;
+        std::vector<Renderable*> _objects;
+        std::vector<light> _lights;
     };
 }

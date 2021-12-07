@@ -2,6 +2,7 @@
 
 #include "../renderable.h"
 #include "../../renderer/renderer.h"
+#include "../../../materials/material.h"
 
 namespace mrld
 {
@@ -16,11 +17,14 @@ namespace mrld
         virtual uint32_t get_indices_count() const = 0;
         virtual void submit_self(Renderer &r) override { r.submit(*this); }
 
-        virtual const Texture* get_texture() const { return _texture; }
+        const Texture* get_texture() const { return _texture; }
+        const std::vector<material>& get_materials() const { return _materials; }
+        void set_materials(const std::vector<material> &materials) { _materials = materials; }
 
     protected:
         std::vector<uint16_t> _indices;
         std::vector<VertexData> _vertices;
+        std::vector<material> _materials;
         const Texture *_texture;
 
     };
