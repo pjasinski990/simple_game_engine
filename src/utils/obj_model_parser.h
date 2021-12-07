@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string>
-#include "../graphics/material.h"
+#include "../graphics/materials/material.h"
 
 namespace mrld
 {

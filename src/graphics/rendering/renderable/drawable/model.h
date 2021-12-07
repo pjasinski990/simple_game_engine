@@ -5,7 +5,7 @@
 #include "../../renderer/renderer.h"
 #include "../../../../math/quaternion.h"
 #include "../../buffer/vertex_data.h"
-#include "../../../material.h"
+#include "../../../materials/material.h"
 #include "drawable.h"
 
 namespace mrld

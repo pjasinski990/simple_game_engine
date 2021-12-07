@@ -41,9 +41,21 @@ int main(void)
             500.0f,
             45.0f
             );
+    mrld::Camera cam_gui(
+            &window,
+            mrld::vec3(0.0f, 0.0f, 0.5f),
+            mrld::vec3(0.0f, 0.0f, 0.0f),
+            mrld::vec3(0.0f, 1.0f, 0.0f)
+    );
+    cam_gui.set_proj(mrld::mat4::orthographic(-1, 1, -1, 1, -1, 1));
+    cam_gui.update_view();
 
     mrld::Renderer3D r3(&s);
     mrld::Layer layer3d(&s, &r3, &cam);
+
+    mrld::PhysicsEngine world;
+    world.add_solver(new mrld::SimplePositionCorrectionSolver());
+    world.add_solver(new mrld::ImpulseSolver());
 
     mrld::VertexData floor[4] = {
             { mrld::vec3(-1000, 0, -1000), mrld::vec3(0, 1, 0), mrld::vec2(0, 0), -1, 0xffa0a0a0 },
@@ -58,10 +70,6 @@ int main(void)
     floor_o->t.position = mrld::vec3(0.0f, -3.0f, 0.0f);
     floor_o->update_model();
     layer3d.add(floor_o->get_model());
-
-    mrld::PhysicsEngine world;
-    world.add_solver(new mrld::SimplePositionCorrectionSolver());
-    world.add_solver(new mrld::ImpulseSolver());
     world.add(floor_o);
 
     mrld::Texture container_t("../res/container.jpg", false);
@@ -70,7 +78,7 @@ int main(void)
     cube_props.bounciness = 0.6f;
     float dist = 10.0f;
     for (int i = 0; i < 40; ++i) {
-        mrld::Model *cube = new mrld::Model(mrld::cube::vertices, mrld::cube::vertex_count, mrld::cube::indices, mrld::cube::index_count);
+        mrld::Model *cube = new mrld::Model(mrld::cube::vertices, mrld::cube::vertex_count, mrld::cube::indices, mrld::cube::index_count, &container_t);
         mrld::Body *cube_o = new mrld::RigidBody(cube, new mrld::SphereCollider(mrld::vec3(0.5f, 0.5f, 0.5f), sqrtf(2.0f)), cube_props);
         const float rand_x = static_cast<float>(rand()) / RAND_MAX * dist - dist / 2.0f;
         const float rand_y = static_cast<float>(rand()) / RAND_MAX * dist;
@@ -93,6 +101,20 @@ int main(void)
 
     mrld::Model *tree = mrld::ObjModelParser::parse_obj_to_model("../res/tree.obj");
     layer3d.add(tree);
+
+    mrld::Texture jake_t("../res/jake.png", true);
+    mrld::Renderer2D r(&s);
+    mrld::Layer layer(&s, &r, &cam_gui);
+    mrld::Group *g = new mrld::Group(mrld::mat4::translate(mrld::vec3(-0.6f, -0.9f, 0.0f)));
+    mrld::Sprite *jake0 = new mrld::Sprite(mrld::vec3(0.0f, 0.0f, 0.0f), mrld::vec2(0.3f, 0.3f), &jake_t);
+    mrld::Sprite *jake1 = new mrld::Sprite(mrld::vec3(0.3f, 0.0f, 0.0f), mrld::vec2(0.3f, 0.3f), &jake_t);
+    mrld::Sprite *jake2 = new mrld::Sprite(mrld::vec3(0.6f, 0.0f, 0.0f), mrld::vec2(0.3f, 0.3f), &jake_t);
+    mrld::Sprite *jake3 = new mrld::Sprite(mrld::vec3(0.9f, 0.0f, 0.0f), mrld::vec2(0.3f, 0.3f), &jake_t);
+    g->add(jake0);
+    g->add(jake1);
+    g->add(jake2);
+    g->add(jake3);
+    layer.add(g);
 
     glClearColor(0.15f, 0.15f, 0.15f, 1.0f);
 
@@ -126,6 +148,9 @@ int main(void)
         handle_keys(handler, cam, dtf);
         window.clear();
         layer3d.draw();
+        glDisable(GL_DEPTH_TEST);
+        layer.draw();
+        glEnable(GL_DEPTH_TEST);
         window.update();
         if (timer.get_elapsed_millis() - fps_timer > 1000u) {
             std::cout << fps << " fps" << std::endl;

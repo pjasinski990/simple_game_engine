@@ -81,9 +81,9 @@ namespace mrld
         const uint32_t n_indices = d.get_indices_count();
 
         const Texture *tex = d.get_texture();
-        if (tex && vertices->tex_slot == -1.0f) {
-            // Set texture slots in vertices if hasn't been set yet or changed - they can't be initially
-            // set in sprite, as the texture slot is provided by the renderer and is dynamic.
+        if (tex) {
+            // Set texture slots in vertices - they can't be initially set in sprite,
+            // as the texture slot is provided by the renderer and is dynamic.
             float texture_slot = static_cast<float>(retrieve_texture_slot(tex->get_id()));
             if (texture_slot == -1.0f) {
                 Logger::log(LogLevel::WRN, "Could not find texture slot for model - skipping rendering");
@@ -110,21 +110,10 @@ namespace mrld
             return;
         }
 
-        glBufferSubData(
-                GL_ARRAY_BUFFER,
-                0u,
-                size,
-                vertices
-        );
+        glBufferSubData(GL_ARRAY_BUFFER, 0u, size, vertices);
         Logger::log(LogLevel::DBG, "Submitted %u bytes of vertex data", size);
-        glBufferSubData(
-                GL_ELEMENT_ARRAY_BUFFER,
-                0u,
-                size_i,
-                indices
-        );
+        glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0u, size_i, indices);
         Logger::log(LogLevel::DBG, "Submitted %u bytes of index data", size_i);
-
         _n_submitted_vertices += n_vertices;
         _n_submitted_indices += n_indices;
         flush();
@@ -134,7 +123,6 @@ namespace mrld
     {
         Logger::log(LogLevel::DBG, "Flushing renderer batch, vertices count=%u, indices count=%u",
                     _n_submitted_vertices, _n_submitted_indices);
-
         for (const auto &val: _texture_id_to_texture_slot) {
             glActiveTexture(GL_TEXTURE0 + val.second);
             glBindTexture(GL_TEXTURE_2D, val.first);
@@ -148,6 +136,5 @@ namespace mrld
         _n_submitted_vertices = 0u;
         _n_submitted_indices = 0u;
         _texture_id_to_texture_slot.clear();
-
     }
 }

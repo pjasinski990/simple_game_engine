@@ -18,7 +18,7 @@
 #include "../../src/graphics/rendering/buffer/index_buffer.h"
 #include "../../src/graphics/rendering/buffer/vertex_array.h"
 #include "../../src/graphics/rendering/buffer/vertex_data.h"
-#include "../../src/graphics/color.h"
+#include "../../src/graphics/materials/color.h"
 
 // Graphics rendering
 #include "../../src/graphics/rendering/renderable/renderable.h"

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../math/vec4.h"
+#include "../../math/vec4.h"
 
 namespace mrld
 {

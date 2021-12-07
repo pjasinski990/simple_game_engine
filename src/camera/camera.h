@@ -21,7 +21,9 @@ namespace mrld
         inline void go_left(float dt) { _eye -=  _right * dt *_speed; }
 
         void update_view();
+        inline void set_view(const mat4 &view) { _view = view; }
         inline const mat4& get_view() const { return _view; }
+        inline void set_proj(const mat4 &proj) { _proj = proj; }
         inline const mat4& get_proj() const { return _proj; }
 
     protected:
