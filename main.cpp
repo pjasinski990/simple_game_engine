@@ -66,36 +66,38 @@ int main(void)
     world.add(floor_o);
 
     // CUBES
-    mrld::Texture container_t("../res/container.jpg", false);
-    mrld::physics_properties cube_props;
-    cube_props.velocity = mrld::vec3(0.0f, 0.0f, 0.0f);
-    cube_props.bounciness = 0.6f;
-    float dist = 10.0f;
-    for (int i = 0; i < 20; ++i) {
-        mrld::Model *cube = new mrld::Model(mrld::cube::vertices, mrld::cube::vertex_count, mrld::cube::indices, mrld::cube::index_count, &container_t);
-        mrld::Body *cube_o = new mrld::RigidBody(cube, new mrld::SphereCollider(mrld::vec3(0.5f, 0.5f, 0.5f), 1.0f), cube_props);
-        const float rand_x = static_cast<float>(rand()) / RAND_MAX * dist - dist / 2.0f;
-        const float rand_y = static_cast<float>(rand()) / RAND_MAX * dist;
-        const float rand_z = static_cast<float>(rand()) / RAND_MAX * dist - dist / 2.0f;
-        cube_o->t.position = mrld::vec3(rand_x, rand_y, rand_z);
-        cube_o->t.rotation = mrld::quat(mrld::vec3(0.0f, 1.0f, 0.0f), 5.0f * rand() / RAND_MAX);
-        layer3d.add(cube_o->get_model());
-        world.add(cube_o);
-    }
+//    mrld::Texture container_t("../res/container.jpg", false);
+//    mrld::physics_properties cube_props;
+//    cube_props.velocity = mrld::vec3(0.0f, 0.0f, 0.0f);
+//    cube_props.bounciness = 0.6f;
+//    float dist = 10.0f;
+//    for (int i = 0; i < 20; ++i) {
+//        mrld::Model *cube = new mrld::Model(mrld::cube::vertices, mrld::cube::vertex_count, mrld::cube::indices, mrld::cube::index_count, &container_t);
+//        mrld::Body *cube_o = new mrld::RigidBody(cube, new mrld::SphereCollider(mrld::vec3(0.5f, 0.5f, 0.5f), 1.0f), cube_props);
+//        const float rand_x = static_cast<float>(rand()) / RAND_MAX * dist - dist / 2.0f;
+//        const float rand_y = static_cast<float>(rand()) / RAND_MAX * dist;
+//        const float rand_z = static_cast<float>(rand()) / RAND_MAX * dist - dist / 2.0f;
+//        cube_o->t.position = mrld::vec3(rand_x, rand_y, rand_z);
+//        cube_o->t.rotation = mrld::quat(mrld::vec3(0.0f, 1.0f, 0.0f), 5.0f * rand() / RAND_MAX);
+//        layer3d.add(cube_o->get_model());
+//        world.add(cube_o);
+//    }
     // TREE
-    mrld::Model *tree = mrld::ObjModelParser::parse_obj_to_model("../res/tree.obj");
-    std::vector<mrld::material> materials = mrld::ObjModelParser::parse_mtl_to_materials("../res/tree.mtl");
-    for (mrld::material &m : materials) { m.ambient = m.diffuse; }
-    // fix leaves
-    materials[0].dissolve = 0.8f;
-    materials[0].specular_e = 32.0f;
-    tree->set_materials(materials);
-
-    mrld::Body *tree_o = new mrld::Body(tree, new mrld::SphereCollider(mrld::vec3(0.0f, 2.0f, 0.0f), 4.0f), mrld::physics_properties());
-    tree_o->t.position = mrld::vec3(0.0f, -3.0f, 0.0f);
-    world.add(tree_o);
-    layer3d.add(tree);
-
+    mrld::Model *tree_model = mrld::ObjModelParser::parse_obj_to_model("../res/tree.obj");
+    std::vector<mrld::material> tree_materials = mrld::ObjModelParser::parse_mtl_to_materials("../res/tree.mtl");
+    for (int i = 0; i < 20; ++i) {
+        for (int j = 0; j < 20; ++j) {
+            mrld::Model *tree = new mrld::Model(*tree_model);
+            std::vector<mrld::material> materials = tree_materials;
+            for (mrld::material &m : materials) { m.ambient = m.diffuse; }
+            // fix leaves
+            materials[0].dissolve = 0.8f;
+            materials[0].specular_e = 32.0f;
+            tree->set_materials(materials);
+            tree->translate(mrld::vec3(i * 8.0f, -3.0f, j * 8.0f));
+            layer3d.add(tree);
+        }
+    }
     glClearColor(0.15f, 0.15f, 0.15f, 1.0f);
 
     mrld::Timer timer;
@@ -125,7 +127,7 @@ int main(void)
         }
         world.interpolate_previous_state(static_cast<float>(accumulator)/ static_cast<float>(dt));
 
-        handle_keys(handler, cam, dtf);
+        handle_keys(handler, cam, frame_time * 0.0001);
         window.clear();
         layer3d.draw();
         window.update();

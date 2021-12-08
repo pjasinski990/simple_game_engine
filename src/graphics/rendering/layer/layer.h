@@ -22,7 +22,6 @@ namespace mrld
         Layer& operator=(Layer &&o);
 
         virtual void draw();
-        virtual void draw_on_top();
         virtual void add(Renderable *o);
         virtual void add_light(const light &l);
 

@@ -1,4 +1,3 @@
-#include <cstring>
 #include <sstream>
 
 #include "renderer3d.h"
@@ -148,26 +147,24 @@ namespace mrld
 
     void Renderer3D::set_shader_material(const material &m, uint32_t at_index)
     {
-        std::stringstream ss;
+        std::string prefix("materials[");
+        std::string ambient_suffix("].ambient");
+        std::string diffuse_suffix("].diffuse");
+        std::string specular_suffix("].specular");
+        std::string specular_e_suffix("].specular_e");
+        std::string dissolve_suffix("].dissolve");
+
+        std::string ambient_string = prefix + std::to_string(at_index) + ambient_suffix;
+        std::string diffuse_string = prefix + std::to_string(at_index) + diffuse_suffix;
+        std::string specular_string = prefix + std::to_string(at_index) + specular_suffix;
+        std::string specular_e_string = prefix + std::to_string(at_index) + specular_e_suffix;
+        std::string dissolve_string = prefix + std::to_string(at_index) + dissolve_suffix;
+
         _shader->use();
-        ss << "materials[" << at_index << "].ambient";
-        _shader->set_vec3(ss.str().c_str(), m.ambient);
-        ss.str(std::string());
-
-        ss << "materials[" << at_index << "].diffuse";
-        _shader->set_vec3(ss.str().c_str(), m.diffuse);
-        ss.str(std::string());
-
-        ss << "materials[" << at_index << "].specular";
-        _shader->set_vec3(ss.str().c_str(), m.specular);
-        ss.str(std::string());
-
-        ss << "materials[" << at_index << "].specular_e";
-        _shader->set_float(ss.str().c_str(), m.specular_e);
-        ss.str(std::string());
-
-        ss << "materials[" << at_index << "].dissolve";
-        _shader->set_float(ss.str().c_str(), m.dissolve);
+        _shader->set_vec3(ambient_string.c_str(), m.ambient);
+        _shader->set_vec3(diffuse_string.c_str(), m.diffuse);
+        _shader->set_vec3(specular_string.c_str(), m.specular);
+        _shader->set_float(specular_e_string.c_str(), m.specular_e);
+        _shader->set_float(dissolve_string.c_str(), m.dissolve);
     }
-
 }

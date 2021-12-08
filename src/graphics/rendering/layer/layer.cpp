@@ -59,15 +59,8 @@ namespace mrld
         _renderer->flush();
     }
 
-    void Layer::draw_on_top()
-    {
-        glDisable(GL_DEPTH_TEST);
-        draw();
-        glEnable(GL_DEPTH_TEST);
-    }
-
     void Layer::add_light(const light &l)
     {
-
+        _lights.push_back(l);
     }
 }
