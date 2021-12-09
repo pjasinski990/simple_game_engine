@@ -8,6 +8,7 @@ namespace mrld
     class Timer
     {
     public:
+        Timer() { reset(); }
         void reset();
         uint64_t get_elapsed_micros() const;
         uint64_t get_elapsed_millis() const;

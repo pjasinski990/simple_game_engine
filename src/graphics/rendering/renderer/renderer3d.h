@@ -25,11 +25,9 @@ namespace mrld
         void flush() override;
 
     private:
-        void set_shader_material(const material &m, uint32_t at_index);
-
-        constexpr static uint32_t MAX_VERTICES = 32768u;
-        constexpr static uint32_t MAX_INDICES = 131072u;
-        constexpr static uint32_t BUFFER_SIZE = MAX_VERTICES * VERTEX_SIZE;
+        const uint32_t MAX_VERTICES = 65535u;
+        const uint32_t MAX_INDICES = 131072u;
+        const uint32_t BUFFER_SIZE = MAX_VERTICES * VERTEX_SIZE;
 
         VertexArray _vao;
         AttribDataBuffer *_vbo;

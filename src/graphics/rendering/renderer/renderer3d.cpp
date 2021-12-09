@@ -99,7 +99,7 @@ namespace mrld
 
         const std::vector<material> &materials = d.get_materials();
         for (uint32_t i = 0; i < materials.size(); ++i) {
-            set_shader_material(materials[i], i);
+            _shader->set_material(materials[i], i);
         }
 
         // Transform positions according to the transform stack
@@ -109,11 +109,11 @@ namespace mrld
         uint32_t size = n_vertices * VERTEX_SIZE;
         uint32_t size_i = n_indices * sizeof(uint16_t);
         if (size > BUFFER_SIZE) {
-            Logger::log(LogLevel::WRN, "Not rendering passed model - vertices size is too large for the buffer");
+            Logger::log(LogLevel::WRN, "In Renderer3D: Not rendering passed model - vertices size is too large for the buffer");
             return;
         }
         if (n_indices > MAX_INDICES) {
-            Logger::log(LogLevel::WRN, "Not rendering passed model - indices size is too large for the buffer");
+            Logger::log(LogLevel::WRN, "In Renderer3D: Not rendering passed model - indices size is too large for the buffer");
             return;
         }
 
@@ -143,28 +143,5 @@ namespace mrld
         _n_submitted_vertices = 0u;
         _n_submitted_indices = 0u;
         _texture_id_to_texture_slot.clear();
-    }
-
-    void Renderer3D::set_shader_material(const material &m, uint32_t at_index)
-    {
-        std::string prefix("materials[");
-        std::string ambient_suffix("].ambient");
-        std::string diffuse_suffix("].diffuse");
-        std::string specular_suffix("].specular");
-        std::string specular_e_suffix("].specular_e");
-        std::string dissolve_suffix("].dissolve");
-
-        std::string ambient_string = prefix + std::to_string(at_index) + ambient_suffix;
-        std::string diffuse_string = prefix + std::to_string(at_index) + diffuse_suffix;
-        std::string specular_string = prefix + std::to_string(at_index) + specular_suffix;
-        std::string specular_e_string = prefix + std::to_string(at_index) + specular_e_suffix;
-        std::string dissolve_string = prefix + std::to_string(at_index) + dissolve_suffix;
-
-        _shader->use();
-        _shader->set_vec3(ambient_string.c_str(), m.ambient);
-        _shader->set_vec3(diffuse_string.c_str(), m.diffuse);
-        _shader->set_vec3(specular_string.c_str(), m.specular);
-        _shader->set_float(specular_e_string.c_str(), m.specular_e);
-        _shader->set_float(dissolve_string.c_str(), m.dissolve);
     }
 }

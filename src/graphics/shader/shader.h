@@ -9,9 +9,12 @@
 #include "../../math/vec3.h"
 #include "../../math/vec4.h"
 #include "../../math/mat4.h"
+#include "../materials/material.h"
 
 namespace mrld
 {
+    struct directional_light;
+    struct point_light;
     enum class ShaderType
     {
         VERTEX_SHADER = GL_VERTEX_SHADER,
@@ -39,6 +42,9 @@ namespace mrld
         void set_vec2(const char *name, const vec2 &value);
         void set_vec3(const char *name, const vec3 &value);
         void set_vec4(const char *name, const vec4 &value);
+        void set_material(const material &m, uint32_t index);
+        void set_directional_light(const directional_light &l);
+        void set_point_light(const point_light &l, uint32_t index);
 
     private:
         GLuint get_uniform_location(const char *name);

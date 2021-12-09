@@ -41,14 +41,14 @@ namespace mrld
         void set_shader(Shader *shader) { _shader = shader; }
 
     protected:
-        constexpr static uint32_t ATTRIB_INDEX_POSITION = 0;
-        constexpr static uint32_t ATTRIB_INDEX_NORMAL = 1;
-        constexpr static uint32_t ATTRIB_INDEX_TEX_COORD = 2;
-        constexpr static uint32_t ATTRIB_INDEX_TEX_SLOT = 3;
-        constexpr static uint32_t ATTRIB_INDEX_MATERIAL_SLOT = 4;
-        constexpr static uint32_t ATTRIB_INDEX_COLOR = 5;
-        constexpr static uint32_t MAX_TEXTURE_SLOTS = 32;
-        constexpr static uint32_t VERTEX_SIZE = sizeof(VertexData);
+        const uint32_t ATTRIB_INDEX_POSITION = 0;
+        const uint32_t ATTRIB_INDEX_NORMAL = 1;
+        const uint32_t ATTRIB_INDEX_TEX_COORD = 2;
+        const uint32_t ATTRIB_INDEX_TEX_SLOT = 3;
+        const uint32_t ATTRIB_INDEX_MATERIAL_SLOT = 4;
+        const uint32_t ATTRIB_INDEX_COLOR = 5;
+        const uint32_t MAX_TEXTURE_SLOTS = 32;
+        const uint32_t VERTEX_SIZE = sizeof(VertexData);
 
         Shader *_shader;
         std::vector<mat4> _transform_stack;

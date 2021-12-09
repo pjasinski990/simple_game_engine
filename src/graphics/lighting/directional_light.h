@@ -4,10 +4,9 @@
 
 namespace mrld
 {
-    struct light
+    struct directional_light
     {
-        vec3 position;
-
+        vec3 direction;
         vec3 ambient;
         vec3 diffuse;
         vec3 specular;

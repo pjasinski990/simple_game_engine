@@ -190,7 +190,7 @@ namespace mrld
                             16, 17, 18, 18, 19, 16,
                             20, 21, 22, 22, 23, 20};
 
-        constexpr uint32_t vertex_count = 24;
-        constexpr uint32_t index_count = 36;
+        const uint32_t vertex_count = 24;
+        const uint32_t index_count = 36;
     }
 }

@@ -8,7 +8,6 @@ void handle_keys(mrld::KeyboardHandler& handler, mrld::FPSCamera &cam, float dt)
 
 int main(void)
 {
-//    mrld::Logger::set_log_level(mrld::LogLevel::DBG);
     mrld::Window window("Hello test", 800, 600);
 
     mrld::MouseHandler m_handler({mrld::MouseButton::BUTTON_LEFT, mrld::MouseButton::BUTTON_RIGHT});
@@ -56,8 +55,7 @@ int main(void)
             { mrld::vec3(1000, 0, 1000), mrld::vec3(0, 1, 0), mrld::vec2(1000, 1000), -1, -1,  0xffa0a0a0 },
             { mrld::vec3(1000, 0, -1000), mrld::vec3(1, 0, 0), mrld::vec2(0, 1000), -1, -1,  0xffa0a0a0 } };
     uint16_t floor_indices[] = {0, 1, 2, 2, 3, 0};
-    mrld::Texture grass = mrld::Texture("../res/grass.jpg");
-    mrld::Model *floor_model = new mrld::Model(floor, 4, floor_indices, 6, &grass);
+    mrld::Model *floor_model = new mrld::Model(floor, 4, floor_indices, 6);
     mrld::Body *floor_o = new mrld::Body(floor_model, new mrld::PlaneCollider(mrld::vec3(0.0f, 1.0f, 0.0f), 0.0f), mrld::physics_properties());
     floor_o->phys_properties.mass_inv = 0.0f;
     floor_o->t.position = mrld::vec3(0.0f, -3.0f, 0.0f);
@@ -66,38 +64,59 @@ int main(void)
     world.add(floor_o);
 
     // CUBES
-//    mrld::Texture container_t("../res/container.jpg", false);
-//    mrld::physics_properties cube_props;
-//    cube_props.velocity = mrld::vec3(0.0f, 0.0f, 0.0f);
-//    cube_props.bounciness = 0.6f;
-//    float dist = 10.0f;
-//    for (int i = 0; i < 20; ++i) {
-//        mrld::Model *cube = new mrld::Model(mrld::cube::vertices, mrld::cube::vertex_count, mrld::cube::indices, mrld::cube::index_count, &container_t);
-//        mrld::Body *cube_o = new mrld::RigidBody(cube, new mrld::SphereCollider(mrld::vec3(0.5f, 0.5f, 0.5f), 1.0f), cube_props);
-//        const float rand_x = static_cast<float>(rand()) / RAND_MAX * dist - dist / 2.0f;
-//        const float rand_y = static_cast<float>(rand()) / RAND_MAX * dist;
-//        const float rand_z = static_cast<float>(rand()) / RAND_MAX * dist - dist / 2.0f;
-//        cube_o->t.position = mrld::vec3(rand_x, rand_y, rand_z);
-//        cube_o->t.rotation = mrld::quat(mrld::vec3(0.0f, 1.0f, 0.0f), 5.0f * rand() / RAND_MAX);
-//        layer3d.add(cube_o->get_model());
-//        world.add(cube_o);
-//    }
-    // TREE
-    mrld::Model *tree_model = mrld::ObjModelParser::parse_obj_to_model("../res/tree.obj");
-    std::vector<mrld::material> tree_materials = mrld::ObjModelParser::parse_mtl_to_materials("../res/tree.mtl");
+    mrld::Texture container_t("../res/container.jpg", false);
+    mrld::physics_properties cube_props;
+    cube_props.velocity = mrld::vec3(0.0f, 0.0f, 0.0f);
+    cube_props.bounciness = 0.6f;
+    float dist = 10.0f;
+
+    mrld::material cube_material;
+    cube_material.specular = mrld::vec3(1.0f, 1.0f, 1.0f);
+    cube_material.diffuse = mrld::vec3(1.0f, 1.0f, 1.0f);
+    cube_material.ambient = mrld::vec3(0.8f, 0.8f, 0.6f);
+    cube_material.specular_e = 32.0f;
+    cube_material.dissolve = 1.0f;
     for (int i = 0; i < 20; ++i) {
-        for (int j = 0; j < 20; ++j) {
-            mrld::Model *tree = new mrld::Model(*tree_model);
-            std::vector<mrld::material> materials = tree_materials;
-            for (mrld::material &m : materials) { m.ambient = m.diffuse; }
-            // fix leaves
-            materials[0].dissolve = 0.8f;
-            materials[0].specular_e = 32.0f;
-            tree->set_materials(materials);
-            tree->translate(mrld::vec3(i * 8.0f, -3.0f, j * 8.0f));
-            layer3d.add(tree);
-        }
+        mrld::Model *cube = new mrld::Model(mrld::cube::vertices, mrld::cube::vertex_count, mrld::cube::indices, mrld::cube::index_count, &container_t);
+        cube->assign_material(cube_material);
+        mrld::Body *cube_o = new mrld::RigidBody(cube, new mrld::SphereCollider(mrld::vec3(0.5f, 0.5f, 0.5f), 1.0f), cube_props);
+        const float rand_x = static_cast<float>(rand()) / RAND_MAX * dist - dist / 2.0f;
+        const float rand_y = static_cast<float>(rand()) / RAND_MAX * dist;
+        const float rand_z = static_cast<float>(rand()) / RAND_MAX * dist - dist / 2.0f;
+        cube_o->t.position = mrld::vec3(rand_x, rand_y, rand_z);
+        cube_o->t.rotation = mrld::quat(mrld::vec3(0.0f, 1.0f, 0.0f), 5.0f * rand() / RAND_MAX);
+        layer3d.add(cube_o->get_model());
+        world.add(cube_o);
     }
+
+    cube_material.specular_e = 128.0f;
+    floor_model->assign_material(cube_material);
+
+    mrld::Model *tree2 = mrld::ObjModelParser::parse_obj_to_model("../res/tree2.obj");
+    std::vector<mrld::material> tree2_mat = mrld::ObjModelParser::parse_mtl_to_materials("../res/tree2.mtl");
+    tree2->set_materials(tree2_mat);
+    tree2->translate(mrld::vec3(0.0f, 6.0f, 0.0f));
+    layer3d.add(tree2);
+
+    mrld::directional_light light;
+    light.direction = mrld::vec3(1.0f, -1.0f, 1.0f) * 0.3f;
+    light.diffuse = mrld::vec3(1.0f, 1.0f, 1.0f) * 0.3f;
+    light.specular = mrld::vec3(1.0f, 1.0f, 1.0f) * 0.3f;
+    light.ambient = mrld::vec3(0.1f, 0.1f, 0.1f) * 0.3f;
+    s.set_directional_light(light);
+
+    mrld::point_light p_light;
+    p_light.position = mrld::vec3(0.0f, 5.0f);
+    p_light.diffuse = mrld::vec3(1.0f, 1.0f, 1.0f);
+    p_light.specular = mrld::vec3(1.0f, 1.0f, 1.0f);
+    p_light.ambient = mrld::vec3(0.2f, 0.2f, 0.2f);
+    p_light.constant = 1.0f;
+    p_light.linear = 0.07f;
+    p_light.quadratic = 0.002f;
+    layer3d.add_point_light(p_light);
+    p_light.position += mrld::vec3(50.0f, 0.0f, 0.0f);
+    layer3d.add_point_light(p_light);
+
     glClearColor(0.15f, 0.15f, 0.15f, 1.0f);
 
     mrld::Timer timer;
@@ -127,7 +146,7 @@ int main(void)
         }
         world.interpolate_previous_state(static_cast<float>(accumulator)/ static_cast<float>(dt));
 
-        handle_keys(handler, cam, frame_time * 0.0001);
+        handle_keys(handler, cam, frame_time * 0.000001);
         window.clear();
         layer3d.draw();
         window.update();

@@ -51,6 +51,7 @@ namespace mrld
         _shader->set_mat4("vp_matrix", _vp_matrix);
         _shader->set_vec3("camera_position", _camera->get_position());
         _shader->set_vec3("camera_direction", _camera->get_direction());
+
         _renderer->begin();
         for (auto &&item : _objects) {
             _renderer->submit(*item);
@@ -59,8 +60,10 @@ namespace mrld
         _renderer->flush();
     }
 
-    void Layer::add_light(const light &l)
+    void Layer::add_point_light(const point_light &l)
     {
-        _lights.push_back(l);
+        _point_lights.push_back(l);
+        _shader->set_point_light(_point_lights.back(), _point_lights.size() - 1);
+        _shader->set_int("lights_count", _point_lights.size());
     }
 }

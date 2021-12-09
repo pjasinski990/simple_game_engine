@@ -27,10 +27,10 @@ namespace mrld
         void flush() override;
 
     private:
-        constexpr static uint32_t MAX_SPRITES = 8192u;
-        constexpr static uint32_t SPRITE_SIZE = VERTEX_SIZE * 4;
-        constexpr static uint32_t BUFFER_SIZE = MAX_SPRITES * SPRITE_SIZE;
-        constexpr static uint32_t MAX_INDICES = MAX_SPRITES * 6;
+        const uint32_t MAX_SPRITES = 8192u;
+        const uint32_t SPRITE_SIZE = VERTEX_SIZE * 4;
+        const uint32_t BUFFER_SIZE = MAX_SPRITES * SPRITE_SIZE;
+        const uint32_t MAX_INDICES = MAX_SPRITES * 6;
 
         VertexArray _vao;
         AttribDataBuffer *_vbo;

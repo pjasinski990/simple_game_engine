@@ -3,6 +3,8 @@
 #include "shader.h"
 #include "../../utils/logger.h"
 #include "../../utils/file_handler.h"
+#include "../lighting/point_light.h"
+#include "../lighting/directional_light.h"
 
 namespace mrld
 {
@@ -221,5 +223,64 @@ namespace mrld
         glUniform1iv(get_uniform_location("textures"), n_texture_slots, slots);
         disable();
         delete[] slots;
+    }
+
+    void Shader::set_material(const material &m, uint32_t index)
+    {
+        std::string prefix("materials[");
+        std::string ambient_suffix("].ambient");
+        std::string diffuse_suffix("].diffuse");
+        std::string specular_suffix("].specular");
+        std::string specular_e_suffix("].specular_e");
+        std::string dissolve_suffix("].dissolve");
+
+        std::string ambient_string = prefix + std::to_string(index) + ambient_suffix;
+        std::string diffuse_string = prefix + std::to_string(index) + diffuse_suffix;
+        std::string specular_string = prefix + std::to_string(index) + specular_suffix;
+        std::string specular_e_string = prefix + std::to_string(index) + specular_e_suffix;
+        std::string dissolve_string = prefix + std::to_string(index) + dissolve_suffix;
+
+        use();
+        set_vec3(ambient_string.c_str(), m.ambient);
+        set_vec3(diffuse_string.c_str(), m.diffuse);
+        set_vec3(specular_string.c_str(), m.specular);
+        set_float(specular_e_string.c_str(), m.specular_e);
+        set_float(dissolve_string.c_str(), m.dissolve);
+    }
+
+    void Shader::set_directional_light(const directional_light &l)
+    {
+        std::string direction_string = "directional_light.direction";
+        std::string ambient_string = "directional_light.ambient";
+        std::string diffuse_string = "directional_light.diffuse";
+        std::string specular_string = "directional_light.specular";
+
+        use();
+        set_vec3(direction_string.c_str(), l.direction);
+        set_vec3(ambient_string.c_str(), l.ambient);
+        set_vec3(diffuse_string.c_str(), l.diffuse);
+        set_vec3(specular_string.c_str(), l.specular);
+    }
+
+    void Shader::set_point_light(const point_light &l, uint32_t index)
+    {
+        std::string position_string = "point_lights[" + std::to_string(index) + "].position";
+        std::string ambient_string = "point_lights[" + std::to_string(index) + "].ambient";
+        std::string diffuse_string = "point_lights[" + std::to_string(index) + "].diffuse";
+        std::string specular_string = "point_lights[" + std::to_string(index) + "].specular";
+
+        std::string constant_string = "point_lights[" + std::to_string(index) + "].constant";
+        std::string linear_string = "point_lights[" + std::to_string(index) + "].linear";
+        std::string quadratic_string = "point_lights[" + std::to_string(index) + "].quadratic";
+
+        use();
+        set_vec3(position_string.c_str(), l.position);
+        set_vec3(ambient_string.c_str(), l.ambient);
+        set_vec3(diffuse_string.c_str(), l.diffuse);
+        set_vec3(specular_string.c_str(), l.specular);
+
+        set_float(constant_string.c_str(), l.constant);
+        set_float(linear_string.c_str(), l.linear);
+        set_float(quadratic_string.c_str(), l.quadratic);
     }
 }

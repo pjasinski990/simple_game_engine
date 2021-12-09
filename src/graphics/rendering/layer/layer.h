@@ -3,7 +3,8 @@
 #include <vector>
 
 #include "../../../math/mat4.h"
-#include "../../lighting/light.h"
+#include "../../lighting/directional_light.h"
+#include "../../lighting/point_light.h"
 
 namespace mrld
 {
@@ -23,7 +24,7 @@ namespace mrld
 
         virtual void draw();
         virtual void add(Renderable *o);
-        virtual void add_light(const light &l);
+        virtual void add_point_light(const point_light &l);
 
     protected:
         Shader *_shader;
@@ -32,6 +33,6 @@ namespace mrld
         mat4 _vp_matrix;
 
         std::vector<Renderable*> _objects;
-        std::vector<light> _lights;
+        std::vector<point_light> _point_lights;
     };
 }
