@@ -54,8 +54,8 @@ namespace mrld
                     normals.push_back(vec3(x, y, z));
                 }
                 else if (msg == "vt") {
-                    float x, y, z;
-                    ss >> x >> y >> z;
+                    float x, y;
+                    ss >> x >> y;
                     tex_coords.push_back(vec2(x, y));
                 }
                 else if (msg == "usemtl") {
@@ -63,21 +63,30 @@ namespace mrld
                     ss >> name;
                     current_material_index = std::find_if(materials.begin(), materials.end(),
                                                           [&](material& m){ return m.name == name; }) - std::begin(materials);
+                    Logger::log(LogLevel::DBG, "Starting to load model vertices with material %s (detected index: %d)",
+                                name.c_str(), current_material_index);
                 }
                 else if (msg == "f") {
                     line = std::regex_replace(line, std::regex("/"), " ");
                     ss.clear();
                     ss.str(line);
                     uint16_t p1, p2, p3, t1, t2, t3, n1, n2, n3;
-                    ss >> msg >> p1 >> t1 >> n1 >> p2 >> t2 >> n2 >> p3 >> t3 >> n3;
+                    if (!tex_coords.empty()) {
+                        ss >> msg >> p1 >> t1 >> n1 >> p2 >> t2 >> n2 >> p3 >> t3 >> n3;
+                    }
+                    else {
+                        ss >> msg >> p1 >> n1 >> p2 >> n2 >> p3 >> n3;
+                    }
 
                     indices_positions.push_back(p1 - 1);
                     indices_positions.push_back(p2 - 1);
                     indices_positions.push_back(p3 - 1);
 
-                    indices_tex_coords.push_back(t1 - 1);
-                    indices_tex_coords.push_back(t2 - 1);
-                    indices_tex_coords.push_back(t3 - 1);
+                    if (!tex_coords.empty()) {
+                        indices_tex_coords.push_back(t1 - 1);
+                        indices_tex_coords.push_back(t2 - 1);
+                        indices_tex_coords.push_back(t3 - 1);
+                    }
 
                     indices_normals.push_back(n1 - 1);
                     indices_normals.push_back(n2 - 1);
@@ -88,13 +97,16 @@ namespace mrld
                     indices_materials.push_back(current_material_index);
                 }
             }
+            Logger::log(LogLevel::DBG, "Finished scanning file %s, now creating vertex data", filepath.c_str());
 
             VertexData *res_vertices = new VertexData[indices_positions.size()];
             uint16_t *res_indices = new uint16_t[indices_positions.size()];
             for (int i = 0; i < indices_positions.size(); ++i) {
                 VertexData next;
                 next.position = positions[indices_positions[i]];
-                next.tex_coord = tex_coords[indices_tex_coords[i]];
+                if (!tex_coords.empty()) {
+                    next.tex_coord = tex_coords[indices_tex_coords[i]];
+                }
                 next.normal = normals[indices_normals[i]];
                 next.tex_slot = -1.0f;
                 next.material_slot = has_materials ? indices_materials[i] : -1.0f;

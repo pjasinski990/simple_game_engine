@@ -92,29 +92,39 @@ int main(void)
     cube_material.specular_e = 128.0f;
     floor_model->assign_material(cube_material);
 
+    mrld::Model *tree = mrld::ObjModelParser::parse_obj_to_model("../res/tree1.obj");
+    std::vector<mrld::material> tree_mat = mrld::ObjModelParser::parse_mtl_to_materials("../res/tree1.mtl");
+    tree->set_materials(tree_mat);
+    tree->translate(mrld::vec3(-10.0f, -3.0f, -20.0f));
+    layer3d.add(tree);
+
     mrld::Model *tree2 = mrld::ObjModelParser::parse_obj_to_model("../res/tree2.obj");
     std::vector<mrld::material> tree2_mat = mrld::ObjModelParser::parse_mtl_to_materials("../res/tree2.mtl");
     tree2->set_materials(tree2_mat);
-    tree2->translate(mrld::vec3(0.0f, 6.0f, 0.0f));
+    tree2->translate(mrld::vec3(0.0f, -3.0f, -20.0f));
     layer3d.add(tree2);
 
+    mrld::Model *tree3 = mrld::ObjModelParser::parse_obj_to_model("../res/tree3.obj");
+    std::vector<mrld::material> tree3_mat = mrld::ObjModelParser::parse_mtl_to_materials("../res/tree3.mtl");
+    tree3->set_materials(tree3_mat);
+    tree3->translate(mrld::vec3(10.0f, -3.0f, -20.0f));
+    layer3d.add(tree3);
+
     mrld::directional_light light;
-    light.direction = mrld::vec3(1.0f, -1.0f, 1.0f) * 0.3f;
-    light.diffuse = mrld::vec3(1.0f, 1.0f, 1.0f) * 0.3f;
-    light.specular = mrld::vec3(1.0f, 1.0f, 1.0f) * 0.3f;
-    light.ambient = mrld::vec3(0.1f, 0.1f, 0.1f) * 0.3f;
+    light.direction = mrld::vec3(1.0f, -1.0f, -1.0f);
+    light.diffuse = mrld::vec3(1.0f, 1.0f, 1.0f) * 0.7f;
+    light.specular = mrld::vec3(1.0f, 1.0f, 1.0f) * 0.7f;
+    light.ambient = mrld::vec3(0.1f, 0.1f, 0.1f) * 0.7f;
     s.set_directional_light(light);
 
     mrld::point_light p_light;
-    p_light.position = mrld::vec3(0.0f, 5.0f);
+    p_light.position = mrld::vec3(20.0f, 5.0f, 0.0f);
     p_light.diffuse = mrld::vec3(1.0f, 1.0f, 1.0f);
     p_light.specular = mrld::vec3(1.0f, 1.0f, 1.0f);
     p_light.ambient = mrld::vec3(0.2f, 0.2f, 0.2f);
     p_light.constant = 1.0f;
     p_light.linear = 0.07f;
     p_light.quadratic = 0.002f;
-    layer3d.add_point_light(p_light);
-    p_light.position += mrld::vec3(50.0f, 0.0f, 0.0f);
     layer3d.add_point_light(p_light);
 
     glClearColor(0.15f, 0.15f, 0.15f, 1.0f);
