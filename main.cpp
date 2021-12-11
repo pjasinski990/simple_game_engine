@@ -62,7 +62,6 @@ int main(void)
     mrld::Body floor_o = mrld::Body(&floor_model, new mrld::PlaneCollider(mrld::vec3(0.0f, 1.0f, 0.0f), 0.0f), mrld::physics_properties());
     floor_o.phys_properties.mass_inv = 0.0f;
     floor_o.t.position = mrld::vec3(0.0f, -3.0f, 0.0f);
-    floor_o.update_model();
     layer3d.add(floor_o.get_model());
     world.add(&floor_o);
 
@@ -78,15 +77,15 @@ int main(void)
     cube_material.ambient = mrld::vec3(0.8f, 0.8f, 0.6f);
     cube_material.specular_e = 32.0f;
     cube_material.dissolve = 1.0f;
-    for (int i = 0; i < 400; ++i) {
+    for (int i = 0; i < 100; ++i) {
         mrld::Model *cube = new mrld::Model(mrld::cube::vertices, mrld::cube::vertex_count, mrld::cube::indices, mrld::cube::index_count);
         cube->assign_material(cube_material);
-        mrld::Body *cube_o = new mrld::RigidBody(cube, new mrld::SphereCollider(mrld::vec3(0.5f, 0.5f, 0.5f), 1.0f), cube_props);
+        mrld::Body *cube_o = new mrld::RigidBody(cube, new mrld::SphereCollider(mrld::vec3(0.5f, 0.5f, 0.5f), 0.5f), cube_props);
         const float rand_x = static_cast<float>(rand()) / RAND_MAX * dist - dist / 2.0f;
         const float rand_y = static_cast<float>(rand()) / RAND_MAX * dist;
         const float rand_z = static_cast<float>(rand()) / RAND_MAX * dist - dist / 2.0f;
         cube_o->t.position = mrld::vec3(rand_x, rand_y, rand_z);
-        cube_o->t.rotation = mrld::quat(mrld::vec3(0.0f, 1.0f, 0.0f), 5.0f * rand() / RAND_MAX);
+//        cube_o->t.position = mrld::vec3();
         layer3d.add(cube_o->get_model());
         world.add(cube_o);
     }
@@ -95,21 +94,15 @@ int main(void)
     cube_material.specular_e = 32.0f;
     floor_model.assign_material(cube_material);
 
-    mrld::Model tree = mrld::ObjModelParser::parse_obj_to_model("../res/tree1.obj");
-    std::vector<mrld::material> tree_mat = mrld::ObjModelParser::parse_mtl_to_materials("../res/tree1.mtl");
-    tree.set_materials(tree_mat);
+    mrld::Model tree = mrld::ObjModelParser::parse_obj_to_model("../res/tree1.obj", "../res/tree1.mtl");
     tree.translate(mrld::vec3(-10.0f, -3.0f, -20.0f));
     layer3d.add(&tree);
 
-    mrld::Model tree2 = mrld::ObjModelParser::parse_obj_to_model("../res/tree2.obj");
-    std::vector<mrld::material> tree2_mat = mrld::ObjModelParser::parse_mtl_to_materials("../res/tree2.mtl");
-    tree2.set_materials(tree2_mat);
+    mrld::Model tree2 = mrld::ObjModelParser::parse_obj_to_model("../res/tree2.obj", "../res/tree2.mtl");
     tree2.translate(mrld::vec3(0.0f, -3.0f, -20.0f));
     layer3d.add(&tree2);
 
-    mrld::Model tree3 = mrld::ObjModelParser::parse_obj_to_model("../res/tree3.obj");
-    std::vector<mrld::material> tree3_mat = mrld::ObjModelParser::parse_mtl_to_materials("../res/tree3.mtl");
-    tree3.set_materials(tree3_mat);
+    mrld::Model tree3 = mrld::ObjModelParser::parse_obj_to_model("../res/tree3.obj", "../res/tree3.mtl");
     tree3.translate(mrld::vec3(10.0f, -3.0f, -20.0f));
     layer3d.add(&tree3);
 
@@ -163,6 +156,19 @@ int main(void)
         window.clear();
         layer3d.draw();
         window.update();
+
+        auto cols = world.shoot_ray(cam.get_position(), cam.get_direction());
+        for (mrld::collision col : cols) {
+            const mrld::SphereCollider *sp;
+            sp = dynamic_cast<const mrld::SphereCollider*>(col.a->get_collider());
+            if (sp) {
+                if (m_handler.is_button_down(mrld::MouseButton::BUTTON_LEFT)) {
+                    col.a->get_model()->get_materials()[0].diffuse = mrld::color::RED;
+                    std::cout << "collision with sphere at distance " << col.coll_p.collision_depth << std::endl;
+                    std::cout << "collision coords: " << col.coll_p.a << std::endl;
+                }
+            }
+        }
 
         if (timer.get_elapsed_millis() - fps_timer > 1000u) {
             std::cout << fps << " fps" << std::endl;

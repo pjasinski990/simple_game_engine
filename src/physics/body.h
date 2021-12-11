@@ -22,6 +22,7 @@ namespace mrld
 
     protected:
         bool _is_dynamic;
+        bool _is_trigger;
 
         Model *_model;
         Collider *_collider;

@@ -23,6 +23,10 @@ namespace mrld
         {
             return coll::sphere_sphere_collision(ta, this, tb, o);
         }
+        inline collision_point check_collision(const transform &ta, const RayCollider *o, const transform &tb) const override
+        {
+            return coll::sphere_ray_collision(ta, this, tb, o);
+        }
 
         inline const vec3& get_center() const { return _center; }
         inline const float get_radius() const {return _r; }

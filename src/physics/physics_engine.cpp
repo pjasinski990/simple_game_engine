@@ -4,6 +4,7 @@
 #include "collisions/collider.h"
 #include "collisions/colliders/sphere_collider.h"
 #include "collisions/solver/solver.h"
+#include "collisions/colliders/ray_collider.h"
 
 namespace mrld
 {
@@ -34,6 +35,19 @@ namespace mrld
         for (uint32_t i = 0; i < _objects.size(); ++i) {
             _objects[i]->t = _current_state[i];
             _objects[i]->update_model();
+        }
+    }
+
+    void PhysicsEngine::update_object(const Body *o)
+    {
+        auto target = std::find(_objects.begin(), _objects.end(), o);
+        if (target != _objects.end()) {
+            uint32_t i = target - _objects.begin();
+            _previous_state[i] = o->t;
+            _current_state[i] = o->t;
+        }
+        else {
+            Logger::log(LogLevel::WRN, "Not updating object %p in physics engine - not found", o);
         }
     }
 
@@ -72,6 +86,20 @@ namespace mrld
         else {
             Logger::log(LogLevel::WRN, "Not removing solver from physics engine - not found");
         }
+    }
+
+    std::vector<collision> PhysicsEngine::shoot_ray(vec3 source, vec3 direction)
+    {
+        std::vector<collision> res;
+        RayCollider test_collider(source, direction);
+        transform t;
+        for (Body *o : _objects) {
+            collision_point coll = test_collider.check_collision(t, o->get_collider(), o->t);
+            if (coll.has_collision) {
+                res.emplace_back(o, nullptr, coll);
+            }
+        }
+        return res;
     }
 
     void PhysicsEngine::update_dynamics(float dt)

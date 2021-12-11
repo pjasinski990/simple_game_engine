@@ -45,6 +45,7 @@
 #include "../../src/physics/collisions/collider.h"
 #include "../../src/physics/collisions/colliders/sphere_collider.h"
 #include "../../src/physics/collisions/colliders/plane_collider.h"
+#include "../../src/physics/collisions/colliders/ray_collider.h"
 #include "../../src/physics/collisions/solver/solver.h"
 #include "../../src/physics/collisions/solver/impulse_solver.h"
 #include "../../src/physics/collisions/solver/recursive_position_correction_solver.h"

@@ -16,10 +16,12 @@ namespace mrld
         void step(float dt);
         void interpolate_previous_state(float ratio);
         void update_models();
+        void update_object(const Body *o);
         void add(Body *o);
         void remove(Body *o);
         void add_solver(Solver *o);
         void remove_solver(Solver *o);
+        std::vector<collision> shoot_ray(vec3 source, vec3 direction);
 
         inline void set_gravity(const vec3& gravity) { _gravity = gravity; }
         inline vec3 get_gravity() { return _gravity; }

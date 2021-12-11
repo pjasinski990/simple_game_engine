@@ -20,6 +20,7 @@ namespace mrld
 
         const Texture* get_texture() const { return _texture; }
         void set_texture(Texture *tex) { _texture = tex; }
+        std::vector<material>& get_materials() { return _materials; }
         const std::vector<material>& get_materials() const { return _materials; }
         void set_materials(const std::vector<material> &materials) { _materials = materials; }
 
