@@ -1,5 +1,6 @@
 #include <unordered_map>
 
+#include "../../body.h"
 #include "impulse_solver.h"
 #include "../../../utils/logger.h"
 

@@ -18,25 +18,6 @@ namespace mrld
         _shader->disable();
     }
 
-    Layer::~Layer()
-    {
-        for (auto &&item : _objects) {
-            delete item;
-        }
-    }
-
-    Layer::Layer(Layer &&o)
-    {
-        *this = std::move(o);
-    }
-
-    Layer &Layer::operator=(Layer &&o)
-    {
-        _objects = std::move(o._objects);
-        o._objects.clear();
-        return *this;
-    }
-
     void Layer::add(Renderable *o)
     {
         _objects.push_back(o);

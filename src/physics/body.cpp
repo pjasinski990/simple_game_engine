@@ -15,10 +15,12 @@ namespace mrld
 
     void Body::update_model()
     {
-        _model->set_model_matrix(
-                mat4::translate(t.position)
-                * mat4::rotate(t.rotation)
-                * mat4::scale(t.scale)
-        );
+        if (_model) {
+            _model->set_model_matrix(
+                    mat4::translate(t.position)
+                    * mat4::rotate(t.rotation)
+                    * mat4::scale(t.scale)
+            );
+        }
     }
 }

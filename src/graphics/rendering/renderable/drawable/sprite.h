@@ -14,7 +14,7 @@ namespace mrld
     class Sprite: public Drawable
     {
     public:
-        Sprite(const vec3 &position, const vec2 &size, const Texture *tex = nullptr, const vec4 &color = color::BLACK);
+        Sprite(const vec3 &position, const vec2 &size, const Texture *tex = nullptr, const vec4 &color = color::BLACK_A);
         VertexData* get_vertices() override;
         inline uint32_t get_vertices_count() const override { return 4u; };
         const uint16_t* get_indices() const override;

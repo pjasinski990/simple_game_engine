@@ -4,7 +4,12 @@
 
 namespace mrld
 {
-    Model::Model(VertexData *vertices, uint32_t v_count, uint16_t *indices, uint32_t i_count, const Texture *tex /* = nullptr */)
+    Model::Model(
+            VertexData *vertices,
+            uint32_t v_count,
+            uint16_t *indices,
+            uint32_t i_count,
+            const Texture *tex /* = nullptr */)
     : Drawable(tex)
     , _model_matrix{mat4::identity()}
     , _v_count{v_count}
@@ -20,7 +25,9 @@ namespace mrld
         }
     }
 
-    Model::Model(VertexData *vertices, uint32_t v_count, const Texture *tex)
+    Model::Model(VertexData *vertices,
+                 uint32_t v_count,
+                 const Texture *tex)
     : Drawable(tex)
     , _model_matrix{mat4::identity()}
     , _v_count{v_count}
@@ -49,5 +56,4 @@ namespace mrld
         quat q(axis, angle_rads);
         _model_matrix = q.create_rotation_matrix() * _model_matrix;
     }
-
 }

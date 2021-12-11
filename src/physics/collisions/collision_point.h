@@ -1,7 +1,6 @@
 #pragma once
 
 #include "../../math/vec3.h"
-#include "../body.h"
 
 namespace mrld
 {

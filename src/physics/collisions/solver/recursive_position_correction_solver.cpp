@@ -3,6 +3,7 @@
 #include <unordered_set>
 
 #include "recursive_position_correction_solver.h"
+#include "../../body.h"
 
 namespace mrld
 {

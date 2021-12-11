@@ -102,6 +102,7 @@ namespace mrld
         for (uint32_t i = 0; i < _objects.size(); ++i) {
             if (_objects[i]->is_dynamic()) {
                 physics_properties &props = _objects[i]->phys_properties;
+                vec3 gravity_dir = _gravity.normalized();
 
                 if (fabs(props.velocity.x) < _velocity_clipping_threshold) {
                     props.velocity.x = 0.0f;
@@ -110,14 +111,18 @@ namespace mrld
                     props.velocity.z = 0.0f;
                 }
 
-                if (fabs(props.velocity.dot(_gravity.normalized())) < _floor_detection_velocity_threshold) {
-                    props.acceleration += props.velocity * props.mass * props.friction_d * _gravity.magnitude() * -1.0f;
+                if (fabs(props.velocity.dot(gravity_dir)) < _floor_detection_velocity_threshold) {
+                    vec3 friction = props.velocity * props.mass * props.friction_d * _gravity.magnitude();
+                    friction.x *= 1.0f - fabs(vec3(1.0f, 0.0f, 0.0f).dot(gravity_dir));
+                    friction.y *= 1.0f - fabs(vec3(0.0f, 1.0f, 0.0f).dot(gravity_dir));
+                    friction.z *= 1.0f - fabs(vec3(0.0f, 0.0f, 1.0f).dot(gravity_dir));
+                    props.acceleration -= friction;
                 }
             }
         }
     }
 
-        std::vector<collision> PhysicsEngine::detect_collisions(float dt)
+    std::vector<collision> PhysicsEngine::detect_collisions(float dt)
     {
         std::vector<collision> collisions;
         for (uint32_t i = 0; i < _objects.size(); ++i) {
@@ -130,7 +135,8 @@ namespace mrld
                         _objects[j]->t);
 
                 if (coll.has_collision) {
-                    // Objects are stored as a base pointer, collision will be detected in a dispatched call with reversed arguments
+                    // Objects are stored as a base pointer, collision will be detected in a dispatched
+                    // call with reversed arguments, thus the reversed order in emplace
                     collisions.emplace_back(_objects[j], _objects[i], coll);
                 }
             }

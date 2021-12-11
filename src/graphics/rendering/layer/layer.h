@@ -15,12 +15,8 @@ namespace mrld
     class Layer
     {
     public:
-        virtual ~Layer();
+        virtual ~Layer() = default;
         Layer(Shader *s, Renderer *r, Camera *camera);
-        Layer(const Layer &o) = delete;
-        Layer& operator=(const Layer &o) = delete;
-        Layer(Layer &&o);
-        Layer& operator=(Layer &&o);
 
         virtual void draw();
         virtual void add(Renderable *o);

@@ -19,7 +19,7 @@ namespace mrld
     };
 
     inline std::ostream& operator<<(std::ostream& out, const VertexData& o) {
-        out << o.position << std::endl << o.normal << std::endl << o.tex_coord << std::endl << o.tex_slot << std::endl << o.color << std::endl;
+        out << o.position << std::endl << o.normal << std::endl << o.tex_coord << std::endl << o.material_slot << std::endl << o.tex_slot << std::endl << o.color << std::endl;
         return out;
     }
 }

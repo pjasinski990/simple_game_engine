@@ -13,7 +13,6 @@ namespace mrld
     public:
         PhysicsEngine();
 
-        // TODO add friction and angular physics
         void step(float dt);
         void interpolate_previous_state(float ratio);
         void update_models();

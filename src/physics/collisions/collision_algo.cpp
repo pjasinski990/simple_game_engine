@@ -55,12 +55,13 @@ namespace mrld
             vec3 sphere_center_actual_pos_a = ta.position + a->get_center();
             vec3 sphere_center_actual_pos_b = tb.position + b->get_center();
             float dist = (sphere_center_actual_pos_a - sphere_center_actual_pos_b).magnitude();
-            res.has_collision = fabs(dist) < a->get_radius() + b->get_radius();
+            float depth = -1.0f * (dist - a->get_radius() - b->get_radius());
+            res.has_collision = depth > 0.0f;
             if (res.has_collision) {
                 res.normal = (sphere_center_actual_pos_a - sphere_center_actual_pos_b).normalized();
                 res.a = sphere_center_actual_pos_a - res.normal * a->get_radius();
                 res.b = sphere_center_actual_pos_b + res.normal * b->get_radius();
-                res.collision_depth = a->get_radius() + b->get_radius() - dist;
+                res.collision_depth = depth;
             }
             return res;
         }

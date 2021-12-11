@@ -1,6 +1,7 @@
 #include <fstream>
 #include <sstream>
 #include <regex>
+#include <stdexcept>
 
 #include "obj_model_parser.h"
 #include "logger.h"
@@ -11,7 +12,7 @@ namespace mrld
     namespace ObjModelParser
     {
         // TODO separate adding material indices to other function
-        Model *parse_obj_to_model(const std::string &filepath)
+        Model parse_obj_to_model(const std::string &filepath)
         {
             std::vector<vec3> positions;
             std::vector<vec3> normals;
@@ -28,7 +29,7 @@ namespace mrld
             std::ifstream fin(filepath);
             if (!fin) {
                 Logger::log(LogLevel::ERR, "File %s could not be opened for reading", filepath.c_str());
-                return nullptr;
+                throw std::runtime_error("Error loading model");
             }
 
             std::string line;
@@ -61,7 +62,8 @@ namespace mrld
                 else if (msg == "usemtl") {
                     std::string name;
                     ss >> name;
-                    current_material_index = std::find_if(materials.begin(), materials.end(),
+                    current_material_index = std::find_if(materials.begin(),
+                                                          materials.end(),
                                                           [&](material& m){ return m.name == name; }) - std::begin(materials);
                     Logger::log(LogLevel::DBG, "Starting to load model vertices with material %s (detected index: %d)",
                                 name.c_str(), current_material_index);
@@ -99,9 +101,9 @@ namespace mrld
             }
             Logger::log(LogLevel::DBG, "Finished scanning file %s, now creating vertex data", filepath.c_str());
 
-            VertexData *res_vertices = new VertexData[indices_positions.size()];
-            uint16_t *res_indices = new uint16_t[indices_positions.size()];
-            for (int i = 0; i < indices_positions.size(); ++i) {
+            auto res_vertices = std::vector<VertexData>(indices_positions.size());
+            auto res_indices = std::vector<uint16_t>(indices_positions.size());
+            for (uint32_t i = 0; i < indices_positions.size(); ++i) {
                 VertexData next;
                 next.position = positions[indices_positions[i]];
                 if (!tex_coords.empty()) {
@@ -113,7 +115,8 @@ namespace mrld
                 res_vertices[i] = next;
                 res_indices[i] = i;
             }
-            return new Model(res_vertices, indices_positions.size(), res_indices, indices_positions.size());
+            Logger::log(LogLevel::DBG, "Success");
+            return Model(&res_vertices[0], indices_positions.size(), &res_indices[0], indices_positions.size());
         }
 
         std::vector<material> parse_mtl_to_materials(const std::string &filepath)
