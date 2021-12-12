@@ -11,9 +11,6 @@ namespace mrld
     class KeyboardHandler
     {
     public:
-        /**
-         * @param keys std::vector of KeyCodes that will be handled by this instance of KeyboardHandler.
-         */
         KeyboardHandler(const std::vector<KeyCode> &keys);
         ~KeyboardHandler();
         KeyboardHandler(const KeyboardHandler& o) = delete;

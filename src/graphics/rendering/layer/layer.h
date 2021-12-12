@@ -15,8 +15,9 @@ namespace mrld
     class Layer
     {
     public:
-        virtual ~Layer() = default;
+        Layer() = default;
         Layer(Shader *s, Renderer *r, Camera *camera);
+        virtual ~Layer() = default;
 
         virtual void draw();
         virtual void add(Renderable *o);

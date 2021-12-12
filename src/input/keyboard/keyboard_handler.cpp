@@ -1,7 +1,6 @@
 #include <algorithm>
 
 #include "keyboard_handler.h"
-#include "../../utils/timer.h"
 
 namespace mrld
 {

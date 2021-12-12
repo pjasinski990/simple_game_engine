@@ -21,7 +21,6 @@ namespace mrld
             Body *other = col.b;
             float inv_mass_sum = body->phys_properties.mass_inv + other->phys_properties.mass_inv;
             if (inv_mass_sum == 0.0f) {
-                Logger::log(LogLevel::WRN, "Request for solving of col between two fixed objects detected");
                 return;
             }
             else {

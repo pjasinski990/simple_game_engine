@@ -68,7 +68,7 @@ int main(void)
     // CUBES
     mrld::physics_properties cube_props;
     cube_props.velocity = mrld::vec3(0.0f, 0.0f, 0.0f);
-    cube_props.bounciness = 0.6f;
+    cube_props.bounciness = 0.0f;
     float dist = 10.0f;
 
     mrld::material cube_material;
@@ -77,15 +77,17 @@ int main(void)
     cube_material.ambient = mrld::vec3(0.8f, 0.8f, 0.6f);
     cube_material.specular_e = 32.0f;
     cube_material.dissolve = 1.0f;
-    for (int i = 0; i < 100; ++i) {
+    for (int i = 0; i < 20; ++i) {
         mrld::Model *cube = new mrld::Model(mrld::cube::vertices, mrld::cube::vertex_count, mrld::cube::indices, mrld::cube::index_count);
         cube->assign_material(cube_material);
         mrld::Body *cube_o = new mrld::RigidBody(cube, new mrld::SphereCollider(mrld::vec3(0.5f, 0.5f, 0.5f), 0.5f), cube_props);
         const float rand_x = static_cast<float>(rand()) / RAND_MAX * dist - dist / 2.0f;
         const float rand_y = static_cast<float>(rand()) / RAND_MAX * dist;
         const float rand_z = static_cast<float>(rand()) / RAND_MAX * dist - dist / 2.0f;
-        cube_o->t.position = mrld::vec3(rand_x, rand_y, rand_z);
-//        cube_o->t.position = mrld::vec3();
+        const float rand_rads = static_cast<float>(rand()) / RAND_MAX * 2.0f * mrld::math_constants::pi;
+//        cube_o->t.position = mrld::vec3(rand_x, rand_y, rand_z);
+        cube_o->t.position = mrld::vec3(0.0f, 2.0f * i);
+        cube_o->t.rotation = mrld::quat(mrld::vec3(0.0f, 1.0f, 0.0f), rand_rads);
         layer3d.add(cube_o->get_model());
         world.add(cube_o);
     }
@@ -105,6 +107,10 @@ int main(void)
     mrld::Model tree3 = mrld::ObjModelParser::parse_obj_to_model("../res/tree3.obj", "../res/tree3.mtl");
     tree3.translate(mrld::vec3(10.0f, -3.0f, -20.0f));
     layer3d.add(&tree3);
+
+    mrld::Model tree4 = mrld::ObjModelParser::parse_obj_to_model("../res/tree4.obj", "../res/tree4.mtl");
+    tree4.translate(mrld::vec3(20.0f, -3.0f, -20.0f));
+    layer3d.add(&tree4);
 
     mrld::directional_light light;
     light.direction = mrld::vec3(1.0f, -1.0f, -1.0f);
@@ -164,8 +170,6 @@ int main(void)
             if (sp) {
                 if (m_handler.is_button_down(mrld::MouseButton::BUTTON_LEFT)) {
                     col.a->get_model()->get_materials()[0].diffuse = mrld::color::RED;
-                    std::cout << "collision with sphere at distance " << col.coll_p.collision_depth << std::endl;
-                    std::cout << "collision coords: " << col.coll_p.a << std::endl;
                 }
             }
         }

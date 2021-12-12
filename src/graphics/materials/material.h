@@ -14,12 +14,11 @@ namespace mrld
         {
             /* no-op */
         }
-
-        std::string name;
         vec3 ambient;
         vec3 diffuse;
         vec3 specular;
         float specular_e;
         float dissolve;
+        std::string name;
     };
 }

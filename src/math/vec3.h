@@ -43,4 +43,11 @@ namespace mrld
         float y;
         float z;
     };
+
+    namespace unit_vec
+    {
+        const vec3 x = vec3(1.0f, 0.0f, 0.0f);
+        const vec3 y = vec3(0.0f, 1.0f, 0.0f);
+        const vec3 z = vec3(0.0f, 0.0f, 1.0f);
+    }
 };

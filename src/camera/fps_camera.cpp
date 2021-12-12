@@ -27,6 +27,7 @@ namespace mrld
     void FPSCamera::update()
     {
         if (_cursor_enabled) {
+            update_view();
             return;
         }
 
