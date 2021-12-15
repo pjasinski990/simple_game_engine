@@ -2,13 +2,12 @@
 
 #include "../../body.h"
 #include "impulse_solver.h"
-#include "../../../utils/logger.h"
 
 namespace mrld
 {
     void ImpulseSolver::solve(std::vector<collision> &cols, float dt)
     {
-        for (uint32_t i = 0; i < 1; ++i) {
+        for (uint32_t i = 0; i < _n_iterations; ++i) {
             apply_impulse(cols);
         }
     }
@@ -23,10 +22,6 @@ namespace mrld
             if (inv_mass_sum == 0.0f) {
                 return;
             }
-            else {
-                inv_mass_sum = body->phys_properties.mass_inv + other->phys_properties.mass_inv;
-            }
-
             const float bounciness = body->phys_properties.bounciness * other->phys_properties.bounciness;
             const vec3 v_rel = other->phys_properties.velocity - body->phys_properties.velocity;
             const float v_on_normal = v_rel.dot(col.coll_p.normal);

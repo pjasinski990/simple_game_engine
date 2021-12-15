@@ -73,11 +73,12 @@ int main(void)
 
     mrld::material cube_material;
     cube_material.specular = mrld::vec3(1.0f, 1.0f, 1.0f) * 0.3f;
-    cube_material.diffuse = mrld::vec3(0.4f, 0.9f, 0.6f);
+    cube_material.diffuse = mrld::vec3(0.3f, 0.9f, 0.8f);
     cube_material.ambient = mrld::vec3(0.8f, 0.8f, 0.6f);
     cube_material.specular_e = 32.0f;
     cube_material.dissolve = 1.0f;
-    for (int i = 0; i < 20; ++i) {
+
+    for (int i = 0; i < 400; ++i) {
         mrld::Model *cube = new mrld::Model(mrld::cube::vertices, mrld::cube::vertex_count, mrld::cube::indices, mrld::cube::index_count);
         cube->assign_material(cube_material);
         mrld::Body *cube_o = new mrld::RigidBody(cube, new mrld::SphereCollider(mrld::vec3(0.5f, 0.5f, 0.5f), 0.5f), cube_props);
@@ -85,9 +86,9 @@ int main(void)
         const float rand_y = static_cast<float>(rand()) / RAND_MAX * dist;
         const float rand_z = static_cast<float>(rand()) / RAND_MAX * dist - dist / 2.0f;
         const float rand_rads = static_cast<float>(rand()) / RAND_MAX * 2.0f * mrld::math_constants::pi;
-//        cube_o->t.position = mrld::vec3(rand_x, rand_y, rand_z);
-        cube_o->t.position = mrld::vec3(0.0f, 2.0f * i);
-        cube_o->t.rotation = mrld::quat(mrld::vec3(0.0f, 1.0f, 0.0f), rand_rads);
+        cube_o->t.position = mrld::vec3(rand_x, rand_y, rand_z);
+//        cube_o->t.position = mrld::vec3(0.0f, 2.0f * i);
+//        cube_o->t.rotation = mrld::quat(mrld::vec3(0.0f, 1.0f, 0.0f), rand_rads);
         layer3d.add(cube_o->get_model());
         world.add(cube_o);
     }
@@ -96,21 +97,21 @@ int main(void)
     cube_material.specular_e = 32.0f;
     floor_model.assign_material(cube_material);
 
-    mrld::Model tree = mrld::ObjModelParser::parse_obj_to_model("../res/tree1.obj", "../res/tree1.mtl");
-    tree.translate(mrld::vec3(-10.0f, -3.0f, -20.0f));
-    layer3d.add(&tree);
-
-    mrld::Model tree2 = mrld::ObjModelParser::parse_obj_to_model("../res/tree2.obj", "../res/tree2.mtl");
-    tree2.translate(mrld::vec3(0.0f, -3.0f, -20.0f));
-    layer3d.add(&tree2);
-
-    mrld::Model tree3 = mrld::ObjModelParser::parse_obj_to_model("../res/tree3.obj", "../res/tree3.mtl");
-    tree3.translate(mrld::vec3(10.0f, -3.0f, -20.0f));
-    layer3d.add(&tree3);
-
-    mrld::Model tree4 = mrld::ObjModelParser::parse_obj_to_model("../res/tree4.obj", "../res/tree4.mtl");
-    tree4.translate(mrld::vec3(20.0f, -3.0f, -20.0f));
-    layer3d.add(&tree4);
+//    mrld::Model tree = mrld::ObjModelParser::parse_obj_to_model("../res/tree1.obj", "../res/tree1.mtl");
+//    tree.translate(mrld::vec3(-10.0f, -3.0f, -20.0f));
+//    layer3d.add(&tree);
+//
+//    mrld::Model tree2 = mrld::ObjModelParser::parse_obj_to_model("../res/tree2.obj", "../res/tree2.mtl");
+//    tree2.translate(mrld::vec3(0.0f, -3.0f, -20.0f));
+//    layer3d.add(&tree2);
+//
+//    mrld::Model tree3 = mrld::ObjModelParser::parse_obj_to_model("../res/tree3.obj", "../res/tree3.mtl");
+//    tree3.translate(mrld::vec3(10.0f, -3.0f, -20.0f));
+//    layer3d.add(&tree3);
+//
+//    mrld::Model tree4 = mrld::ObjModelParser::parse_obj_to_model("../res/tree4.obj", "../res/tree4.mtl");
+//    tree4.translate(mrld::vec3(20.0f, -3.0f, -20.0f));
+//    layer3d.add(&tree4);
 
     mrld::directional_light light;
     light.direction = mrld::vec3(1.0f, -1.0f, -1.0f);
@@ -120,13 +121,19 @@ int main(void)
     s.set_directional_light(light);
 
     mrld::point_light p_light;
-    p_light.position = mrld::vec3(20.0f, 5.0f, 0.0f);
     p_light.diffuse = mrld::vec3(1.0f, 1.0f, 1.0f);
     p_light.specular = mrld::vec3(1.0f, 1.0f, 1.0f);
     p_light.ambient = mrld::vec3(0.2f, 0.2f, 0.2f);
     p_light.constant = 1.0f;
-    p_light.linear = 0.07f;
-    p_light.quadratic = 0.002f;
+    p_light.linear = 0.14f;
+    p_light.quadratic = 0.01f;
+    p_light.position = mrld::vec3(12.0f, 6.0f, -12.0f);
+    layer3d.add_point_light(p_light);
+    p_light.position = mrld::vec3(-12.0f, 6.0f, -12.0f);
+    layer3d.add_point_light(p_light);
+    p_light.position = mrld::vec3(12.0f, 6.0f, 12.0f);
+    layer3d.add_point_light(p_light);
+    p_light.position = mrld::vec3(-12.0f, 6.0f, 12.0f);
     layer3d.add_point_light(p_light);
 
     glClearColor(0.15f, 0.15f, 0.15f, 1.0f);

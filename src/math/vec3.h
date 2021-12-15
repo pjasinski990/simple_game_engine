@@ -6,7 +6,8 @@ namespace mrld
 {
     struct vec3
     {
-        explicit vec3(float x = 0.0f, float y = 0.0f, float z = 0.0f);
+        explicit vec3(float x, float y, float z);
+        explicit vec3(float f = 0.0f);
 
         float& operator[](int i);
         float operator[](int i) const;

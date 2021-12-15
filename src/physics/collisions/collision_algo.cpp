@@ -11,9 +11,7 @@ namespace mrld
     {
         collision_point plane_plane_collision(const transform &ta, const PlaneCollider *a, const transform &tb, const PlaneCollider *b)
         {
-            collision_point res;
-            res.has_collision = false;
-            return res;
+            return collision_point();
         }
 
         collision_point plane_sphere_collision(const transform &ta, const PlaneCollider *a, const transform &tb, const SphereCollider *b)
@@ -90,20 +88,20 @@ namespace mrld
             vec3 diff = sphere_center_actual_position - ray_source_actual_position;
             res.has_collision = false;
 
-            float tca_f = diff.dot(b->get_direction());
+            float on_ray_proj = diff.dot(b->get_direction());
             // ray cast in other direction
-            if (tca_f < 0.0f) {
+            if (on_ray_proj < 0.0f) {
                 res.has_collision = false;
                 return res;
             }
 
             float l2 = diff.magnitude_squared();
-            float d2 = l2 - tca_f * tca_f;
+            float d2 = l2 - on_ray_proj * on_ray_proj;
             float r2 = a->get_radius() * a->get_radius();
             res.has_collision = d2 < r2;
             if (res.has_collision) {
-                float thc_f2 = r2 - d2;
-                res.collision_depth = -1.0f * (tca_f - sqrtf(thc_f2));
+                float on_ray_proj_pen2 = r2 - d2;
+                res.collision_depth = -1.0f * (on_ray_proj - sqrtf(on_ray_proj_pen2));
                 res.a = ray_source_actual_position - b->get_direction() * res.collision_depth;
                 res.b = b->get_source() + tb.position;
                 res.normal = (res.b - res.a).normalized();
@@ -134,20 +132,20 @@ namespace mrld
             vec3 diff = sphere_center_actual_position - ray_source_actual_position;
             res.has_collision = false;
 
-            float tca_f = diff.dot(a->get_direction());
+            float on_ray_proj = diff.dot(a->get_direction());
             // ray cast in other direction
-            if (tca_f < 0.0f) {
+            if (on_ray_proj < 0.0f) {
                 res.has_collision = false;
                 return res;
             }
 
             float l2 = diff.magnitude_squared();
-            float d2 = l2 - tca_f * tca_f;
+            float d2 = l2 - on_ray_proj * on_ray_proj;
             float r2 = b->get_radius() * b->get_radius();
             res.has_collision = d2 < r2;
             if (res.has_collision) {
-                float thc_f2 = r2 - d2;
-                res.collision_depth = -1.0f * (tca_f - sqrtf(thc_f2));
+                float on_ray_proj_pen2 = r2 - d2;
+                res.collision_depth = -1.0f * (on_ray_proj - sqrtf(on_ray_proj_pen2));
                 res.a = a->get_source() + ta.position;
                 res.b = ray_source_actual_position - a->get_direction() * res.collision_depth;
                 res.normal = (res.b - res.a).normalized();
@@ -157,9 +155,7 @@ namespace mrld
 
         collision_point ray_ray_collision(const transform &ta, const RayCollider* a, const transform &tb, const RayCollider *b)
         {
-            collision_point res;
-            res.has_collision = false;
-            return res;
+            return collision_point();
         }
     }
 }

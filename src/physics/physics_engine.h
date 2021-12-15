@@ -28,8 +28,9 @@ namespace mrld
 
     private:
         void update_dynamics(float dt);
-        void apply_gravity(float dt);
+        void apply_forces(float dt);
         void handle_floor_friction(float dt);
+        void clip_velocities(float dt);
 
         std::vector<collision> detect_collisions(float dt);
         void solve_collisions(float dt, std::vector<collision> &collisions);

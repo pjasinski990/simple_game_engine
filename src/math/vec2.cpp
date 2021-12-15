@@ -6,6 +6,7 @@
 namespace mrld 
 {
     vec2::vec2(float x, float y): x{x}, y{y} {}
+    vec2::vec2(float f): vec2(f, f) {}
 
     float& vec2::operator[](int i)
     {

@@ -5,6 +5,7 @@
 namespace mrld
 {
     vec4::vec4(float x, float y, float z, float w): x{x}, y{y}, z{z}, w{w} {}
+    vec4::vec4(float f): vec4(f, f, f, f) {}
 
     float& vec4::operator[](int i)
     {

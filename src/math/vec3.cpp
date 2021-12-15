@@ -5,6 +5,7 @@
 namespace mrld
 {
     vec3::vec3(float x, float y, float z): x{x}, y{y}, z{z} {}
+    vec3::vec3(float f): vec3(f, f, f) {}
 
     float& vec3::operator[](int i)
     {

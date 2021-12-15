@@ -94,6 +94,7 @@ namespace mrld
         RayCollider test_collider(source, direction);
         transform t;
         for (Body *o : _objects) {
+            if (!o->get_collider()) { continue; }
             collision_point coll = test_collider.check_collision(t, o->get_collider(), o->t);
             if (coll.has_collision) {
                 res.emplace_back(o, nullptr, coll);
@@ -108,18 +109,21 @@ namespace mrld
             _previous_state[i] = _current_state[i];
         }
 
-        apply_gravity(dt);
+        apply_forces(dt);
         handle_floor_friction(dt);
+        clip_velocities(dt);
     }
 
-    void PhysicsEngine::apply_gravity(float dt)
+    void PhysicsEngine::apply_forces(float dt)
     {
         for (uint32_t i = 0; i < _objects.size(); ++i) {
             if (_objects[i]->is_dynamic()) {
                 physics_properties &props = _objects[i]->phys_properties;
+
                 props.acceleration += _gravity * props.mass;
                 props.velocity += props.acceleration / props.mass * dt;
                 _objects[i]->t.position += props.velocity * dt;
+
                 props.acceleration = vec3();
             }
         }
@@ -132,13 +136,6 @@ namespace mrld
                 physics_properties &props = _objects[i]->phys_properties;
                 vec3 gravity_dir = _gravity.normalized();
 
-                if (fabs(props.velocity.x) < _velocity_clipping_threshold) {
-                    props.velocity.x = 0.0f;
-                }
-                if (fabs(props.velocity.z) < _velocity_clipping_threshold) {
-                    props.velocity.z = 0.0f;
-                }
-
                 if (fabs(props.velocity.dot(gravity_dir)) < _floor_detection_velocity_threshold) {
                     vec3 friction = props.velocity * props.mass * props.friction_d * _gravity.magnitude();
                     friction.x *= 1.0f - fabs(vec3(1.0f, 0.0f, 0.0f).dot(gravity_dir));
@@ -150,6 +147,17 @@ namespace mrld
         }
     }
 
+    void PhysicsEngine::clip_velocities(float dt)
+    {
+        for (uint32_t i = 0; i < _objects.size(); ++i) {
+            physics_properties &props = _objects[i]->phys_properties;
+            if (fabs(props.velocity.x) + fabs(props.velocity.z) < _velocity_clipping_threshold) {
+                props.velocity.x = 0.0f;
+                props.velocity.z = 0.0f;
+            }
+        }
+    }
+
     std::vector<collision> PhysicsEngine::detect_collisions(float dt)
     {
         std::vector<collision> collisions;
@@ -157,6 +165,7 @@ namespace mrld
             for (uint32_t j = i + 1; j < _objects.size(); ++j) {
                 if (_objects[i] == _objects[j]) { continue; }
                 if (!_objects[i]->get_collider() || !_objects[j]->get_collider()) { continue; }
+                if (!_objects[i]->is_dynamic() && !_objects[j]->is_dynamic()) { continue; }
                 collision_point coll = _objects[i]->get_collider()->check_collision(
                         _objects[i]->t,
                         _objects[j]->get_collider(),

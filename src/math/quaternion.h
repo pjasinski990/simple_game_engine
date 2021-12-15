@@ -15,6 +15,9 @@ namespace mrld
         quat(const vec3 &axis, float angle_rads);
         quat conjugate() const;
         mat4 create_rotation_matrix() const;
+        float magnitude_squared() const;
+        float magnitude() const;
+        quat normalized() const;
 
         quat& operator*=(const quat &o);
         friend quat operator*(quat o1, const quat &o2);

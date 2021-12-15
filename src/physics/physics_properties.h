@@ -8,7 +8,7 @@ namespace mrld
         : center_of_mass{vec3()}
         , velocity{vec3()}
         , acceleration{vec3()}
-        , bounciness{1.0f}
+        , bounciness{0.5f}
         , friction_s{0.5f}
         , friction_d{0.5f}
         , mass{1.0f}

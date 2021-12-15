@@ -82,4 +82,19 @@ namespace mrld
         return res;
     }
 
+    float quat::magnitude_squared() const
+    {
+        return a*a + b*b + c*c + d*d;
+    }
+
+    float quat::magnitude() const
+    {
+        return sqrtf(magnitude_squared());
+    }
+
+    quat quat::normalized() const
+    {
+        float m = magnitude_squared();
+        return quat(a/m, b/m, c/m, d/m);
+    }
 }
