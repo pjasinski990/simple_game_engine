@@ -17,8 +17,8 @@ namespace mrld
     void PhysicsEngine::step(float dt)
     {
         update_dynamics(dt);
-        std::vector<collision> c = detect_collisions(dt);
-        solve_collisions(dt, c);
+        std::vector<collision> colls = detect_collisions(dt);
+        solve_collisions(dt, colls);
     }
 
     void PhysicsEngine::interpolate_previous_state(float ratio)
@@ -38,6 +38,10 @@ namespace mrld
         }
     }
 
+    /**
+     * @brief Should be called after external update of objects transform (updates state of object in physics engine)
+     * @param o Body that was updated
+     */
     void PhysicsEngine::update_object(const Body *o)
     {
         auto target = std::find(_objects.begin(), _objects.end(), o);

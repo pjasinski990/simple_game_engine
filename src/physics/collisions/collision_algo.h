@@ -17,6 +17,8 @@ namespace mrld
         collision_point sphere_sphere_collision(const transform &ta, const SphereCollider *a, const transform &tb, const SphereCollider *b);
         collision_point sphere_ray_collision(const transform &ta, const SphereCollider* a, const transform &tb, const RayCollider *b);
 
+        // Ray collision is a special case, where returned collision point contains only Body a, which is the body hit.
+        // Also, collision depth represents negative value of distance between caster and object hit.
         collision_point ray_plane_collision(const transform &ta, const RayCollider* a, const transform &tb, const PlaneCollider *b);
         collision_point ray_sphere_collision(const transform &ta, const RayCollider* a, const transform &tb, const SphereCollider *b);
         collision_point ray_ray_collision(const transform &ta, const RayCollider* a, const transform &tb, const RayCollider *b);

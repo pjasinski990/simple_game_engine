@@ -14,12 +14,5 @@ namespace mrld
         float tex_slot;
         float material_slot;
         uint32_t color;
-
-        friend std::ostream& operator<<(std::ostream& out, const VertexData& o);
     };
-
-    inline std::ostream& operator<<(std::ostream& out, const VertexData& o) {
-        out << o.position << std::endl << o.normal << std::endl << o.tex_coord << std::endl << o.material_slot << std::endl << o.tex_slot << std::endl << o.color << std::endl;
-        return out;
-    }
 }

@@ -20,7 +20,9 @@ namespace mrld
         Renderer(Shader *shader);
         virtual ~Renderer() = default;
 
+        // Should be called before submitting
         virtual void begin() const {};
+        // Should be called before flushing
         virtual void end() const {};
 
         // Can accept aggregates (groups)
@@ -32,7 +34,7 @@ namespace mrld
         virtual void push(const mat4 &transform, bool override = false);
         virtual void pop();
 
-        // Assume transform stack is empty when it has only one identity matrix
+        // Assume transform stack is empty when it has only one transform - identity matrix
         inline bool has_transforms_on_stack() const { return _transform_stack.size() > 1; }
         const mat4 &get_last_transform() const { return *_last_transform; }
         inline uint32_t get_n_texture_slots_used() const { return _texture_id_to_texture_slot.size(); }

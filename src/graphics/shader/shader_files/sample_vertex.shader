@@ -29,14 +29,16 @@ void main()
     v_position = world_position.xyz;
     gl_Position = vp_matrix * world_position;
 
-    v_tex_coord = tex_coord;
-    v_tex_slot = tex_slot;
-    v_material_slot = material_slot;
-
+    // Rotate normal vectors
     mat3 normals_model_matrix = mat3(model_matrix);
     v_normal = normalize(normals_model_matrix * normal);
     v_color = color;
 
+
+    // Pass data to fragment shader
+    v_tex_coord = tex_coord;
+    v_tex_slot = tex_slot;
+    v_material_slot = material_slot;
     v_camera_position = camera_position;
     v_camera_direction = camera_direction;
 }

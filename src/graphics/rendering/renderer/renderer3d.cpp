@@ -1,5 +1,3 @@
-#include <sstream>
-
 #include "renderer3d.h"
 #include "../buffer/index_buffer.h"
 #include "../renderable/drawable/drawable.h"

@@ -50,11 +50,13 @@ void main()
 {
     // Use directional light
     if (v_material_slot >= 0.0f) {
+        // Model has material
         uint m_slot = uint(v_material_slot + 0.5f);
         vec3 view_direction = normalize(v_camera_position - v_position);
         f_color = vec4(calc_directional_light(directional_light, v_normal, view_direction, materials[m_slot]), 1.0f);
     }
     if (v_tex_slot >= 0.0f) {
+        // Model has texture
         uint t_slot = uint(v_tex_slot + 0.5f);
         vec4 tex_color = texture(textures[t_slot], v_tex_coord);
         f_color *= tex_color;
@@ -64,11 +66,13 @@ void main()
     for (int i = 0; i < lights_count; ++i) {
         vec3 res = vec3(0.0f);
         if (v_material_slot >= 0.0f) {
+            // Model has material
             uint m_slot = uint(v_material_slot + 0.5f);
             vec3 view_direction = normalize(v_camera_position - v_position);
             res = calc_point_light(point_lights[i], v_normal, v_position, view_direction, materials[m_slot]);
         }
         if (v_tex_slot >= 0.0f) {
+            // Model has texture
             uint t_slot = uint(v_tex_slot + 0.5f);
             vec4 tex_color = texture(textures[t_slot], v_tex_coord);
             res *= tex_color.xyz;
